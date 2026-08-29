@@ -110,13 +110,6 @@ function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
     ? store.orders.find(order => order.id === orderMeta.id)
     : null;
   const statusIndexes = { Received: 0, Preparing: 1, Cooking: 2, Ready: 3, Delivered: 4 };
-  const currentStatus = trackedOrder?.status || "Cooking";
-  const activeStep = statusIndexes[currentStatus] ?? 2;
-
-  useEffect(() => {
-    const t = setInterval(() => setElapsed(e => e + 1), 1000);
-    return () => clearInterval(t);
-  }, []);
 
   // ── Per-dish prep time calculation ──────────────────────────────────────────
   const dishTimes = orderItems.map(item => ({
@@ -124,9 +117,10 @@ function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
     prepMins: getDishPrepTime(item.name),
   }));
 
-  // Total cook time = longest single dish (parallel cooking) + small queue buffer
+  // Total cook time = longest single dish (parallel cooking) + small queue buffer.
+  // This is the true foundation for the timer/progress calculations.
   const maxPrepMins = dishTimes.length ? Math.max(...dishTimes.map(d => d.prepMins)) : 0;
-  const totalCookMins = maxPrepMins + Math.floor(dishTimes.length / 2); // queue buffer
+  const totalCookMins = Math.max(12, maxPrepMins + Math.floor(dishTimes.length / 2));
 
   // Use the saved order timestamp so the tracking page reflects this order.
   const orderDate = orderMeta?.ts ? new Date(orderMeta.ts) : new Date();
@@ -138,27 +132,51 @@ function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
     return `${String(hh > 12 ? hh - 12 : hh || 12).padStart(2,"0")}:${String(mm).padStart(2,"0")} ${suffix}`;
   };
 
+  const orderAgeMinutes = Math.max(0, (Date.now() - orderDate.getTime()) / 60000);
+
+  const effectiveStatus = trackedOrder?.status || (
+    orderAgeMinutes < totalCookMins * 0.2 ? "Received" :
+    orderAgeMinutes < totalCookMins * 0.55 ? "Preparing" :
+    orderAgeMinutes < totalCookMins ? "Cooking" :
+    "Ready"
+  );
+  const currentStatus = effectiveStatus;
+  const activeStep = statusIndexes[currentStatus] ?? 2;
+
+  useEffect(() => {
+    const t = setInterval(() => setElapsed(e => e + 1), 1000);
+    return () => clearInterval(t);
+  }, []);
+
   const stepTimes = [
     addMins(orderDate, 0),
-    addMins(orderDate, 3),
-    addMins(orderDate, 5),
-    addMins(orderDate, 5 + totalCookMins),
-    addMins(orderDate, 8 + totalCookMins),
+    addMins(orderDate, Math.max(2, totalCookMins * 0.2)),
+    addMins(orderDate, Math.max(4, totalCookMins * 0.5)),
+    addMins(orderDate, totalCookMins),
+    addMins(orderDate, totalCookMins + 6),
   ];
   const placedAt = orderDate.toLocaleString([], { day:"2-digit", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit" });
 
-  // Countdown — time left until ready
-  const cookingElapsedMins = Math.floor(elapsed / 60);
-  const minsLeft = Math.max(0, (totalCookMins - 5) - cookingElapsedMins);
-  const secsLeft = minsLeft > 0 ? 59 - (elapsed % 60) : 0;
+  // Countdown and progress are based on the actual total prep time for the order.
+  const elapsedPrepMins = Math.min(totalCookMins, orderAgeMinutes);
+  const remainingPrepMins = Math.max(0, totalCookMins - elapsedPrepMins);
+  const minsLeft = Math.floor(remainingPrepMins);
+  const secsLeft = Math.max(0, Math.round((remainingPrepMins - minsLeft) * 60));
   const timerStr = `${String(minsLeft).padStart(2,"0")}:${String(secsLeft).padStart(2,"0")}`;
 
-  // Overall progress
-  const stepPcts = trackSteps.map((_, index) =>
-    index < activeStep ? 100 : index === activeStep ? (activeStep === 4 ? 100 : 60) : 0
-  );
-  const statusProgress = { Received: 10, Preparing: 30, Cooking: 60, Ready: 85, Delivered: 100 };
-  const overallPct = statusProgress[currentStatus] ?? 60;
+  const overallPct = totalCookMins > 0 ? Math.min(100, (elapsedPrepMins / totalCookMins) * 100) : 0;
+
+  const stageProgress = currentStatus === "Delivered"
+    ? 100
+    : currentStatus === "Ready"
+      ? 100
+      : Math.min(100, Math.max(0, (elapsedPrepMins / Math.max(1, totalCookMins)) * 100));
+
+  const stepPcts = trackSteps.map((_, index) => {
+    if (index < activeStep) return 100;
+    if (index > activeStep) return 0;
+    return index === activeStep ? stageProgress : 0;
+  });
 
   const subtotal      = orderItems.reduce((s,i) => s + i.price * i.qty, 0);
   const serviceCharge = Math.round(subtotal * 0.10);

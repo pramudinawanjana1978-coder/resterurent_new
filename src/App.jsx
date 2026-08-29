@@ -48,7 +48,7 @@ function Sidebar({ accentColor, activeNav, onNavigate, onMoreClick }) {
           }}>
             <span style={{ fontSize:18, width:22, textAlign:"center" }}>{item.icon}</span>
             <span>{item.label}</span>
-            {item.badge && <span style={{ marginLeft:"auto", background:accentColor, color:"#fff", borderRadius:"50%", width:22, height:22, display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:700 }}>{item.badge}</span>}
+            {item.badge && item.label !== 'Cart' && <span style={{ marginLeft:"auto", background:accentColor, color:"#fff", borderRadius:"50%", width:22, height:22, display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:700 }}>{item.badge}</span>}
           </button>
         ))}
       </nav>

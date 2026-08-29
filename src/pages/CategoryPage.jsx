@@ -139,24 +139,24 @@ const categoryConfig = {
     desc:"Energise your afternoon with fresh wraps and hearty sandwiches.",
     accentColor:"#43a047", bannerGrad:"linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 100%)",
     slides:[[
-    { image: "/images/fruitsalad.jpg", name: "Salad" },
+    { image: "/images/eggrice.png",name: "Salad" },
     { image: "/images/vegerice.png", name: "Wrap" },
-    { image: "/images/porkrice.png", name: "Sandwich" },
-    { image: "/images/porkrice.png", name: "Noodle Soup" },
+    {   image: "/images/FriedFish.jpg",   name: "Sandwich" },
+    {  image: "/images/PrawnCurry.jpg",   name: "Noodle Soup" },
     { image: "/images/porkrice.png", name: "Tacos" },
-    { image: "/images/porkrice.png", name: "Burrito" },
-    { image: "/images/porkrice.png", name: "Paella" },
-    { image: "/images/porkrice.png", name: "Bento Box" }
+    {image: "/images/SeafoodKottu.jpg", name: "Burrito" },
+    { image: "/images/Seafood Noodles.jpg",  name: "Paella" },
+    { image: "/images/Vegetable Fried Rice.jpg", name: "Bento Box" }
   ],
   [
-    { image: "/images/pancake2.jpg", name: "Pasta" },
-    { image: "/images/porkrice.png", name: "Grain Bowl" },
-    { image: "/images/porkrice.png", name: "Stew" },
+    {  image: "/images/crispychicken.png", name: "Pasta" },
+    { image: "/images/eggrice.png",  name: "Grain Bowl" },
+    { image: "/images/Pork Devilled.jpg",  name: "Stew" },
     { image: "/images/porkrice.png", name: "Stir Fry" },
-    { image: "/images/porkrice.png", name: "Curry" },
-    { image: "/images/porkrice.png", name: "Falafel" },
-    { image: "/images/porkrice.png", name: "Caesar" },
-    { image: "/images/porkrice.png", name: "Hummus" }
+    {  image: "/images/CuttlefishDevilled.jpg", name: "Curry" },
+    { image: "/images/Vegetable Kottu.jpg",  name: "Falafel" },
+    {  image: "/images/Chicken Noodles.jpg",  name: "Caesar" },
+    { image: "/images/FriedFish.jpg",name: "Hummus" }
   ]],
   },
   Dinner: {
