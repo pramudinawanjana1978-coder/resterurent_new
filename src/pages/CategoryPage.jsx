@@ -405,7 +405,7 @@ const allDishes = {
 const navItems = [
   {icon:"🏠",label:"Home"},{icon:"🍽️",label:"Special Menu"},{icon:"💡",label:"Recommendation"},
   {icon:"📍",label:"Track Order"},{icon:"💬",label:"Feedback"},{icon:"🏷️",label:"Offers"},
-  {icon:"🛒",label:"Cart",badge:4},{icon:"👤",label:"Offers"},{icon:"👥",label:"Staff"},
+  {icon:"🛒",label:"Cart"},{icon:"👤",label:"Offers"},{icon:"👥",label:"Staff"},
 ];
 const categories = ["Breakfast","Lunch","Dinner","Desserts","Drinks"];
 
