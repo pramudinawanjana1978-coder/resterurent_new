@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { navItems, categories, categoryConfig, allDishes } from './data/data.js';
 import { OrbitDisplay, Stars } from './components/Shared.jsx';
 import { DishDetailPage } from './pages/DishDetailPage.jsx';
@@ -28,44 +28,54 @@ const getTimeBasedCategory = (hour = new Date().getHours()) => {
   return "Breakfast";
 };
 
-function Sidebar({ accentColor, activeNav, onNavigate, onMoreClick }) {
+function Sidebar({ accentColor, activeNav, onNavigate, onPreviewClick, isMobile }) {
   return (
-    <aside style={{ width:240, flexShrink:0, background:"#1a1a1a", display:"flex", flexDirection:"column", padding:"0 0 24px 0", boxShadow:"4px 0 20px rgba(0,0,0,0.15)", zIndex:10 }}>
-      <div style={{ padding:"28px 24px 24px", borderBottom:"1px solid rgba(255,255,255,0.08)", marginBottom:16 }}>
+    <aside style={{ width:isMobile ? '100%' : 240, maxWidth:isMobile ? '100%' : 240, flexShrink:0, background:"#1a1a1a", display:"flex", flexDirection:"column", padding:isMobile ? "0 0 12px 0" : "0 0 24px 0", boxShadow:"4px 0 20px rgba(0,0,0,0.15)", zIndex:10 }}>
+      <div style={{ padding:isMobile ? "20px 18px 18px" : "28px 24px 24px", borderBottom:"1px solid rgba(255,255,255,0.08)", marginBottom:isMobile ? 12 : 16 }}>
         <div style={{ display:"flex", alignItems:"center", gap:12 }}>
           <div style={{ width:44, height:44, background:`linear-gradient(135deg,${accentColor},${accentColor}bb)`, borderRadius:12, display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, color:"#fff", fontSize:16, boxShadow:`0 4px 12px ${accentColor}55` }}>SR</div>
           <span style={{ color:"#fff", fontWeight:600, fontSize:15 }}>Smart Restaurant</span>
         </div>
       </div>
-      <nav style={{ flex:1, padding:"0 12px" }}>
+      <nav style={{ flex:1, padding:isMobile ? "0 10px 8px" : "0 12px" }}>
         {navItems.map(item => (
-          <button key={item.label} onClick={() => onNavigate(item.label)} style={{
-            display:"flex", alignItems:"center", gap:14, width:"100%", padding:"12px 14px", borderRadius:12, border:"none",
-            background: activeNav===item.label ? accentColor+"22" : "transparent",
-            color: activeNav===item.label ? accentColor : "rgba(255,255,255,0.6)",
-            cursor:"pointer", marginBottom:4, fontSize:14, fontWeight: activeNav===item.label ? 600 : 400,
-            transition:"all 0.2s", textAlign:"left", fontFamily:"inherit",
-          }}>
-            <span style={{ fontSize:18, width:22, textAlign:"center" }}>{item.icon}</span>
-            <span>{item.label}</span>
-            {item.badge && item.label !== 'Cart' && <span style={{ marginLeft:"auto", background:accentColor, color:"#fff", borderRadius:"50%", width:22, height:22, display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:700 }}>{item.badge}</span>}
-          </button>
+          <Fragment key={item.label}>
+            <button onClick={() => onNavigate(item.label)} style={{
+              display:"flex", alignItems:"center", gap:14, width:"100%", padding:isMobile ? "10px 12px" : "12px 14px", borderRadius:12, border:"none",
+              background: activeNav===item.label ? accentColor+"22" : "transparent",
+              color: activeNav===item.label ? accentColor : "rgba(255,255,255,0.6)",
+              cursor:"pointer", marginBottom:4, fontSize:isMobile ? 13 : 14, fontWeight: activeNav===item.label ? 600 : 400,
+              transition:"all 0.2s", textAlign:"left", fontFamily:"inherit",
+            }}>
+              <span style={{ fontSize:18, width:22, textAlign:"center" }}>{item.icon}</span>
+              <span>{item.label}</span>
+              {item.badge && item.label !== 'Cart' && <span style={{ marginLeft:"auto", background:accentColor, color:"#fff", borderRadius:"50%", width:22, height:22, display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:700 }}>{item.badge}</span>}
+            </button>
+            {item.label === 'Staff' && (
+              <div style={{ padding:"4px 2px 0" }}>
+                <button onClick={onPreviewClick} style={{
+                  display:"flex", alignItems:"center", justifyContent:"center", gap:8,
+                  width:"100%", padding:"10px 12px", borderRadius:12, border:"1px solid rgba(234, 88, 12, 0.4)",
+                  background:"linear-gradient(135deg, #ea580c, #f97316)", color:"#fff",
+                  fontSize:12, fontWeight:800, cursor:"pointer", letterSpacing:"0.3px",
+                  boxShadow:"0 6px 14px rgba(234, 88, 12, 0.25)"
+                }}>
+                  <span>🎥</span>
+                  <span>Watch Preview</span>
+                </button>
+              </div>
+            )}
+          </Fragment>
         ))}
       </nav>
-      <div style={{ marginTop:"auto", padding:"16px 12px" }}>
-        <div style={{ background:"linear-gradient(135deg, #1e1b4b, #311005)", borderRadius:16, padding:14, textAlign:"center", border:"1px solid rgba(234, 88, 12, 0.2)", boxShadow:"0 4px 12px rgba(0,0,0,0.2)" }}>
-          <div style={{ color:"#ef4444", fontSize:10, fontWeight:900, letterSpacing:1, marginBottom:8 }}>● LIVE FEED</div>
-          <h4 style={{ color:"#fff", margin:"0 0 4px", fontSize:13, fontWeight:700 }}>Smart Kitchen</h4>
-          <p style={{ color:"#9ca3af", margin:"0 0 12px", fontSize:11, lineHeight:1.4 }}>Watch how we prepare your delicious food live!</p>
-          <button onClick={onMoreClick} style={{ background:"#ea580c", color:"#fff", border:"none", borderRadius:10, padding:"8px 14px", width:"100%", fontSize:11, fontWeight:700, cursor:"pointer" }}>🎥 Watch Preview</button>
-        </div>
-      </div>
     </aside>
   );
 }
 
 export default function App() {
   const { placeOrder } = useAppStore();
+  const videoRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth <= 900 : false);
   const [activeNav, setActiveNav] = useState("Home");
   const [activeCategory, setActiveCategory] = useState(() => getTimeBasedCategory(new Date().getHours()));
   const [searchVal, setSearchVal] = useState("");
@@ -81,6 +91,53 @@ export default function App() {
   const [orderSummaryState, setOrderSummaryState] = useState(null);
   
   const [feedbackStats, setFeedbackStats] = useState({ average: 4.8, count: 2000 });
+  const [isVideoPreviewOpen, setIsVideoPreviewOpen] = useState(false);
+  const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
+
+  const openPreviewModal = () => {
+    setIsVideoPreviewOpen(true);
+    setIsPreviewPlaying(true);
+    setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.currentTime = 0;
+        videoRef.current.play().catch(() => {});
+      }
+    }, 50);
+  };
+
+  const closePreviewModal = () => {
+    setIsVideoPreviewOpen(false);
+    setIsPreviewPlaying(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  };
+
+  const togglePreviewPlayback = () => {
+    if (!videoRef.current) return;
+    if (videoRef.current.paused) {
+      videoRef.current.play().catch(() => {});
+      setIsPreviewPlaying(true);
+    } else {
+      videoRef.current.pause();
+      setIsPreviewPlaying(false);
+    }
+  };
+
+  const stopPreviewVideo = () => {
+    if (!videoRef.current) return;
+    videoRef.current.pause();
+    videoRef.current.currentTime = 0;
+    setIsPreviewPlaying(false);
+  };
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 900);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -180,10 +237,40 @@ export default function App() {
     if (label === "Staff") setPage("orders");
     
   };
+  const previewModal = isVideoPreviewOpen && (
+    <div
+      onClick={closePreviewModal}
+      style={{
+        position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.72)', display: 'flex',
+        alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: 24
+      }}
+    >
+      <div onClick={e => e.stopPropagation()} style={{ width: 'min(900px, 100%)', maxWidth: 900, background: '#111827', borderRadius: 20, padding: 20, boxShadow: '0 20px 50px rgba(0,0,0,0.45)', border: '1px solid rgba(255,255,255,0.1)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+          <div style={{ color: '#fff', fontSize: 18, fontWeight: 800 }}>Kitchen Preview</div>
+          <button onClick={closePreviewModal} style={{ background: '#ef4444', color: '#fff', border: 'none', borderRadius: 10, padding: '8px 12px', fontWeight: 700, cursor: 'pointer' }}>Close</button>
+        </div>
+        <video
+          ref={videoRef}
+          src="/videos/cooking.mp4"
+          controls={false}
+          autoPlay
+          style={{ width: '100%', height: 'auto', maxHeight: '70vh', borderRadius: 14, background: '#000', display: 'block' }}
+        />
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginTop: 18, flexWrap: 'wrap' }}>
+          <button onClick={togglePreviewPlayback} style={{ background: '#f59e0b', color: '#111827', border: 'none', borderRadius: 10, padding: '10px 18px', fontWeight: 800, cursor: 'pointer' }}>{isPreviewPlaying ? 'Pause' : 'Play'}</button>
+          <button onClick={stopPreviewVideo} style={{ background: '#ef4444', color: '#fff', border: 'none', borderRadius: 10, padding: '10px 18px', fontWeight: 800, cursor: 'pointer' }}>Stop</button>
+          <button onClick={closePreviewModal} style={{ background: '#374151', color: '#fff', border: 'none', borderRadius: 10, padding: '10px 18px', fontWeight: 800, cursor: 'pointer' }}>Close</button>
+        </div>
+      </div>
+    </div>
+  );
+
   const pageShell = (content) => (
-    <div style={{ display:"flex", minHeight:"100vh", background:"#f6f3ef" }}>
-      <Sidebar accentColor={cfg.accentColor} activeNav={activeNav} onNavigate={handleNav} onMoreClick={onMoreClick} />
-      <main style={{ flex:1, minWidth:0 }}>{content}</main>
+    <div style={{ display:"flex", flexDirection:isMobile ? 'column' : 'row', minHeight:"100vh", background:"#f6f3ef" }}>
+      {previewModal}
+      <Sidebar accentColor={cfg.accentColor} activeNav={activeNav} onNavigate={handleNav} onPreviewClick={openPreviewModal} isMobile={isMobile} />
+      <main style={{ flex:1, minWidth:0, width: isMobile ? '100%' : 'auto' }}>{content}</main>
     </div>
   );
 
@@ -368,83 +455,69 @@ export default function App() {
   const popularDishes = (allDishes[activeCategory]||[]).slice(0,4);
 
   return (
-    <div style={{ display:"flex", height:"100vh", fontFamily:"'Trebuchet MS', sans-serif", background:"#faf8f5", overflow:"hidden" }}>
+    <div style={{ display:"flex", flexDirection:isMobile ? "column" : "row", height:isMobile ? "auto" : "100vh", minHeight:"100vh", fontFamily:"'Trebuchet MS', sans-serif", background:"#faf8f5", overflow:isMobile ? "auto" : "hidden" }}>
+      {previewModal}
 
       {/* Sidebar */}
-      <aside style={{ width:240, background:"#1a1a1a", display:"flex", flexDirection:"column", padding:"0 0 24px 0", boxShadow:"4px 0 20px rgba(0,0,0,0.15)", zIndex:10 }}>
-        <div style={{ padding:"28px 24px 24px", borderBottom:"1px solid rgba(255,255,255,0.08)", marginBottom:16 }}>
+      <aside style={{ width:isMobile ? '100%' : 240, background:"#1a1a1a", display:"flex", flexDirection:"column", padding:"0 0 24px 0", boxShadow:"4px 0 20px rgba(0,0,0,0.15)", zIndex:10 }}>
+        <div style={{ padding:isMobile ? "20px 18px 18px" : "28px 24px 24px", borderBottom:"1px solid rgba(255,255,255,0.08)", marginBottom:isMobile ? 12 : 16 }}>
           <div style={{ display:"flex", alignItems:"center", gap:12 }}>
             <div style={{ width:44, height:44, background:`linear-gradient(135deg,${cfg.accentColor},${cfg.accentColor}bb)`, borderRadius:12, display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, color:"#fff", fontSize:16, boxShadow:`0 4px 12px ${cfg.accentColor}55`, transition:"background 0.4s" }}>SR</div>
             <span style={{ color:"#fff", fontWeight:600, fontSize:15 }}>Smart Restaurant</span>
           </div>
         </div>
-        <nav style={{ flex:1, padding:"0 12px" }}>
+        <nav style={{ flex:1, padding:isMobile ? "0 10px 8px" : "0 12px" }}>
           {navItems.map(item => (
-            <button key={item.label} onClick={() => {
-              setActiveNav(item.label);
-              // ✅ Home එක click කළ විට Reset වන ලෙස සැකසුවා
-              if (item.label === "Home") setPage(null); 
-              if (item.label === "Track Order") { setPage("track"); setOrderPaymentMethod(null); }
-              if (item.label === "Cart") setPage("cart");
-              if (item.label === "Feedback") setPage("feedback");
-              if (item.label === "Recommendation") setPage("recommendation");
-              if (item.label === "Special Menu") setPage("menu");
-              if (item.label === "Offers") setPage("offers");
-              if (item.label === "Staff") setPage("orders");
-            }} style={{
-              display:"flex", alignItems:"center", gap:14, width:"100%", padding:"12px 14px", borderRadius:12, border:"none",
-              background: activeNav===item.label ? cfg.accentColor+"22" : "transparent",
-              color: activeNav===item.label ? cfg.accentColor : "rgba(255,255,255,0.6)",
-              cursor:"pointer", marginBottom:4, fontSize:14, fontWeight: activeNav===item.label ? 600 : 400,
-              transition:"all 0.2s", textAlign:"left", fontFamily:"inherit",
-            }}>
-              <span style={{ fontSize:18, width:22, textAlign:"center" }}>{item.icon}</span>
-              <span>{item.label}</span>
-              {item.badge && <span style={{ marginLeft:"auto", background:cfg.accentColor, color:"#fff", borderRadius:"50%", width:22, height:22, display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:700 }}>{item.badge}</span>}
-            </button>
+            <Fragment key={item.label}>
+              <button onClick={() => {
+                setActiveNav(item.label);
+                // ✅ Home එක click කළ විට Reset වන ලෙස සැකසුවා
+                if (item.label === "Home") setPage(null); 
+                if (item.label === "Track Order") { setPage("track"); setOrderPaymentMethod(null); }
+                if (item.label === "Cart") setPage("cart");
+                if (item.label === "Feedback") setPage("feedback");
+                if (item.label === "Recommendation") setPage("recommendation");
+                if (item.label === "Special Menu") setPage("menu");
+                if (item.label === "Offers") setPage("offers");
+                if (item.label === "Staff") setPage("orders");
+              }} style={{
+                display:"flex", alignItems:"center", gap:14, width:"100%", padding:isMobile ? "10px 12px" : "12px 14px", borderRadius:12, border:"none",
+                background: activeNav===item.label ? cfg.accentColor+"22" : "transparent",
+                color: activeNav===item.label ? cfg.accentColor : "rgba(255,255,255,0.6)",
+                cursor:"pointer", marginBottom:4, fontSize:isMobile ? 13 : 14, fontWeight: activeNav===item.label ? 600 : 400,
+                transition:"all 0.2s", textAlign:"left", fontFamily:"inherit",
+              }}>
+                <span style={{ fontSize:18, width:22, textAlign:"center" }}>{item.icon}</span>
+                <span>{item.label}</span>
+                {item.badge && <span style={{ marginLeft:"auto", background:cfg.accentColor, color:"#fff", borderRadius:"50%", width:22, height:22, display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:700 }}>{item.badge}</span>}
+              </button>
+              {item.label === 'Staff' && (
+                <div style={{ padding: '4px 2px 0' }}>
+                  <button 
+                    onClick={openPreviewModal}
+                    style={{
+                      background: 'linear-gradient(135deg, #ea580c, #f97316)', color: '#fff', border: '1px solid rgba(234, 88, 12, 0.4)', borderRadius: '12px',
+                      padding: '10px 12px', width: '100%', fontSize: '12px',
+                      fontWeight: '800', cursor: 'pointer', transition: 'transform 0.2s',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                      boxShadow: '0 6px 14px rgba(234, 88, 12, 0.25)'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                  >
+                    <span>🎥</span> Watch Preview
+                  </button>
+                </div>
+              )}
+            </Fragment>
           ))}
         </nav>
-
-        <div style={{ marginTop: 'auto', padding: '16px 12px' }}>
-          <div style={{
-            background: 'linear-gradient(135deg, #1e1b4b, #311005)',
-            borderRadius: '16px',
-            padding: '14px',
-            textAlign: 'center',
-            border: '1px solid rgba(234, 88, 12, 0.2)',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
-              <span style={{
-                width: '8px', height: '8px', backgroundColor: '#ef4444', 
-                borderRadius: '50%', display: 'inline-block',
-                animation: 'pulse 1.5s infinite'
-              }}></span>
-              <span style={{ color: '#ef4444', fontSize: '10px', fontWeight: '900', letterSpacing: '1px' }}>LIVE FEED</span>
-            </div>
-            <h4 style={{ color: '#fff', margin: '0 0 4px 0', fontSize: '13px', fontWeight: '700' }}>Smart Kitchen</h4>
-            <p style={{ color: '#9ca3af', margin: '0 0 12px 0', fontSize: '11px', lineHeight: '1.4' }}>Watch how we prepare your delicious food live!</p>
-            <button 
-              onClick={onMoreClick}
-              style={{
-                background: '#ea580c', color: '#fff', border: 'none', borderRadius: '10px',
-                padding: '8px 14px', width: '100%', fontSize: '11px',
-                fontWeight: '700', cursor: 'pointer', transition: 'transform 0.2s',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
-              onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-            >
-              <span>🎥</span> Watch Preview
-            </button>
-          </div>
-        </div>
       </aside>
 
       {/* Main Content */}
-      <main style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden", minWidth:0 }}>
-        <header style={{ display:"flex", alignItems:"center", padding:"0 32px", height:72, background:"#fff", borderBottom:"1px solid rgba(0,0,0,0.06)", gap:24, flexShrink:0 }}>
-          <div style={{ display:"flex", gap:22 }}>
+      <main style={{ flex:1, display:"flex", flexDirection:"column", overflow:isMobile ? "auto" : "hidden", minWidth:0, width:'100%' }}>
+        <header style={{ display:"flex", alignItems:"center", padding:isMobile ? "16px 18px" : "0 32px", height:isMobile ? "auto" : 72, background:"#fff", borderBottom:"1px solid rgba(0,0,0,0.06)", gap:isMobile ? 12 : 24, flexShrink:0, flexWrap:isMobile ? "wrap" : "nowrap", flexDirection:isMobile ? "column" : "row" }}>
+          <div style={{ display:"flex", gap:22, width:isMobile ? "100%" : "auto", overflowX:isMobile ? "auto" : "visible", paddingBottom:isMobile ? 4 : 0, scrollbarWidth:"thin" }}>
             {categories.map(cat => (
               <button key={cat} onClick={() => changeCategory(cat)} style={{
                 background:"none", border:"none", fontSize:14, fontWeight:500,
@@ -455,11 +528,11 @@ export default function App() {
               }}>{cat}</button>
             ))}
           </div>
-          <div style={{ flex:1, maxWidth:360, display:"flex", alignItems:"center", background:"#f5f5f5", borderRadius:12, padding:"0 16px", gap:8 }}>
+          <div style={{ flex:1, maxWidth:isMobile ? "100%" : 360, display:"flex", alignItems:"center", background:"#f5f5f5", borderRadius:12, padding:"0 16px", gap:8, width:isMobile ? "100%" : "auto" }}>
             <span style={{ color:"#aaa" }}>🔍</span>
             <input value={searchVal} onChange={e => setSearchVal(e.target.value)} placeholder="Search for food, drinks..." style={{ flex:1, border:"none", background:"none", fontSize:14, color:"#333", outline:"none", padding:"10px 0", fontFamily:"inherit" }}/>
           </div>
-          <div style={{ display:"flex", gap:10, marginLeft:"auto" }}>
+          <div style={{ display:"flex", gap:10, marginLeft:isMobile ? 0 : "auto", width:isMobile ? "100%" : "auto", justifyContent:isMobile ? "space-between" : "flex-start" }}>
             <a href="https://wa.me/945995735?text=I%20need%20some%20help%20with%20my%20order" target="_blank" rel="noopener noreferrer" style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"10px 18px", background:"#25D366", borderRadius:25, color:"#fff", fontWeight:600, fontSize:13, textDecoration:"none", cursor:"pointer", fontFamily:"inherit", transition:"background 0.4s" }}>
               💬 Chat via WhatsApp
             </a>
@@ -469,12 +542,12 @@ export default function App() {
           </div>
         </header>
 
-        <div style={{ flex:1, overflowY:"auto", overflowX:"visible", padding:"28px 32px" }}>
+        <div style={{ flex:1, overflowY:"auto", overflowX:"visible", padding:isMobile ? "18px 18px 28px" : "28px 32px" }}>
 
           {/* Hero */}
-          <div style={{ background:cfg.bannerGrad, borderRadius:24, padding:"40px 40px 50px 48px", position:"relative", overflow:"hidden", display:"flex", alignItems:"center", justifyContent:"space-between", minHeight:380, marginBottom:40, transition:"background 0.5s" }}>
-            <div style={{ maxWidth:380, flexShrink:0, zIndex:2 }}>
-              <h1 style={{ fontSize:44, fontWeight:900, lineHeight:1.15, color:"#1a1a1a", margin:"0 0 16px", letterSpacing:"-1px", whiteSpace:"pre-line" }}>
+          <div style={{ background:cfg.bannerGrad, borderRadius:24, padding:isMobile ? "24px 20px 28px" : "40px 40px 50px 48px", position:"relative", overflow:"hidden", display:"flex", alignItems:"center", justifyContent:"space-between", flexDirection:isMobile ? "column" : "row", minHeight:isMobile ? 260 : 380, marginBottom:40, transition:"background 0.5s", gap:isMobile ? 20 : 0 }}>
+            <div style={{ maxWidth:isMobile ? "100%" : 380, flexShrink:0, zIndex:2, width:"100%" }}>
+              <h1 style={{ fontSize:isMobile ? 30 : 44, fontWeight:900, lineHeight:1.15, color:"#1a1a1a", margin:"0 0 16px", letterSpacing:"-1px", whiteSpace:"pre-line" }}>
                 {cfg.tagline}<span style={{ color:cfg.accentColor, transition:"color 0.4s" }}>{cfg.moodWord}</span>
               </h1>
               <p style={{ fontSize:14, color:"#777", lineHeight:1.65, margin:"0 0 28px" }}>{cfg.desc}</p>
@@ -501,7 +574,7 @@ export default function App() {
             </div>
             
             {/* Orbit Display */}
-            <div style={{ display:"flex", alignItems:"center", gap:8, zIndex:2, flexShrink:0 }}>
+            <div style={{ display:"flex", alignItems:"center", gap:8, zIndex:2, flexShrink:0, width:isMobile ? '100%' : 'auto', justifyContent:isMobile ? 'center' : 'initial' }}>
               <button onClick={goPrev} style={{ width:38, height:38, borderRadius:"50%", border:"none", background:"rgba(255,255,255,0.9)", cursor:"pointer", fontSize:20, boxShadow:"0 2px 10px rgba(0,0,0,0.12)", display:"flex", alignItems:"center", justifyContent:"center", transition:"transform 0.15s" }}
                 onMouseEnter={e => e.currentTarget.style.transform="scale(1.12)"}
                 onMouseLeave={e => e.currentTarget.style.transform="scale(1)"}
