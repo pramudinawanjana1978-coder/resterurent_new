@@ -2112,11 +2112,7 @@ function CartPage({
               "Colombo 03, Sri Lanka",
             ],
           },
-          {
-            icon: "👥",
-            title: "Follow Us",
-            social: true,
-          },
+          
         ].map((column, index) => (
           <div key={index}>
             <div

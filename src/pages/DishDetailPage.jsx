@@ -582,7 +582,7 @@ function DishDetailPage({ dish, category, onBack, cartItems, setCartItems, accen
           { icon:"🕐", title:"Operating Hours", lines:["Mon - Sun","10:00 AM - 11:00 PM"] },
           { icon:"📞", title:"Contact Us", lines:["+94 77 599 5735","info@smartrestaurant.lk"] },
           { icon:"📍", title:"Our Location", lines:["123, Galle Road,","Colombo 03, Sri Lanka"] },
-          { icon:"👥", title:"Follow Us", social:true },
+        
         ].map((col,i) => (
           <div key={i}>
             <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:10 }}>

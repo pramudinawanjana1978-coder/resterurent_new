@@ -477,7 +477,7 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
           {icon:"🕐",title:"Hours",    lines:["Mon–Sun","10 AM – 11 PM"]},
           {icon:"📞",title:"Contact",  lines:["+94 77 599 5735","info@smartrestaurant.lk"]},
           {icon:"📍",title:"Location", lines:["123, Galle Road","Colombo 03, Sri Lanka"]},
-          {icon:"👥",title:"Follow Us",social:true},
+          
         ].map((col,i)=>(
           <div key={i}>
             <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:7}}>
