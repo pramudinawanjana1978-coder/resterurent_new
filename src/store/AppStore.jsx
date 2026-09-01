@@ -16,14 +16,63 @@ const saveToStorage = (state) => {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
 };
 
+export const getDishReviewStats = (
+  feedbackList = [],
+  dishId,
+  fallback = { rating: 0, reviews: 0 }
+) => {
+  const safeFeedback = Array.isArray(feedbackList) ? feedbackList : [];
+  const targetId = String(dishId ?? "");
+
+  const liveReviews = safeFeedback.filter(
+    entry => String(entry.dishId ?? "") === targetId
+  );
+
+  const fallbackRating = Number(fallback?.rating ?? 0);
+  const fallbackReviews = Number(fallback?.reviews ?? 0);
+
+  if (liveReviews.length === 0) {
+    return {
+      rating:
+        Number.isFinite(fallbackRating) && fallbackRating > 0
+          ? Number(fallbackRating.toFixed(1))
+          : 0,
+      reviews:
+        Number.isFinite(fallbackReviews)
+          ? fallbackReviews
+          : 0,
+    };
+  }
+
+  const existingTotal = fallbackRating > 0 && fallbackReviews > 0
+    ? fallbackRating * fallbackReviews
+    : 0;
+
+  const newTotal = liveReviews.reduce(
+    (sum, review) => sum + Number(review.rating || 0),
+    0
+  );
+
+  const totalReviews = fallbackReviews + liveReviews.length;
+
+  const averageRating = totalReviews > 0
+    ? (existingTotal + newTotal) / totalReviews
+    : 0;
+
+  return {
+    rating: Number(averageRating.toFixed(1)),
+    reviews: totalReviews,
+  };
+};
 const buildInitialStore = () => ({
   orders:             [],
   feedbackList:       [],
   ratingOverrides:    {},
   nextOrderNum:       10001,
   cartItems:          [],
-  activeTrackOrderId: null,   
-  staffMessages:      {},     
+  activeTrackOrderId: null,
+  staffMessages:      {},
+  customerMessages:   {},
 });
 
 export function AppStoreProvider({ children }) {
@@ -135,27 +184,108 @@ export function AppStoreProvider({ children }) {
     }));
   };
 
+  const sendCustomerMessage = (orderId, text) => {
+    const msg = {
+      text,
+      time:   new Date().toLocaleTimeString("en-GB", { hour:"2-digit", minute:"2-digit" }),
+      sender: "Customer",
+    };
+    setStore(prev => ({
+      ...prev,
+      customerMessages: {
+        ...prev.customerMessages,
+        [orderId]: [...(prev.customerMessages?.[orderId] || []), msg],
+      },
+    }));
+  };
+
   const submitFeedback = (feedbackData) => {
+    const rating = Number(feedbackData.rating);
+
+    if (!rating || rating < 1 || rating > 5) {
+      return;
+    }
+
     const fb = {
-      id:        `fb_${Date.now()}`, dishId:    feedbackData.dishId, dishName:  feedbackData.dishName, dishEmoji: feedbackData.dishEmoji, rating:    feedbackData.rating, tags:      feedbackData.tags || [], comment:   feedbackData.comment || "", name:      feedbackData.name    || "Anonymous", recommend: feedbackData.recommend, aspects:   feedbackData.aspects || {}, createdAt: new Date().toISOString(), orderId:   feedbackData.orderId || "",
+      id: feedbackData.id || `fb_${Date.now()}`,
+      dishId: feedbackData.dishId,
+      dishName: feedbackData.dishName,
+      dishEmoji: feedbackData.dishEmoji,
+      rating,
+      tags: feedbackData.tags || [],
+      comment: feedbackData.comment || "",
+      name: feedbackData.name || "Anonymous",
+      recommend: feedbackData.recommend,
+      aspects: feedbackData.aspects || {},
+      createdAt: feedbackData.createdAt || new Date().toISOString(),
+      orderId: feedbackData.orderId || "",
     };
 
     setStore(prev => {
-      const existingFbs = prev.feedbackList.filter(f => f.dishId === fb.dishId);
-      const allRatings  = [...existingFbs.map(f => f.rating), fb.rating];
-      const newAvg      = allRatings.reduce((s,r)=>s+r,0) / allRatings.length;
-      const newCount    = allRatings.length;
+      const existingFeedback = Array.isArray(prev.feedbackList) ? prev.feedbackList : [];
+      const existingIndex = feedbackData.id
+        ? existingFeedback.findIndex(item => item.id === feedbackData.id)
+        : existingFeedback.findIndex(item =>
+            String(item.orderId || "") === String(feedbackData.orderId || "") &&
+            String(item.dishId ?? "") === String(feedbackData.dishId ?? "")
+          );
+
+      const updatedFeedback = existingIndex >= 0
+        ? existingFeedback.map((item, index) => index === existingIndex ? fb : item)
+        : [fb, ...existingFeedback];
+
+      const fallbackRating = typeof feedbackData.initialRating === "number"
+        ? feedbackData.initialRating
+        : prev.ratingOverrides?.[String(feedbackData.dishId)]?.rating ?? 0;
+
+      const fallbackReviews = typeof feedbackData.initialReviews === "number"
+        ? feedbackData.initialReviews
+        : prev.ratingOverrides?.[String(feedbackData.dishId)]?.reviews ?? 0;
+
+      const liveStats = getDishReviewStats(updatedFeedback, fb.dishId, {
+        rating: fallbackRating,
+        reviews: fallbackReviews,
+      });
 
       return {
-        ...prev, feedbackList: [fb, ...prev.feedbackList],
+        ...prev,
+        feedbackList: updatedFeedback,
+        ratingOverrides: {
+          ...(prev.ratingOverrides || {}),
+          [String(fb.dishId)]: {
+            rating: liveStats.rating,
+            reviews: liveStats.reviews,
+          },
+        },
       };
     });
+
+    return fb;
   };
 
   const value = {
-    store, addToCart, changeCartQty, removeFromCart, clearCart,
-    placeOrder, updateOrderStatus, submitFeedback, sendStaffMessage,
-  };
+  store,
+
+  addToCart,
+  changeCartQty,
+  removeFromCart,
+  clearCart,
+
+  placeOrder,
+  updateOrderStatus,
+
+  submitFeedback,
+
+  sendStaffMessage,
+  sendCustomerMessage,
+
+  getDishReviewStats: (dishId, fallback) =>
+    getDishReviewStats(
+      store.feedbackList,
+      dishId,
+      fallback
+    ),
+};
 
   return (
     <AppStoreContext.Provider value={value}>

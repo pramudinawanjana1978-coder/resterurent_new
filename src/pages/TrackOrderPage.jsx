@@ -103,8 +103,10 @@ const trackSteps = [
 ];
 
 function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
-  const { store } = useAppStore();
+  const { store, sendCustomerMessage } = useAppStore();
   const [elapsed, setElapsed]   = useState(0);
+  const [customerDraft, setCustomerDraft] = useState("");
+  const [customerMsgSent, setCustomerMsgSent] = useState(false);
 
   const trackedOrder = orderMeta?.id
     ? store.orders.find(order => order.id === orderMeta.id)
@@ -181,6 +183,17 @@ function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
   const subtotal      = orderItems.reduce((s,i) => s + i.price * i.qty, 0);
   const serviceCharge = Math.round(subtotal * 0.10);
   const total         = subtotal + serviceCharge;
+  const staffMessages = store.staffMessages?.[orderMeta?.id] || [];
+  const customerMessages = store.customerMessages?.[orderMeta?.id] || [];
+
+  const handleCustomerMessage = () => {
+    const text = customerDraft.trim();
+    if (!text || !orderMeta?.id) return;
+    sendCustomerMessage(orderMeta.id, text);
+    setCustomerDraft("");
+    setCustomerMsgSent(true);
+    setTimeout(() => setCustomerMsgSent(false), 2500);
+  };
 
   const catColors = { Breakfast:"#f5a623", Lunch:"#43a047", Dinner:"#c62828", Desserts:"#ad1457", Drinks:"#0277bd", "Fast Food":"#f97316" };
 
@@ -196,6 +209,12 @@ function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
 
   return (
     <div style={{ minHeight:"100vh", background:"#f6f3ef", fontFamily:"'Trebuchet MS',sans-serif", color:"#1a1a1a" }}>
+
+      {customerMsgSent && (
+        <div style={{ position: "fixed", top: 20, right: 20, zIndex: 20, background: "#ecfdf5", border: "1px solid #86efac", color: "#166534", borderRadius: 12, padding: "10px 14px", fontSize: 12, fontWeight: 800, boxShadow: "0 10px 24px rgba(22,163,74,0.18)" }}>
+          ✅ Message sent to the staff team.
+        </div>
+      )}
 
       {/* ── Dark hero ── */}
       <div style={{ background:"linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%)", padding:"36px 44px 44px", position:"relative", overflow:"hidden" }}>
@@ -500,6 +519,58 @@ function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
                 <span style={{ fontSize:11, color:"#6b7280", lineHeight:1.5 }}>{t.tip}</span>
               </div>
             ))}
+          </div>
+
+          {/* Message center */}
+          <div style={{ background:"#fff", borderRadius:20, padding:"18px 20px", boxShadow:"0 2px 14px rgba(0,0,0,0.05)" }}>
+            <div style={{ fontSize:12, fontWeight:800, color:"#374151", marginBottom:12, textTransform:"uppercase", letterSpacing:"0.5px" }}>💬 Order Messages</div>
+
+            {staffMessages.length > 0 && (
+              <div style={{ marginBottom:12, background:"#f0fdf4", border:"1px solid #bbf7d0", borderRadius:12, padding:"10px 12px" }}>
+                <div style={{ fontSize:9, fontWeight:800, color:"#16a34a", marginBottom:6, textTransform:"uppercase", letterSpacing:"0.5px" }}>From Staff</div>
+                {staffMessages.map((msg, idx) => (
+                  <div key={idx} style={{ display:"flex", gap:8, alignItems:"flex-start", marginBottom:6 }}>
+                    <span style={{ fontSize:10, color:"#6b7280", flexShrink:0, marginTop:1 }}>{msg.time}</span>
+                    <span style={{ fontSize:11, color:"#374151", lineHeight:1.5 }}>{msg.text}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {customerMessages.length > 0 && (
+              <div style={{ marginBottom:12, background:"#eff6ff", border:"1px solid #bfdbfe", borderRadius:12, padding:"10px 12px" }}>
+                <div style={{ fontSize:9, fontWeight:800, color:"#1d4ed8", marginBottom:6, textTransform:"uppercase", letterSpacing:"0.5px" }}>Your Messages</div>
+                {customerMessages.map((msg, idx) => (
+                  <div key={idx} style={{ display:"flex", gap:8, alignItems:"flex-start", marginBottom:6 }}>
+                    <span style={{ fontSize:10, color:"#6b7280", flexShrink:0, marginTop:1 }}>{msg.time}</span>
+                    <span style={{ fontSize:11, color:"#374151", lineHeight:1.5 }}>{msg.text}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {staffMessages.length === 0 && customerMessages.length === 0 && (
+              <div style={{ fontSize:11, color:"#9ca3af", background:"#f9fafb", borderRadius:10, padding:"10px 12px", border:"1px dashed #e5e7eb" }}>
+                No staff or customer messages yet for this order.
+              </div>
+            )}
+
+            <div style={{ display:"grid", gridTemplateColumns:"1fr auto", gap:10, alignItems:"flex-end", marginTop:10 }}>
+              <textarea
+                value={customerDraft}
+                onChange={e => setCustomerDraft(e.target.value)}
+                rows={2}
+                placeholder="Send a note to the kitchen staff…"
+                style={{ width:"100%", boxSizing:"border-box", background:"#f9fafb", border:"1.5px solid #e5e7eb", borderRadius:10, padding:"9px 12px", color:"#374151", fontSize:12, resize:"none", outline:"none", fontFamily:"inherit", lineHeight:1.6 }}
+              />
+              <button
+                onClick={handleCustomerMessage}
+                disabled={!customerDraft.trim()}
+                style={{ padding:"10px 14px", borderRadius:11, border:"none", background: customerDraft.trim() ? `linear-gradient(135deg,${accentColor},${accentColor}cc)` : "#e5e7eb", color: customerDraft.trim() ? "#fff" : "#9ca3af", fontWeight:700, fontSize:12, cursor: customerDraft.trim() ? "pointer" : "not-allowed", fontFamily:"inherit", whiteSpace:"nowrap" }}
+              >
+                Send
+              </button>
+            </div>
           </div>
 
           {/* Contact kitchen */}

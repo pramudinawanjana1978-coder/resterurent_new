@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useCart } from './CartContext';
+import { getDishReviewStats, useAppStore } from '../store/AppStore.jsx';
 // ─── DISH VARIANTS (photo carousel per dish) ───────────────────────────────
 
 const dishVariants = {
@@ -204,13 +205,13 @@ const categoryConfig = {
 
 const allDishes = {
   Breakfast:[
-    {id:1,  name:"Blueberry Pancakes",   image: "/images/pancake2.jpg",   price:"Rs. 1,850", color:"#FFF3E0", section:"Sweet / Western", desc:"Fluffy stacks loaded with fresh blueberries & Vermont maple syrup",            rating:4.9, reviews:210, ingredients:["Flour","Eggs","Blueberries","Maple Syrup","Butter"]},
-    {id:13, name:"Chocolate Pancakes",   image: "/images/chocolate_pancakes.jpg", price:"Rs. 1,900",  color:"#EFEBE9", section:"Sweet / Western", desc:"Thick cocoa pancakes drizzled with Nutella and chocolate chips",                rating:4.8, reviews:145, ingredients:["Flour","Cocoa Powder","Eggs","Chocolate Chips","Nutella"]},
-    {id:4,  name:"French Toast",         image: "/images/French_Toast.jpg",   price:"Rs. 1,750",  color:"#FFF3E0", section:"Sweet / Western", desc:"Thick-cut brioche dipped in vanilla custard, dusted with powdered sugar",       rating:4.9, reviews:145, ingredients:["Brioche","Eggs","Vanilla","Cinnamon","Powdered Sugar"]},
-    {id:11, name:"Waffles with Syrup",   image: "/images/Belgian_waffles.jpg",   price:"Rs. 1,670",  color:"#FFF8E1", section:"Sweet / Western", desc:"Crispy Belgian waffles, warm maple syrup & fresh whipped cream",                rating:4.8, reviews:109, ingredients:["Waffle Mix","Whipped Cream","Maple Syrup","Butter","Strawberries"]},
-    {id:14, name:"Banana Pancakes",      image: "/images/banana_pancakes.jpg",   price:"Rs. 1,780",  color:"#FFFDE7", section:"Sweet / Western", desc:"Light banana-battered pancakes with caramelised banana & honey",                rating:4.7, reviews:88,  ingredients:["Banana","Flour","Eggs","Honey","Cinnamon"]},
-    {id:15, name:"Muffins",              image: "/images/muffin.jpg",   price:"Rs. 950",    color:"#FCE4EC", section:"Sweet / Western", desc:"Freshly baked daily — blueberry, chocolate chip or bran",                       rating:4.5, reviews:62,  ingredients:["Flour","Eggs","Butter","Sugar","Choice of Mix-in"]},
-    {id:16, name:"Croissant with Butter",image: "/images/lucidrealistic_buttery.jpg",   price:"Rs. 850",    color:"#FFF8E1", section:"Sweet / Western", desc:"Flaky all-butter croissant, served warm with French butter & jam",              rating:4.6, reviews:74,  ingredients:["Butter","Flour","Yeast","Salt","Jam"]},
+    {id:1,  name:"Blueberry Pancakes",   image: "/images/pancake2.jpg",   price:"Rs. 1,850", color:"#FFF3E0", section:"Sweet / Western", desc:"Fluffy stacks loaded with fresh blueberries & Vermont maple syrup",             ingredients:["Flour","Eggs","Blueberries","Maple Syrup","Butter"]},
+    {id:13, name:"Chocolate Pancakes",   image: "/images/chocolate_pancakes.jpg", price:"Rs. 1,900",  color:"#EFEBE9", section:"Sweet / Western", desc:"Thick cocoa pancakes drizzled with Nutella and chocolate chips",                ingredients:["Flour","Cocoa Powder","Eggs","Chocolate Chips","Nutella"]},
+    {id:4,  name:"French Toast",         image: "/images/French_Toast.jpg",   price:"Rs. 1,750",  color:"#FFF3E0", section:"Sweet / Western", desc:"Thick-cut brioche dipped in vanilla custard, dusted with powdered sugar",        ingredients:["Brioche","Eggs","Vanilla","Cinnamon","Powdered Sugar"]},
+    {id:11, name:"Waffles with Syrup",   image: "/images/Belgian_waffles.jpg",   price:"Rs. 1,670",  color:"#FFF8E1", section:"Sweet / Western", desc:"Crispy Belgian waffles, warm maple syrup & fresh whipped cream",                 ingredients:["Waffle Mix","Whipped Cream","Maple Syrup","Butter","Strawberries"]},
+    {id:14, name:"Banana Pancakes",      image: "/images/banana_pancakes.jpg",   price:"Rs. 1,780",  color:"#FFFDE7", section:"Sweet / Western", desc:"Light banana-battered pancakes with caramelised banana & honey",                ingredients:["Banana","Flour","Eggs","Honey","Cinnamon"]},
+    {id:15, name:"Muffins",              image: "/images/muffin.jpg",   price:"Rs. 950",    color:"#FCE4EC", section:"Sweet / Western", desc:"Freshly baked daily — blueberry, chocolate chip or bran",                         ingredients:["Flour","Eggs","Butter","Sugar","Choice of Mix-in"]},
+    {id:16, name:"Croissant with Butter",image: "/images/lucidrealistic_buttery.jpg",   price:"Rs. 850",    color:"#FFF8E1", section:"Sweet / Western", desc:"Flaky all-butter croissant, served warm with French butter & jam",              ingredients:["Butter","Flour","Yeast","Salt","Jam"]},
     {id:17, name:"Cinnamon Rolls",       image: "/images/Cinnamon_Rolls.jpg",   price:"Rs. 1,200",  color:"#FFF3E0", section:"Sweet / Western", desc:"Soft spiral rolls filled with cinnamon sugar, glazed with cream cheese icing",  rating:4.9, reviews:132, ingredients:["Dough","Cinnamon","Brown Sugar","Cream Cheese","Vanilla"]},
     {id:2,  name:"Eggs Benedict",         image: "/images/Eggs_Benedict.jpg",price:"Rs. 2,100", color:"#FFF8E1", section:"Savory",         desc:"Poached eggs & Canadian bacon on English muffin with hollandaise",              rating:4.7, reviews:98,  ingredients:["Eggs","Canadian Bacon","English Muffin","Hollandaise","Chives"]},
     {id:18, name:"Scrambled Eggs",         image: "/images/Scrambled_Eggs.jpg",  price:"Rs. 1,200", color:"#FFFDE7", section:"Savory",         desc:"Soft, creamy scrambled eggs with chives, served with toasted sourdough",         rating:4.6, reviews:79,  ingredients:["Eggs","Butter","Cream","Chives","Sourdough"]},
@@ -235,12 +236,12 @@ const allDishes = {
     {id:32, name:"Roti with Curry",         image: "/images/roti.png",  price:"Rs. 900",    color:"#FFF8E1", section:"Sri Lankan 🇱🇰",  desc:"Soft Ceylon roti served with lentil dhal & coconut sambol",                    rating:4.8, reviews:134, ingredients:["Wheat Flour","Coconut","Dhal Curry","Pol Sambol","Onion"]},
   ],
   Lunch:[
-    {id:101,name:"Chicken Rice & Curry",   image: "/images/udechicken.png",  price:"Rs. 1,200",color:"#FFF3E0",desc:"Steamed rice with aromatic chicken curry, dhal, and fresh pol sambol",rating:4.8,reviews:142,ingredients:["Basmati Rice","Chicken","Coconut Milk","Curry Leaves","Onion","Tomato","Spices"],subcategory:"Traditional Rice & Curry"},
-    {id:102,name:"Fish Rice & Curry",      image: "/images/fishrice.png",  price:"Rs. 1,150",color:"#E3F2FD",desc:"Steamed rice with tangy fish curry, papadam, and coconut sambol",   rating:4.7,reviews:98, ingredients:["Basmati Rice","Fish","Goraka","Turmeric","Curry Leaves","Coconut Milk"],subcategory:"Traditional Rice & Curry"},
-    {id:103,name:"Beef Rice & Curry",      image: "/images/beefrice.png",  price:"Rs. 1,350",color:"#FFEBEE",desc:"Slow-cooked beef curry with rice, dhal, and green leaf salad",       rating:4.8,reviews:115,ingredients:["Basmati Rice","Beef","Pandan Leaves","Cloves","Cinnamon","Coconut Milk"],subcategory:"Traditional Rice & Curry"},
-    {id:104,name:"Pork Rice & Curry",      image: "/images/porkrice.png",  price:"Rs. 1,300",color:"#FCE4EC",desc:"Tender pork curry with steamed rice, pol sambol, and papadam",      rating:4.6,reviews:78, ingredients:["Basmati Rice","Pork","Vinegar","Curry Leaves","Onion","Spices"],subcategory:"Traditional Rice & Curry"},
-    {id:105,name:"Vegetable Rice & Curry", image: "/images/vegerice.png",  price:"Rs. 950", color:"#E8F5E9",desc:"Assorted vegetable curries with rice, dhal, and coconut sambol",    rating:4.5,reviews:66, ingredients:["Basmati Rice","Mixed Veg","Dhal","Coconut Milk","Mustard Seeds","Curry Leaves"],subcategory:"Traditional Rice & Curry"},
-    {id:106,name:"Egg Rice & Curry",       image: "/images/eggrice.png",  price:"Rs. 1,000",color:"#FFFDE7",desc:"Spiced egg curry with steamed rice, papadam, and green sambol",     rating:4.6,reviews:54, ingredients:["Basmati Rice","Eggs","Coconut Milk","Curry Leaves","Onion","Green Chilli"],subcategory:"Traditional Rice & Curry"},
+    {id:101,name:"Chicken Rice & Curry",   image: "/images/udechicken.png",  price:"Rs. 1,200",color:"#FFF3E0",desc:"Steamed rice with aromatic chicken curry, dhal, and fresh pol sambol",ingredients:["Basmati Rice","Chicken","Coconut Milk","Curry Leaves","Onion","Tomato","Spices"],subcategory:"Traditional Rice & Curry"},
+    {id:102,name:"Fish Rice & Curry",      image: "/images/fishrice.png",  price:"Rs. 1,150",color:"#E3F2FD",desc:"Steamed rice with tangy fish curry, papadam, and coconut sambol",   ingredients:["Basmati Rice","Fish","Goraka","Turmeric","Curry Leaves","Coconut Milk"],subcategory:"Traditional Rice & Curry"},
+    {id:103,name:"Beef Rice & Curry",      image: "/images/beefrice.png",  price:"Rs. 1,350",color:"#FFEBEE",desc:"Slow-cooked beef curry with rice, dhal, and green leaf salad",       ingredients:["Basmati Rice","Beef","Pandan Leaves","Cloves","Cinnamon","Coconut Milk"],subcategory:"Traditional Rice & Curry"},
+    {id:104,name:"Pork Rice & Curry",      image: "/images/porkrice.png",  price:"Rs. 1,300",color:"#FCE4EC",desc:"Tender pork curry with steamed rice, pol sambol, and papadam",      ingredients:["Basmati Rice","Pork","Vinegar","Curry Leaves","Onion","Spices"],subcategory:"Traditional Rice & Curry"},
+    {id:105,name:"Vegetable Rice & Curry", image: "/images/vegerice.png",  price:"Rs. 950", color:"#E8F5E9",desc:"Assorted vegetable curries with rice, dhal, and coconut sambol",   ingredients:["Basmati Rice","Mixed Veg","Dhal","Coconut Milk","Mustard Seeds","Curry Leaves"],subcategory:"Traditional Rice & Curry"},
+    {id:106,name:"Egg Rice & Curry",       image: "/images/eggrice.png",  price:"Rs. 1,000",color:"#FFFDE7",desc:"Spiced egg curry with steamed rice, papadam, and green sambol",     ingredients:["Basmati Rice","Eggs","Coconut Milk","Curry Leaves","Onion","Green Chilli"],subcategory:"Traditional Rice & Curry"},
     {id:107,name:"Mixed Rice & Curry",     image: "/images/mixrice.png",  price:"Rs. 1,500",color:"#F3E5F5",desc:"A feast plate — rice with chicken, fish, beef, dhal, and three sambols",rating:4.9,reviews:189,ingredients:["Rice","Chicken","Fish","Beef","Dhal","Pol Sambol","Papadam"],subcategory:"Traditional Rice & Curry"},
     {id:110,name:"Devilled Chicken",      image: "/images/devilledchicken.png",   price:"Rs. 1,400",color:"#FFEBEE",desc:"Crispy fried chicken wok-tossed with peppers, onions, and spicy sauce",rating:4.9,reviews:234,ingredients:["Chicken","Capsicum","Onion","Tomato","Chilli","Soy Sauce","Vinegar"],subcategory:"Chicken Dishes"},
     {id:111,name:"Chicken Curry",          image: "/images/chickencurry.png",  price:"Rs. 1,200",color:"#FFF3E0",desc:"Traditional Sri Lankan chicken curry simmered in rich coconut gravy", rating:4.8,reviews:178,ingredients:["Chicken","Coconut Milk","Curry Leaves","Pandan","Turmeric","Roasted Curry Powder"],subcategory:"Chicken Dishes"},
@@ -272,24 +273,24 @@ const allDishes = {
     {id:164,name:"Vegetable Fried Rice",  image: "/images/Vegetable Fried Rice.jpg",   price:"Rs. 950", color:"#E8F5E9",desc:"Wholesome fried rice with seasonal vegetables and light soy seasoning",rating:4.4,reviews:62, ingredients:["Basmati Rice","Mixed Veg","Egg","Soy Sauce","Garlic","Sesame Oil"],subcategory:"Fried Rice"},
   ],
   Dinner:[
-    {id:201,name:"Chicken Rice & Curry",    image: "/images/chickenrice.jpg",   price:"Rs. 1,200",color:"#FFF3E0",desc:"Steamed rice with aromatic chicken curry, dhal, papadam & pol sambol",        rating:4.9,reviews:210,ingredients:["Basmati Rice","Chicken","Coconut Milk","Curry Leaves","Dhal","Pol Sambol","Spices"],subcategory:"Traditional Rice & Curry"},
-    {id:202,name:"Fish Rice & Curry",        image: "/images/fishrice.jpg",  price:"Rs. 1,150",color:"#E3F2FD",desc:"Steamed rice with tangy fish curry, papadam, and fresh coconut sambol",       rating:4.8,reviews:164,ingredients:["Basmati Rice","Fish","Goraka","Turmeric","Curry Leaves","Coconut Milk"],subcategory:"Traditional Rice & Curry"},
-    {id:203,name:"Beef Rice & Curry",        image: "/images/beefrice.jpg",  price:"Rs. 1,300",color:"#FFEBEE",desc:"Slow-cooked beef curry with aromatic spices served with steamed rice",        rating:4.8,reviews:138,ingredients:["Basmati Rice","Beef","Roasted Curry Powder","Coconut Milk","Pandan Leaf","Spices"],subcategory:"Traditional Rice & Curry"},
-    {id:204,name:"Pork Rice & Curry",        image: "/images/porkrice.jpg",  price:"Rs. 1,250",color:"#FBE9E7",desc:"Tender black pork curry with dark roasted spices and steamed rice",           rating:4.7,reviews:112,ingredients:["Basmati Rice","Pork","Black Curry Powder","Goraka","Onion","Coconut Milk"],subcategory:"Traditional Rice & Curry"},
-    {id:205,name:"Vegetable Rice & Curry",   image: "/images/vegerice.png",  price:"Rs. 950", color:"#E8F5E9",desc:"Rice with mixed vegetable curries — potato, jackfruit & dhal",                 rating:4.6,reviews:88, ingredients:["Basmati Rice","Potato","Jackfruit","Dhal","Coconut Milk","Tempered Spices"],subcategory:"Traditional Rice & Curry"},
-    {id:206,name:"Egg Rice & Curry",         image: "/images/eggrice.png",  price:"Rs. 1,000",color:"#FFFDE7",desc:"Steamed rice with egg curry, dhal, and fresh sambol",                         rating:4.5,reviews:74, ingredients:["Basmati Rice","Egg","Coconut Milk","Curry Leaves","Onion","Tomato"],subcategory:"Traditional Rice & Curry"},
-    {id:207,name:"Mixed Rice & Curry",       image: "/images/mixrice.png",  price:"Rs. 1,400",color:"#F3E5F5",desc:"A generous spread — chicken, fish, dhal, 3 veggie curries, papadam & sambol", rating:4.9,reviews:248,ingredients:["Basmati Rice","Chicken","Fish","Dhal","Pol Sambol","Coconut Milk","Mixed Curries"],subcategory:"Traditional Rice & Curry"},
-    {id:211,name:"Devilled Chicken",         image: "/images/devilledchicken.png",  price:"Rs. 1,450",color:"#FFEBEE",desc:"Crispy fried chicken tossed in a bold devilled sauce with capsicum & onion",  rating:4.9,reviews:198,ingredients:["Chicken","Capsicum","Onion","Chilli","Soy Sauce","Tomato Sauce","Vinegar"],subcategory:"Chicken Dishes"},
-    {id:212,name:"Chicken Curry",            image: "/images/chickencurry.png",  price:"Rs. 1,200",color:"#FFF3E0",desc:"Sri Lankan-style chicken curry slow-cooked in coconut milk with spices",       rating:4.8,reviews:172,ingredients:["Chicken","Coconut Milk","Curry Powder","Curry Leaves","Pandan Leaf","Tomato"],subcategory:"Chicken Dishes"},
-    {id:213,name:"Chicken Biryani",          image: "/images/chickenbiriyani.png",  price:"Rs. 1,650",color:"#FFF8E1",desc:"Fragrant basmati rice cooked with tender chicken & whole spices, served with raita", rating:4.9,reviews:215,ingredients:["Basmati Rice","Chicken","Saffron","Whole Spices","Fried Onion","Mint","Raita"],subcategory:"Chicken Dishes"},
-    {id:214,name:"Crispy Fried Chicken",     image: "/images/crispychicken.png",  price:"Rs. 1,350",color:"#FFF3E0",desc:"Golden crunchy fried chicken seasoned with Lankan spices and herbs",            rating:4.7,reviews:143,ingredients:["Chicken","Spice Marinade","Breadcrumbs","Egg","Flour","Chilli Flakes"],subcategory:"Chicken Dishes"},
-    {id:215,name:"Grilled Chicken",         image: "/images/grilledchicken.png",   price:"Rs. 1,500",color:"#FBE9E7",desc:"Juicy marinated chicken fillet grilled over charcoal with herb butter",        rating:4.8,reviews:124,ingredients:["Chicken Breast","Herb Marinade","Garlic","Butter","Lemon","Rosemary"],subcategory:"Chicken Dishes"},
-    {id:221,name:"Devilled Beef",            image: "/images/Devilled Beef.jpg",  price:"Rs. 1,650",color:"#FFEBEE",desc:"Tender beef cubes tossed in a rich devilled sauce — fiery and full of flavour", rating:4.9,reviews:178,ingredients:["Beef","Capsicum","Onion","Chilli","Soy Sauce","Tomato Sauce","Vinegar"],subcategory:"Meat Dishes"},
-    {id:222,name:"Beef Curry",                image: "/images/Beef Curry.jpg", price:"Rs. 1,400",color:"#FBE9E7",desc:"Slow-cooked beef in dark roasted curry powder and thick coconut milk gravy",    rating:4.8,reviews:154,ingredients:["Beef","Roasted Curry Powder","Coconut Milk","Pandan Leaf","Curry Leaves","Onion"],subcategory:"Meat Dishes"},
-    {id:223,name:"Black Pork Curry",         image: "/images/Black Pork Curry.jpg",  price:"Rs. 1,550",color:"#EFEBE9",desc:"Authentic Sri Lankan black pork curry with goraka and dark roasted spices",      rating:4.9,reviews:187,ingredients:["Pork","Black Curry Powder","Goraka","Onion","Curry Leaves","Coconut Milk"],subcategory:"Meat Dishes"},
-    {id:224,name:"Pork Devilled",            image: "/images/Pork Devilled.jpg",  price:"Rs. 1,600",color:"#FBE9E7",desc:"Crispy pork belly tossed in tangy devilled sauce with vegetables",              rating:4.8,reviews:132,ingredients:["Pork Belly","Capsicum","Onion","Chilli","Soy Sauce","Vinegar","Sugar"],subcategory:"Meat Dishes"},
-    {id:231,name:"Devilled Prawns",          image: "/images/DevilledPrawns.jpg",  price:"Rs. 1,850",color:"#FFF3E0",desc:"Juicy tiger prawns tossed in a bold spicy devilled sauce with peppers",         rating:4.9,reviews:196,ingredients:["Tiger Prawns","Capsicum","Onion","Chilli","Soy Sauce","Tomato Sauce","Vinegar"],subcategory:"Seafood Dishes"},
-    {id:232,name:"Fish Ambul Thiyal",        image: "/images/FishAmbulThiyal.jpg",  price:"Rs. 1,400",color:"#E3F2FD",desc:"Traditional sour fish curry dry-cooked with goraka — a Sri Lankan signature",   rating:4.8,reviews:142,ingredients:["Tuna","Goraka","Turmeric","Black Pepper","Curry Leaves","Pandan Leaf"],subcategory:"Seafood Dishes"},
+    {id:201,name:"Chicken Rice & Curry",    image: "/images/chickenrice.jpg",   price:"Rs. 1,200",color:"#FFF3E0",desc:"Steamed rice with aromatic chicken curry, dhal, papadam & pol sambol",        ingredients:["Basmati Rice","Chicken","Coconut Milk","Curry Leaves","Dhal","Pol Sambol","Spices"],subcategory:"Traditional Rice & Curry"},
+    {id:202,name:"Fish Rice & Curry",        image: "/images/fishrice.jpg",  price:"Rs. 1,150",color:"#E3F2FD",desc:"Steamed rice with tangy fish curry, papadam, and fresh coconut sambol",      ingredients:["Basmati Rice","Fish","Goraka","Turmeric","Curry Leaves","Coconut Milk"],subcategory:"Traditional Rice & Curry"},
+    {id:203,name:"Beef Rice & Curry",        image: "/images/beefrice.jpg",  price:"Rs. 1,300",color:"#FFEBEE",desc:"Slow-cooked beef curry with aromatic spices served with steamed rice",        ingredients:["Basmati Rice","Beef","Roasted Curry Powder","Coconut Milk","Pandan Leaf","Spices"],subcategory:"Traditional Rice & Curry"},
+    {id:204,name:"Pork Rice & Curry",        image: "/images/porkrice.jpg",  price:"Rs. 1,250",color:"#FBE9E7",desc:"Tender black pork curry with dark roasted spices and steamed rice",      ingredients:["Basmati Rice","Pork","Black Curry Powder","Goraka","Onion","Coconut Milk"],subcategory:"Traditional Rice & Curry"},
+    {id:205,name:"Vegetable Rice & Curry",   image: "/images/vegerice.png",  price:"Rs. 950", color:"#E8F5E9",desc:"Rice with mixed vegetable curries — potato, jackfruit & dhal",                ingredients:["Basmati Rice","Potato","Jackfruit","Dhal","Coconut Milk","Tempered Spices"],subcategory:"Traditional Rice & Curry"},
+    {id:206,name:"Egg Rice & Curry",         image: "/images/eggrice.png",  price:"Rs. 1,000",color:"#FFFDE7",desc:"Steamed rice with egg curry, dhal, and fresh sambol",                       ingredients:["Basmati Rice","Egg","Coconut Milk","Curry Leaves","Onion","Tomato"],subcategory:"Traditional Rice & Curry"},
+    {id:207,name:"Mixed Rice & Curry",       image: "/images/mixrice.png",  price:"Rs. 1,400",color:"#F3E5F5",desc:"A generous spread — chicken, fish, dhal, 3 veggie curries, papadam & sambol", ingredients:["Basmati Rice","Chicken","Fish","Dhal","Pol Sambol","Coconut Milk","Mixed Curries"],subcategory:"Traditional Rice & Curry"},
+    {id:211,name:"Devilled Chicken",         image: "/images/devilledchicken.png",  price:"Rs. 1,450",color:"#FFEBEE",desc:"Crispy fried chicken tossed in a bold devilled sauce with capsicum & onion",  ingredients:["Chicken","Capsicum","Onion","Chilli","Soy Sauce","Tomato Sauce","Vinegar"],subcategory:"Chicken Dishes"},
+    {id:212,name:"Chicken Curry",            image: "/images/chickencurry.png",  price:"Rs. 1,200",color:"#FFF3E0",desc:"Sri Lankan-style chicken curry slow-cooked in coconut milk with spices",       ingredients:["Chicken","Coconut Milk","Curry Powder","Curry Leaves","Pandan Leaf","Tomato"],subcategory:"Chicken Dishes"},
+    {id:213,name:"Chicken Biryani",          image: "/images/chickenbiriyani.png",  price:"Rs. 1,650",color:"#FFF8E1",desc:"Fragrant basmati rice cooked with tender chicken & whole spices, served with raita", ingredients:["Basmati Rice","Chicken","Saffron","Whole Spices","Fried Onion","Mint","Raita"],subcategory:"Chicken Dishes"},
+    {id:214,name:"Crispy Fried Chicken",     image: "/images/crispychicken.png",  price:"Rs. 1,350",color:"#FFF3E0",desc:"Golden crunchy fried chicken seasoned with Lankan spices and herbs",            ingredients:["Chicken","Spice Marinade","Breadcrumbs","Egg","Flour","Chilli Flakes"],subcategory:"Chicken Dishes"},
+    {id:215,name:"Grilled Chicken",         image: "/images/grilledchicken.png",   price:"Rs. 1,500",color:"#FBE9E7",desc:"Juicy marinated chicken fillet grilled over charcoal with herb butter",   ingredients:["Chicken Breast","Herb Marinade","Garlic","Butter","Lemon","Rosemary"],subcategory:"Chicken Dishes"},
+    {id:221,name:"Devilled Beef",            image: "/images/Devilled Beef.jpg",  price:"Rs. 1,650",color:"#FFEBEE",desc:"Tender beef cubes tossed in a rich devilled sauce — fiery and full of flavour", ingredients:["Beef","Capsicum","Onion","Chilli","Soy Sauce","Tomato Sauce","Vinegar"],subcategory:"Meat Dishes"},
+    {id:222,name:"Beef Curry",                image: "/images/Beef Curry.jpg", price:"Rs. 1,400",color:"#FBE9E7",desc:"Slow-cooked beef in dark roasted curry powder and thick coconut milk gravy",    ingredients:["Beef","Roasted Curry Powder","Coconut Milk","Pandan Leaf","Curry Leaves","Onion"],subcategory:"Meat Dishes"},
+    {id:223,name:"Black Pork Curry",         image: "/images/Black Pork Curry.jpg",  price:"Rs. 1,550",color:"#EFEBE9",desc:"Authentic Sri Lankan black pork curry with goraka and dark roasted spices",     ingredients:["Pork","Black Curry Powder","Goraka","Onion","Curry Leaves","Coconut Milk"],subcategory:"Meat Dishes"},
+    {id:224,name:"Pork Devilled",            image: "/images/Pork Devilled.jpg",  price:"Rs. 1,600",color:"#FBE9E7",desc:"Crispy pork belly tossed in tangy devilled sauce with vegetables",              ingredients:["Pork Belly","Capsicum","Onion","Chilli","Soy Sauce","Vinegar","Sugar"],subcategory:"Meat Dishes"},
+    {id:231,name:"Devilled Prawns",          image: "/images/DevilledPrawns.jpg",  price:"Rs. 1,850",color:"#FFF3E0",desc:"Juicy tiger prawns tossed in a bold spicy devilled sauce with peppers",         ingredients:["Tiger Prawns","Capsicum","Onion","Chilli","Soy Sauce","Tomato Sauce","Vinegar"],subcategory:"Seafood Dishes"},
+    {id:232,name:"Fish Ambul Thiyal",        image: "/images/FishAmbulThiyal.jpg",  price:"Rs. 1,400",color:"#E3F2FD",desc:"Traditional sour fish curry dry-cooked with goraka — a Sri Lankan signature",   ingredients:["Tuna","Goraka","Turmeric","Black Pepper","Curry Leaves","Pandan Leaf"],subcategory:"Seafood Dishes"},
     {id:233,name:"Fried Fish",               image: "/images/FriedFish.jpg",  price:"Rs. 1,300",color:"#E3F2FD",desc:"Crispy shallow-fried fish fillets marinated in Lankan spices and lime",          rating:4.6,reviews:108,ingredients:["Fish Fillet","Turmeric","Chilli Powder","Lime","Garlic","Oil"],subcategory:"Seafood Dishes"},
     {id:234,name:"Cuttlefish Devilled",      image: "/images/CuttlefishDevilled.jpg",  price:"Rs. 1,750",color:"#E8EAF6",desc:"Tender cuttlefish strips in fiery devilled sauce — a true Lankan favourite",    rating:4.8,reviews:121,ingredients:["Cuttlefish","Capsicum","Onion","Chilli","Soy Sauce","Tomato Sauce"],subcategory:"Seafood Dishes"},
     {id:235,name:"Prawn Curry",              image: "/images/PrawnCurry.jpg",  price:"Rs. 1,800",color:"#FFF8E1",desc:"Succulent prawns in creamy coconut milk curry with fragrant spices",             rating:4.8,reviews:134,ingredients:["Prawns","Coconut Milk","Turmeric","Curry Leaves","Tomato","Onion","Spices"],subcategory:"Seafood Dishes"},
@@ -309,14 +310,14 @@ const allDishes = {
     {id:265,name:"Vegetable Fried Rice",     image: "/images/Vegetable Fried Rice.jpg",  price:"Rs. 950", color:"#E8F5E9",desc:"Wholesome fried rice with seasonal vegetables and light soy seasoning",          rating:4.4,reviews:62, ingredients:["Basmati Rice","Mixed Veg","Egg","Soy Sauce","Garlic","Sesame Oil"],subcategory:"Fried Rice"},
   ],
   Desserts:[
-    {id:301,name:"Watalappan",              image: "/images/Watalappan.jpg",  price:"Rs. 550", color:"#FFF3E0",desc:"Rich jaggery & coconut milk steamed pudding with cashews & cardamom",                  rating:4.9,reviews:210,ingredients:["Coconut Milk","Jaggery","Eggs","Cardamom","Cashews","Rosewater"],subcategory:"Traditional Sri Lankan Desserts"},
-    {id:302,name:"Kiri Pani",               image: "/images/Kiri Pani.jpg",  price:"Rs. 450", color:"#FFFDE7",desc:"Creamy buffalo curd drizzled with golden kithul treacle — simple and heavenly",        rating:4.8,reviews:178,ingredients:["Buffalo Curd","Kithul Treacle"],subcategory:"Traditional Sri Lankan Desserts"},
-    {id:303,name:"Konda Kavum",             image: "/images/KondaKaum.jpg",  price:"Rs. 400", color:"#FFF8E1",desc:"Crispy deep-fried rice flour oil cakes sweetened with jaggery — a festive favourite",  rating:4.7,reviews:132,ingredients:["Rice Flour","Jaggery","Coconut Milk","Turmeric","Oil"],subcategory:"Traditional Sri Lankan Desserts"},
-    {id:304,name:"Aluwa",                   image: "/images/aluwa.jpg",  price:"Rs. 350", color:"#FFFDE7",desc:"Soft rice flour sweet fudge squares flavoured with cardamom, cashews and rose water",   rating:4.6,reviews:98, ingredients:["Rice Flour","Sugar","Cashews","Cardamom","Ghee","Rosewater"],subcategory:"Traditional Sri Lankan Desserts"},
-    {id:305,name:"Bibikkan",                image: "/images/Bibikkan.png",  price:"Rs. 450", color:"#FFF3E0",desc:"Moist coconut and jaggery cake baked with semolina, cashews and spices",               rating:4.7,reviews:112,ingredients:["Scraped Coconut","Jaggery","Semolina","Cashews","Spices","Eggs"],subcategory:"Traditional Sri Lankan Desserts"},
-    {id:306,name:"Dodol",                   image: "/images/Dodol.jpg",  price:"Rs. 400", color:"#FBE9E7",desc:"Chewy sticky coconut toffee made with jaggery and rice flour — intensely sweet",        rating:4.5,reviews:87, ingredients:["Coconut Milk","Jaggery","Rice Flour","Cardamom"],subcategory:"Traditional Sri Lankan Desserts"},
-    {id:307,name:"Pani Walalu",             image: "/images/Pani walalu.jpg",  price:"Rs. 350", color:"#FCE4EC",desc:"Delicate urad dhal rings soaked in golden kithul honey — crunchy outside, sweet inside", rating:4.6,reviews:76, ingredients:["Urad Dhal","Rice Flour","Kithul Treacle","Oil"],subcategory:"Traditional Sri Lankan Desserts"},
-    {id:308,name:"Mung Kavum",              image: "/images/MungKawum.webp",  price:"Rs. 380", color:"#E8F5E9",desc:"Green gram sweet cakes fried golden and garnished with sesame — light and nutty",       rating:4.5,reviews:64, ingredients:["Green Gram","Rice Flour","Jaggery","Sesame","Coconut Milk","Oil"],subcategory:"Traditional Sri Lankan Desserts"},
+    {id:301,name:"Watalappan",              image: "/images/Watalappan.jpg",  price:"Rs. 550", color:"#FFF3E0",desc:"Rich jaggery & coconut milk steamed pudding with cashews & cardamom",                 ingredients:["Coconut Milk","Jaggery","Eggs","Cardamom","Cashews","Rosewater"],subcategory:"Traditional Sri Lankan Desserts"},
+    {id:302,name:"Kiri Pani",               image: "/images/Kiri Pani.jpg",  price:"Rs. 450", color:"#FFFDE7",desc:"Creamy buffalo curd drizzled with golden kithul treacle — simple and heavenly",        ingredients:["Buffalo Curd","Kithul Treacle"],subcategory:"Traditional Sri Lankan Desserts"},
+    {id:303,name:"Konda Kavum",             image: "/images/KondaKaum.jpg",  price:"Rs. 400", color:"#FFF8E1",desc:"Crispy deep-fried rice flour oil cakes sweetened with jaggery — a festive favourite",  ingredients:["Rice Flour","Jaggery","Coconut Milk","Turmeric","Oil"],subcategory:"Traditional Sri Lankan Desserts"},
+    {id:304,name:"Aluwa",                   image: "/images/aluwa.jpg",  price:"Rs. 350", color:"#FFFDE7",desc:"Soft rice flour sweet fudge squares flavoured with cardamom, cashews and rose water",    ingredients:["Rice Flour","Sugar","Cashews","Cardamom","Ghee","Rosewater"],subcategory:"Traditional Sri Lankan Desserts"},
+    {id:305,name:"Bibikkan",                image: "/images/Bibikkan.png",  price:"Rs. 450", color:"#FFF3E0",desc:"Moist coconut and jaggery cake baked with semolina, cashews and spices",              ingredients:["Scraped Coconut","Jaggery","Semolina","Cashews","Spices","Eggs"],subcategory:"Traditional Sri Lankan Desserts"},
+    {id:306,name:"Dodol",                   image: "/images/Dodol.jpg",  price:"Rs. 400", color:"#FBE9E7",desc:"Chewy sticky coconut toffee made with jaggery and rice flour — intensely sweet",       ingredients:["Coconut Milk","Jaggery","Rice Flour","Cardamom"],subcategory:"Traditional Sri Lankan Desserts"},
+    {id:307,name:"Pani Walalu",             image: "/images/Pani walalu.jpg",  price:"Rs. 350", color:"#FCE4EC",desc:"Delicate urad dhal rings soaked in golden kithul honey — crunchy outside, sweet inside",  ingredients:["Urad Dhal","Rice Flour","Kithul Treacle","Oil"],subcategory:"Traditional Sri Lankan Desserts"},
+    {id:308,name:"Mung Kavum",              image: "/images/MungKawum.webp",  price:"Rs. 380", color:"#E8F5E9",desc:"Green gram sweet cakes fried golden and garnished with sesame — light and nutty",      ingredients:["Green Gram","Rice Flour","Jaggery","Sesame","Coconut Milk","Oil"],subcategory:"Traditional Sri Lankan Desserts"},
     {id:311,name:"Chocolate Fudge Cake",    image: "/images/Chocolate Fudge Cake.jpg",  price:"Rs. 850", color:"#EFEBE9",desc:"Dense moist chocolate fudge cake layered with ganache and creamy buttercream frosting",  rating:4.9,reviews:245,ingredients:["Dark Chocolate","Butter","Eggs","Flour","Sugar","Cocoa","Cream","Ganache"],subcategory:"Cakes & Bakery Desserts"},
     {id:312,name:"Black Forest Cake",       image: "/images/Black Forest Cake.jpg",  price:"Rs. 900", color:"#FCE4EC",desc:"Chocolate sponge layered with cream, cherries and dark chocolate shavings",              rating:4.8,reviews:198,ingredients:["Chocolate Sponge","Whipped Cream","Cherries","Kirsch","Dark Chocolate Shavings"],subcategory:"Cakes & Bakery Desserts"},
     {id:313,name:"Vanilla Sponge & Cream",  image: "/images/Vanilla Sponge & Cream.jpg",  price:"Rs. 750", color:"#FFF8E1",desc:"Light fluffy vanilla sponge filled with fresh whipped cream and seasonal fruits",        rating:4.7,reviews:145,ingredients:["Vanilla Sponge","Whipped Cream","Seasonal Fruits","Icing Sugar","Vanilla Extract"],subcategory:"Cakes & Bakery Desserts"},
@@ -339,13 +340,13 @@ const allDishes = {
     {id:344,name:"Mango Slices with Honey",  image: "/images/Tostwithegg.jpg", price:"Rs. 600", color:"#FFF3E0",desc:"Chilled ripe mango slices drizzled with wildflower honey and a touch of fresh lime",     rating:4.6,reviews:94, ingredients:["Ripe Mango","Wildflower Honey","Lime","Mint"],subcategory:"Light & Fresh Options"},
   ],
   Drinks:[
-    {id:401,name:"Ceylon Black Tea",    image: "/images/black_tea.jpg",    price:"Rs. 250", color:"#FFF8E1",desc:"Aromatic Sri Lankan single-estate black tea brewed to golden perfection",                 rating:4.8,reviews:210,ingredients:["Ceylon Tea Leaves","Hot Water","Optional Milk","Optional Sugar"],subcategory:"Hot Beverages"},
-    {id:402,name:"Green Tea",           image: "/images/green_tea.jpg",    price:"Rs. 280", color:"#E8F5E9",desc:"Light and antioxidant-rich green tea with a delicate grassy flavour",                    rating:4.6,reviews:98, ingredients:["Green Tea Leaves","Hot Water","Optional Honey"],subcategory:"Hot Beverages"},
-    {id:403,name:"Ginger Tea",          image: "/images/ginger_tea.jpg",    price:"Rs. 300",color:"#FFF3E0",desc:"Warming fresh ginger tea with a spicy kick — great for digestion and immunity",          rating:4.7,reviews:132,ingredients:["Fresh Ginger","Hot Water","Honey","Lime","Optional Cinnamon"],subcategory:"Hot Beverages"},
-    {id:404,name:"Milk Tea",             image: "/images/milkTea.jpg",   price:"Rs. 280", color:"#FFFDE7",desc:"Creamy Sri Lankan style milk tea brewed strong and sweetened to taste",                 rating:4.9,reviews:289,ingredients:["Ceylon Tea","Whole Milk","Sugar","Optional Cardamom"],subcategory:"Hot Beverages"},
-    {id:405,name:"Cappuccino",           image: "/images/cappatunio.jpg",   price:"Rs. 650",color:"#EFEBE9",desc:"Espresso topped with velvety steamed milk and a thick layer of milk foam",               rating:4.8,reviews:178,ingredients:["Espresso Shot","Steamed Milk","Milk Foam","Optional Cinnamon Dust"],subcategory:"Hot Beverages"},
-    {id:406,name:"Latte",                image: "/images/latte.jpg",   price:"Rs. 680", color:"#FFF8E1",desc:"Double espresso with silky steamed milk — smooth, creamy and comforting",                rating:4.8,reviews:201,ingredients:["Double Espresso","Steamed Milk","Milk Foam"],subcategory:"Hot Beverages"},
-    {id:407,name:"Espresso",             image: "/images/Espresso.jpg",   price:"Rs. 450",color:"#EFEBE9",desc:"Rich single-origin espresso shot — bold, intense and aromatic",                         rating:4.7,reviews:143,ingredients:["Espresso Roast Coffee Beans","Hot Water"],subcategory:"Hot Beverages"},
+    {id:401,name:"Ceylon Black Tea",    image: "/images/black_tea.jpg",    price:"Rs. 250", color:"#FFF8E1",desc:"Aromatic Sri Lankan single-estate black tea brewed to golden perfection",                 ingredients:["Ceylon Tea Leaves","Hot Water","Optional Milk","Optional Sugar"],subcategory:"Hot Beverages"},
+    {id:402,name:"Green Tea",           image: "/images/green_tea.jpg",    price:"Rs. 280", color:"#E8F5E9",desc:"Light and antioxidant-rich green tea with a delicate grassy flavour",                    ingredients:["Green Tea Leaves","Hot Water","Optional Honey"],subcategory:"Hot Beverages"},
+    {id:403,name:"Ginger Tea",          image: "/images/ginger_tea.jpg",    price:"Rs. 300",color:"#FFF3E0",desc:"Warming fresh ginger tea with a spicy kick — great for digestion and immunity",          ingredients:["Fresh Ginger","Hot Water","Honey","Lime","Optional Cinnamon"],subcategory:"Hot Beverages"},
+    {id:404,name:"Milk Tea",             image: "/images/milkTea.jpg",   price:"Rs. 280", color:"#FFFDE7",desc:"Creamy Sri Lankan style milk tea brewed strong and sweetened to taste",                 ingredients:["Ceylon Tea","Whole Milk","Sugar","Optional Cardamom"],subcategory:"Hot Beverages"},
+    {id:405,name:"Cappuccino",           image: "/images/cappatunio.jpg",   price:"Rs. 650",color:"#EFEBE9",desc:"Espresso topped with velvety steamed milk and a thick layer of milk foam",              ingredients:["Espresso Shot","Steamed Milk","Milk Foam","Optional Cinnamon Dust"],subcategory:"Hot Beverages"},
+    {id:406,name:"Latte",                image: "/images/latte.jpg",   price:"Rs. 680", color:"#FFF8E1",desc:"Double espresso with silky steamed milk — smooth, creamy and comforting",               ingredients:["Double Espresso","Steamed Milk","Milk Foam"],subcategory:"Hot Beverages"},
+    {id:407,name:"Espresso",             image: "/images/Espresso.jpg",   price:"Rs. 450",color:"#EFEBE9",desc:"Rich single-origin espresso shot — bold, intense and aromatic",                        ingredients:["Espresso Roast Coffee Beans","Hot Water"],subcategory:"Hot Beverages"},
     {id:408,name:"Hot Chocolate",        image: "/images/Hot Chocolate.jpg",   price:"Rs. 700", color:"#EFEBE9",desc:"Velvety Belgian dark chocolate melted into steamed milk with a whipped cream crown",    rating:4.9,reviews:234,ingredients:["Belgian Dark Chocolate","Whole Milk","Whipped Cream","Cocoa Powder","Sugar"],subcategory:"Hot Beverages"},
     {id:409,name:"Mocha Coffee",          image: "/images/Mocha Coffee.jpg",  price:"Rs. 720", color:"#FBE9E7",desc:"Espresso combined with chocolate syrup and steamed milk — the best of both worlds",      rating:4.8,reviews:167,ingredients:["Espresso","Chocolate Syrup","Steamed Milk","Whipped Cream"],subcategory:"Hot Beverages"},
     {id:411,name:"Iced Coffee",          image: "/images/Iced Coffee.jpg",   price:"Rs. 700", color:"#E3F2FD",desc:"Chilled brewed coffee over ice with optional milk — your perfect afternoon pick-me-up",  rating:4.8,reviews:198,ingredients:["Brewed Coffee","Ice","Milk","Optional Sugar Syrup"],subcategory:"Iced Beverages"},
@@ -569,11 +570,6 @@ function DishDetailPage({ dish, category, onBack, accentColor, }) {
               fontSize:10, fontWeight:700,
             }}>3</span>
           </div>
-          <div style={{
-            width:36, height:36, borderRadius:"50%",
-            background:`linear-gradient(135deg,${accentColor},${accentColor}99)`,
-            display:"flex", alignItems:"center", justifyContent:"center", fontSize:18,
-          }}>👤</div>
         </div>
       </div>
 
@@ -659,9 +655,9 @@ function DishDetailPage({ dish, category, onBack, accentColor, }) {
                   {dish.name}
                 </h1>
                 <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
-                  <Stars rating={dish.rating} color={accentColor} size={16}/>
-                  <span style={{ color:accentColor, fontWeight:700, fontSize:15 }}>{dish.rating}</span>
-                  <span style={{ color:"#888", fontSize:13 }}>({dish.reviews}+ reviews)</span>
+                  <Stars rating={selectedLiveStats.rating} color={accentColor} size={16}/>
+                  <span style={{ color:accentColor, fontWeight:700, fontSize:15 }}>{selectedLiveStats.rating}</span>
+                  <span style={{ color:"#888", fontSize:13 }}>({selectedLiveStats.reviews}+ reviews)</span>
                 </div>
                 <div style={{ fontSize:28, fontWeight:800, color:accentColor, marginBottom:16 }}>
                   {dish.price}
@@ -965,15 +961,7 @@ function DishDetailPage({ dish, category, onBack, accentColor, }) {
                 fontWeight:700, fontSize:14, cursor:"pointer", fontFamily:"inherit",
                 marginBottom:10, display:"flex", alignItems:"center", justifyContent:"center", gap:8,
               }}>⚡ Buy Now</button>
-              <button onClick={() => setLiked(l=>!l)} style={{
-                width:"100%", padding:"13px",
-                background:"transparent",
-                border:`1px solid ${liked ? "#e91e63" : "rgba(0,0,0,0.1)"}`,
-                borderRadius:12, color: liked ? "#e91e63" : "#888",
-                fontWeight:700, fontSize:14, cursor:"pointer", fontFamily:"inherit",
-                display:"flex", alignItems:"center", justifyContent:"center", gap:8,
-                transition:"all 0.2s",
-              }}>{liked ? "❤️ Saved to Favourites" : "🤍 Add to Favourites"}</button>
+              
             </div>
           </div>
         </div>
@@ -1126,10 +1114,16 @@ const hasSpiceLevel = (dish) => {
 };
 
 function CategoryPage({ category, onBack, onDishSelect, onViewCart, cartItems = [], setCartItems }) {
+  const { store } = useAppStore();
   const cfg   = categoryConfig[category];
   const items = allDishes[category] || [];
   const popularItems = items.filter(d => d.popular === true);
   const regularItems = items.filter(d => d.popular !== true);
+
+  const getLiveDishStats = (dish) => getDishReviewStats(store.feedbackList, dish.id, {
+    rating: dish.rating ?? 0,
+    reviews: dish.reviews ?? 0,
+  });
 
   const accent = cfg.accentColor;
 
@@ -1264,6 +1258,7 @@ function CategoryPage({ category, onBack, onDishSelect, onViewCart, cartItems = 
     setTimeout(()=>setAddedFlash(null),700);
   };
 
+    const selectedLiveStats = selectedDish ? getLiveDishStats(selectedDish) : { rating: 0, reviews: 0 };
     const basePrice = selectedDish ? parseInt(selectedDish.price.replace(/[^0-9]/g,"")) : 0;
     const dishGroup = selectedDish?.subcategory || selectedDish?.section || "";
     const toppingMap = Object.fromEntries((subToppings[dishGroup] || subToppings.default).map(([n,p])=>[n,p]));
@@ -1325,7 +1320,7 @@ function CategoryPage({ category, onBack, onDishSelect, onViewCart, cartItems = 
           <button onClick={handleVoiceSearch} style={{ display:"inline-flex", alignItems:"center", gap:6, border:"none", background:isListening?accent:"#f3f4f6", color:isListening?"#fff":"#374151", borderRadius:12, padding:"8px 12px", cursor:"pointer", fontSize:13, fontWeight:700, fontFamily:"inherit" }}>
             {isListening ? '🛑 Listening...' : '🎙️ Voice'}
           </button>
-          <span style={{ fontSize:20, opacity:0.5 }}>🔔</span>
+          <span style={{ fontSize:20, opacity:0.5 }}></span>
           <div onClick={onViewCart} style={{ position:"relative", cursor: onViewCart ? "pointer" : "default" }}>
             <span style={{ fontSize:20 }}>🛒</span>
             {cartItems.reduce((s,i)=>s+(i.qty||0),0) > 0 && (
@@ -1334,7 +1329,6 @@ function CategoryPage({ category, onBack, onDishSelect, onViewCart, cartItems = 
               </span>
             )}
           </div>
-          <div style={{ width:32,height:32,borderRadius:"50%",background:`linear-gradient(135deg,${accent},${accent}99)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16 }}>👤</div>
         </div>
       </div>
 
@@ -1442,7 +1436,7 @@ function CategoryPage({ category, onBack, onDishSelect, onViewCart, cartItems = 
               {/* Dish cards grid */}
               <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))", gap:16 }}>
                 {dishList.map(dish=>(
-                  <DishCard key={dish.id} dish={dish} accent={accent} onOpen={openDish} onAddCart={handleAddCart} addedFlash={addedFlash}/>
+                  <DishCard key={dish.id} dish={dish} accent={accent} onOpen={openDish} onAddCart={handleAddCart} addedFlash={addedFlash} liveStats={getLiveDishStats(dish)}/>
                 ))}
               </div>
             </div>
@@ -1452,7 +1446,7 @@ function CategoryPage({ category, onBack, onDishSelect, onViewCart, cartItems = 
             {search && <div style={{ fontSize:13, color:"#9ca3af", marginBottom:16 }}>{filtered.length} result{filtered.length!==1?"s":""} for "{search}"</div>}
             <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))", gap:16 }}>
               {filtered.map(dish=>(
-                <DishCard key={dish.id} dish={dish} accent={accent} onOpen={openDish} onAddCart={handleAddCart} addedFlash={addedFlash}/>
+                <DishCard key={dish.id} dish={dish} accent={accent} onOpen={openDish} onAddCart={handleAddCart} addedFlash={addedFlash} liveStats={getLiveDishStats(dish)}/>
               ))}
             </div>
             {filtered.length===0 && (
@@ -1536,9 +1530,9 @@ function CategoryPage({ category, onBack, onDishSelect, onViewCart, cartItems = 
                 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
                   <div style={{ fontSize:28, fontWeight:900, color:accent }}>{selectedDish.price}</div>
                   <div style={{ display:"flex", alignItems:"center", gap:6 }}>
-                    {renderStars(selectedDish.rating, accent, 15)}
-                    <span style={{ fontWeight:700, color:accent, fontSize:14 }}>{selectedDish.rating}</span>
-                    <span style={{ color:"#aaa", fontSize:12 }}>({selectedDish.reviews}+ reviews)</span>
+                    {renderStars(selectedLiveStats.rating, accent, 15)}
+                    <span style={{ fontWeight:700, color:accent, fontSize:14 }}>{selectedLiveStats.rating}</span>
+                    <span style={{ color:"#aaa", fontSize:12 }}>({selectedLiveStats.reviews}+ reviews)</span>
                   </div>
                 </div>
 
@@ -1723,11 +1717,13 @@ function CategoryPage({ category, onBack, onDishSelect, onViewCart, cartItems = 
       `}</style>
     </div>
   );
-}function DishCard({ dish, accent, onOpen, onAddCart, addedFlash }) {
+}function DishCard({ dish, accent, onOpen, onAddCart, addedFlash, liveStats }) {
   const [hovered, setHovered] = useState(false);
   const [liked, setLiked] = useState(false);
   const [imageError, setImageError] = useState(false);
   const isFlash = addedFlash === dish.id;
+  const ratingValue = liveStats?.rating ?? dish.rating ?? 0;
+  const reviewValue = liveStats?.reviews ?? dish.reviews ?? 0;
 
   const badge = dish.subcategory || dish.section || "Chef's Choice";
 
@@ -1920,9 +1916,9 @@ function CategoryPage({ category, onBack, onDishSelect, onViewCart, cartItems = 
 
         <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 12 }}>
           <span style={{ color: "#f59e0b", fontSize: 13 }}>★</span>
-          <span style={{ fontSize: 12, fontWeight: 700, color: "#374151" }}>{dish.rating}</span>
+          <span style={{ fontSize: 12, fontWeight: 700, color: "#374151" }}>{ratingValue}</span>
           <span style={{ fontSize: 11, color: "#d1d5db" }}>
-            ({dish.reviews || "50"}+)
+            ({reviewValue}+)
           </span>
         </div>
 

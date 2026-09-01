@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { getDishReviewStats, useAppStore } from '../store/AppStore.jsx';
 
 // ─── MENU PAGE ─────────────────────────────────────────────────────────────────
 
@@ -90,6 +91,7 @@ const menuData = {
 };
 
 function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartItems, onViewCart }) {
+  const { store } = useAppStore();
   const [activeCategory, setActiveCategory] = useState("Fast Food");
   const [search, setSearch]               = useState("");
   const [sortBy, setSortBy]               = useState("default"); // default | price | rating
@@ -99,6 +101,10 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
 
   const catKeys = Object.keys(menuData);
   const cat = menuData[activeCategory];
+  const getLiveDishStats = (dish) => getDishReviewStats(store.feedbackList, dish.id, {
+    rating: dish.rating ?? 0,
+    reviews: dish.reviews ?? 0,
+  });
 
   const addToCart = (item) => {
     if (!setCartItems) return;
@@ -123,7 +129,13 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
 
   const displayItems = [...allItems]
     .filter(i => filterSpicy ? i.spicy : true)
-    .sort((a,b) => sortBy === "price" ? a.price - b.price : sortBy === "rating" ? b.rating - a.rating : 0);
+    .sort((a,b) => {
+      if (sortBy === "price") return a.price - b.price;
+      if (sortBy === "rating") {
+        return getLiveDishStats(b).rating - getLiveDishStats(a).rating;
+      }
+      return 0;
+    });
 
   const totalItemsInCategory = catKeys.reduce((s,k)=>s+menuData[k].items.length,0);
   const cartCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
@@ -172,7 +184,6 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
         </div>
 
         <div style={{ marginLeft:"auto", display:"flex", gap:12, alignItems:"center" }}>
-          <span style={{ fontSize:20, opacity:0.5, cursor:"pointer" }}>🔔</span>
           <div style={{ position:"relative", cursor:"pointer" }}>
             <span style={{ fontSize:20 }}>🛒</span>
             {cartCount > 0 && (
@@ -185,7 +196,6 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
               }}>{cartCount}</span>
             )}
           </div>
-          <div style={{ width:34, height:34, borderRadius:"50%", background:`linear-gradient(135deg,${accentColor},${accentColor}99)`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:17 }}>👤</div>
         </div>
       </div>
 
@@ -313,6 +323,7 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
             const itemCat = catKeys.find(k => menuData[k].items.some(i=>i.id===item.id));
             const itemColor = itemCat ? menuData[itemCat].color : accentColor;
             const itemBg    = itemCat ? menuData[itemCat].bg    : "#fff3e0";
+            const liveStats = getLiveDishStats(item);
             return (
               <div key={item.id}
                 style={{
@@ -414,8 +425,9 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
                   {/* Meta row */}
                   <div style={{ display:"flex", gap:10, marginBottom:12, flexWrap:"wrap" }}>
                     <span style={{ fontSize:11, color:"#6b7280", display:"flex", alignItems:"center", gap:3 }}>
-                      <span style={{ color:"#f5a623" }}>★</span> {item.rating}
+                      <span style={{ color:"#f5a623" }}>★</span> {liveStats.rating}
                     </span>
+                    <span style={{ fontSize:11, color:"#6b7280" }}>({liveStats.reviews}+ reviews)</span>
                     <span style={{ fontSize:11, color:"#6b7280" }}>⏱ {item.time}</span>
                     {item.cal && <span style={{ fontSize:11, color:"#6b7280" }}>🔥 {item.cal} cal</span>}
                   </div>

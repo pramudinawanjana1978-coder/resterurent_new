@@ -377,6 +377,7 @@ function OrdersPage({ onBack, accentColor = "#e11d48", onLogout }) {
             const isDelayed = queuePos > 1;
             const prepMins = order.items ? Math.max(...order.items.map(i => getDishPrepTime(i.name))) : 20;
             const existingMsgs = store.staffMessages?.[order.id] || [];
+            const customerIncomingMsgs = store.customerMessages?.[order.id] || [];
 
             return (
               <div key={order.id} style={{
@@ -541,6 +542,18 @@ function OrdersPage({ onBack, accentColor = "#e11d48", onLogout }) {
                         )}
                         <span style={{ fontSize: 9, color: "#9ca3af", fontWeight: 400, marginLeft: 4 }}>Customer sees this on the Track Order page in real-time</span>
                       </div>
+
+                      {customerIncomingMsgs.length > 0 && (
+                        <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 12, background: "#eff6ff", borderRadius: 12, padding: "10px 14px", border: "1px solid #bfdbfe" }}>
+                          <div style={{ fontSize: 9, fontWeight: 700, color: "#1d4ed8", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.5px" }}>📩 Customer Messages</div>
+                          {customerIncomingMsgs.map((msg, i) => (
+                            <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+                              <span style={{ fontSize: 10, color: "#6b7280", flexShrink: 0, marginTop: 1 }}>{msg.time}</span>
+                              <span style={{ fontSize: 11, color: "#374151", lineHeight: 1.5 }}>{msg.text}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
 
                       {existingMsgs.length > 0 && (
                         <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 12, background: "#f0fdf4", borderRadius: 12, padding: "10px 14px", border: "1px solid #bbf7d0" }}>
@@ -843,7 +856,7 @@ const STAFF_CREDENTIALS = [
   { username: "waiter1", password: "waiter123", role: "Senior Waiter", icon: "🍽️" },
 ];
 
-function StaffLoginModal({ accentColor, onSuccess, onClose }) {
+export function StaffLoginModal({ accentColor, onSuccess, onClose }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);

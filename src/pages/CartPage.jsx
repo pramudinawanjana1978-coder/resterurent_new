@@ -321,15 +321,6 @@ function CartPage({
             gap: 14,
           }}
         >
-          <span
-            style={{
-              fontSize: 21,
-              opacity: 0.6,
-            }}
-          >
-            🔔
-          </span>
-
           <div
             style={{
               position: "relative",
@@ -359,21 +350,6 @@ function CartPage({
                 0
               )}
             </span>
-          </div>
-
-          <div
-            style={{
-              width: 34,
-              height: 34,
-              borderRadius: "50%",
-              background: `linear-gradient(135deg,${accentColor},${accentColor}99)`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 17,
-            }}
-          >
-            👤
           </div>
         </div>
       </div>
@@ -1076,16 +1052,28 @@ function CartPage({
                                 display: "block",
                               }}
                               onError={(e) => {
-                                e.currentTarget.style.display =
-                                  "none";
+                                const img = e.currentTarget;
+                                if (!img) return;
 
-                                if (
-                                  e.currentTarget
-                                    .parentElement
-                                ) {
-                                  e.currentTarget.parentElement.innerHTML =
-                                    `<span style="font-size:36px">${s.emoji || "🍽️"}</span>`;
+                                img.style.display = "none";
+
+                                const parent = img.parentElement;
+                                if (!parent) return;
+
+                                const existingFallback = parent.querySelector(".fallback-emoji");
+                                if (existingFallback) {
+                                  existingFallback.textContent = s.emoji || "🍽️";
+                                  existingFallback.style.display = "inline-block";
+                                  return;
                                 }
+
+                                const fallback = document.createElement("span");
+                                fallback.className = "fallback-emoji";
+                                fallback.textContent = s.emoji || "🍽️";
+                                fallback.style.fontSize = "36px";
+                                fallback.style.lineHeight = "1";
+                                fallback.style.display = "inline-block";
+                                parent.appendChild(fallback);
                               }}
                             />
                           ) : (
@@ -1639,21 +1627,7 @@ function CartPage({
                       : "📅 Schedule"}
                   </button>
 
-                  <button
-                    style={{
-                      padding: 11,
-                      background: "transparent",
-                      border: `1.5px solid ${accentColor}`,
-                      borderRadius: 12,
-                      color: accentColor,
-                      fontWeight: 600,
-                      fontSize: 12,
-                      cursor: "pointer",
-                      fontFamily: "inherit",
-                    }}
-                  >
-                    ❤️ Save Cart
-                  </button>
+                 
                 </div>
 
                 {/* Trust badges */}

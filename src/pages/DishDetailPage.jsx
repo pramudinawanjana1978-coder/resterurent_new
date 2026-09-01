@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { dishVariants, allDishes, categoryConfig } from '../data/data.js';
 import { Stars } from "../components/Shared.jsx";
 import { PaymentPage } from './PaymentPage.jsx';
+import { getDishReviewStats, useAppStore } from '../store/AppStore.jsx';
 
 const makeVariants = (dish) => [
   { label: "Original",     bg: dish.color + "cc", emoji: dish.emoji, note: dish.desc },
@@ -20,6 +21,26 @@ const mockReviews = [
 // ─── DISH DETAIL PAGE ─────────────────────────────────────────────────────────
 
 function DishDetailPage({ dish, category, onBack, cartItems, setCartItems, accentColor, onTrack }) {
+  const { store } = useAppStore();
+  const liveStats = getDishReviewStats(store.feedbackList, dish.id, {
+    rating: dish.rating ?? 0,
+    reviews: dish.reviews ?? 0,
+  });
+
+  const reviewStats = getDishReviewStats(
+  store.feedbackList,
+  dish.id,
+  {
+    rating: dish.rating,
+    reviews: dish.reviews
+  }
+);
+<div>
+  ⭐ {reviewStats.rating}
+  <span>
+    ({reviewStats.reviews} reviews)
+  </span>
+</div>
   const variants = dishVariants[dish.id] ? dishVariants[dish.id].variants : makeVariants(dish);
   const [variantIdx, setVariantIdx]   = useState(0);
   const [animDir, setAnimDir]         = useState(null);
@@ -136,7 +157,7 @@ function DishDetailPage({ dish, category, onBack, cartItems, setCartItems, accen
         </div>
         <div style={{ display:"flex", gap:12, marginLeft:"auto" }}>
           <div style={{ position:"relative" }}>
-            <span style={{ fontSize:22 }}>🔔</span>
+            <span style={{ fontSize:22 }}></span>
           </div>
           <div style={{ position:"relative" }}>
             <span style={{ fontSize:22 }}>🛒</span>
@@ -151,7 +172,7 @@ function DishDetailPage({ dish, category, onBack, cartItems, setCartItems, accen
             width:36, height:36, borderRadius:"50%",
             background:`linear-gradient(135deg,${accentColor},${accentColor}99)`,
             display:"flex", alignItems:"center", justifyContent:"center", fontSize:18,
-          }}>👤</div>
+          }}></div>
         </div>
       </div>
 
@@ -253,9 +274,9 @@ function DishDetailPage({ dish, category, onBack, cartItems, setCartItems, accen
                   {dish.name}
                 </h1>
                 <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
-                  <Stars rating={dish.rating} color={accentColor} size={16}/>
-                  <span style={{ color:accentColor, fontWeight:700, fontSize:15 }}>{dish.rating}</span>
-                  <span style={{ color:"#888", fontSize:13 }}>({dish.reviews}+ reviews)</span>
+                  <Stars rating={liveStats.rating} color={accentColor} size={16}/>
+                  <span style={{ color:accentColor, fontWeight:700, fontSize:15 }}>{liveStats.rating}</span>
+                  <span style={{ color:"#888", fontSize:13 }}>({liveStats.reviews}+ reviews)</span>
                 </div>
                 <div style={{ fontSize:28, fontWeight:800, color:accentColor, marginBottom:16 }}>
                   {dish.price}
@@ -269,7 +290,7 @@ function DishDetailPage({ dish, category, onBack, cartItems, setCartItems, accen
                 <div>
                   <div style={{ fontSize:13, fontWeight:700, color:"#333", marginBottom:10 }}>Ingredients</div>
                   <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
-                    {dish.ingredients.map((ing,i) => (
+                    {(dish.ingredients || []).map((ing,i) => (
                       <div key={i} style={{ display:"flex", alignItems:"center", gap:8, fontSize:13, color:"#666" }}>
                         <span style={{ color:accentColor, fontSize:15 }}>✓</span> {ing}
                       </div>
@@ -285,7 +306,7 @@ function DishDetailPage({ dish, category, onBack, cartItems, setCartItems, accen
                 You May Also Like
               </h2>
               <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:14 }}>
-                {similarDishes.map(sd => (
+                {(similarDishes || []).map(sd => (
                   <div key={sd.id} style={{
                     background:"#fff", borderRadius:16,
                     border:"1px solid rgba(0,0,0,0.06)",

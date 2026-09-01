@@ -5,69 +5,87 @@ import * as faceapi from 'face-api.js';
 
 const moodProfiles = {
   Happy: {
-    emoji:"😄", color:"#f5a623", bg:"linear-gradient(135deg,#fff3e0,#ffe0a0)",
-    label:"You're Happy!", subtitle:"Celebrate with something indulgent!",
-    tags:["Sweet","Rich","Celebratory"],
-    dishes:[
-      { name:"Chocolate Fondant",  emoji:"🍫", price:"Rs. 1,450", reason:"A rich lava cake to match your bright mood!", id:301 },
-      { name:"Blueberry Pancakes", emoji:"🥞", price:"Rs. 1,850", reason:"Sweet stacks — pure joy on a plate.",          id:1   },
-      { name:"Waffles & Cream",    emoji:"🧇", price:"Rs. 1,670", reason:"Crispy, creamy, and celebratory!",             id:11  },
-      { name:"Mango Bubble Tea",   emoji:"🧋", price:"Rs. 940",   reason:"A sweet tropical treat for your smile.",       id:402 },
+    emoji: "😄",
+    color: "#f5a623",
+    bg: "linear-gradient(135deg,#fff3e0,#ffe0a0)",
+    label: "You're Happy!",
+    subtitle: "Celebrate with something indulgent!",
+    tags: ["Sweet", "Rich", "Celebratory"],
+    dishes: [
+      { name: "Chocolate Fondant", image: "/images/Chocolate Fondant.jpg", price: "Rs. 1,450", reason: "A rich lava cake to match your bright mood!", id: 301, emoji: "🍫" },
+      { name: "Blueberry Pancakes", image: "/images/pancake2.jpg", price: "Rs. 1,850", reason: "Sweet stacks — pure joy on a plate.", id: 1, emoji: "🥞" },
+      { name: "Waffles & Cream", image: "/images/Waffles & Cream.jpg", price: "Rs. 1,670", reason: "Crispy, creamy, and celebratory!", id: 11, emoji: "🧇" },
+      { name: "Mango Bubble Tea", image: "/images/Mango Bubble Tea.jpg", price: "Rs. 940", reason: "A sweet tropical treat for your smile.", id: 402, emoji: "🧋" },
     ],
   },
   Sad: {
-    emoji:"😢", color:"#0277bd", bg:"linear-gradient(135deg,#e3f2fd,#b3e5fc)",
-    label:"Feeling Down?", subtitle:"Comfort food is what you need right now.",
-    tags:["Comforting","Warm","Hearty"],
-    dishes:[
-      { name:"Tom Kha Soup",      emoji:"🍜", price:"Rs. 1,600", reason:"Warm, creamy broth — a hug in a bowl.",      id:104 },
-      { name:"Grilled Ribeye",    emoji:"🥩", price:"Rs. 4,800", reason:"A hearty steak to lift your spirits!",        id:201 },
-      { name:"Shakshuka",         emoji:"🍅", price:"Rs. 2,050", reason:"Warm spiced eggs — deeply comforting.",       id:12  },
-      { name:"Tiramisu",          emoji:"☕", price:"Rs. 1,305", reason:"Sweet espresso dessert to cheer you up.",     id:308 },
+    emoji: "😢",
+    color: "#0277bd",
+    bg: "linear-gradient(135deg,#e3f2fd,#b3e5fc)",
+    label: "Feeling Down?",
+    subtitle: "Comfort food is what you need right now.",
+    tags: ["Comforting", "Warm", "Hearty"],
+    dishes: [
+      { name: "Tom Kha Soup", image: "/images/Tom Kha Soup.jpg", price: "Rs. 1,600", reason: "Warm, creamy broth — a hug in a bowl.", id: 104, emoji: "🥘" },
+      { name: "Grilled Ribeye", image: "/images/Grilled Ribeye.jpg", price: "Rs. 4,800", reason: "A hearty steak to lift your spirits!", id: 201, emoji: "🥩" },
+      { name: "Shakshuka", image: "/images/Shakshuka.jpg", price: "Rs. 2,050", reason: "Warm spiced eggs — deeply comforting.", id: 12, emoji: "🍳" },
+      { name: "Tiramisu", image: "/images/Tiramisu.jpg", price: "Rs. 1,305", reason: "Sweet espresso dessert to cheer you up.", id: 308, emoji: "🍰" },
     ],
   },
   Angry: {
-    emoji:"😠", color:"#c62828", bg:"linear-gradient(135deg,#fbe9e7,#ffccbc)",
-    label:"Feeling Tense?", subtitle:"Cool down with something refreshing.",
-    tags:["Cooling","Light","Refreshing"],
-    dishes:[
-      { name:"Acai Bowl",          emoji:"🫐", price:"Rs. 2,000", reason:"Cold, fresh and energising — perfect reset.", id:5   },
-      { name:"Fresh Fruit Platter",emoji:"🍓", price:"Rs. 1,300", reason:"Light and calming natural sweetness.",        id:10  },
-      { name:"Matcha Latte",       emoji:"🍵", price:"Rs. 1,015", reason:"L-theanine in matcha naturally soothes.",     id:406 },
-      { name:"Garden Fresh Salad", emoji:"🥗", price:"Rs. 1,450", reason:"Clean, crisp and stress-relieving.",          id:101 },
+    emoji: "😠",
+    color: "#c62828",
+    bg: "linear-gradient(135deg,#fbe9e7,#ffccbc)",
+    label: "Feeling Tense?",
+    subtitle: "Cool down with something refreshing.",
+    tags: ["Cooling", "Light", "Refreshing"],
+    dishes: [
+      { name: "Acai Bowl", image: "/images/Acai Bowl.jpg", price: "Rs. 2,000", reason: "Cold, fresh and energising — perfect reset.", id: 5, emoji: "🥣" },
+      { name: "Fresh Fruit Platter", image: "/images/Fresh Fruit Platter.jpg", price: "Rs. 1,300", reason: "Light and calming natural sweetness.", id: 10, emoji: "🍇" },
+      { name: "Matcha Latte", image: "/images/Matcha Latte.jpg", price: "Rs. 1,015", reason: "L-theanine in matcha naturally soothes.", id: 406, emoji: "🍵" },
+      { name: "Garden Fresh Salad", image: "/images/Garden Fresh Salad.jpg", price: "Rs. 1,450", reason: "Clean, crisp and stress-relieving.", id: 101, emoji: "🥗" },
     ],
   },
   Surprised: {
-    emoji:"😲", color:"#ad1457", bg:"linear-gradient(135deg,#fce4ec,#f8bbd0)",
-    label:"Full of Energy!", subtitle:"Try something adventurous and exciting!",
-    tags:["Bold","Adventurous","Exciting"],
-    dishes:[
-      { name:"Lobster Thermidor", emoji:"🦞", price:"Rs. 7,100", reason:"An adventurous luxurious choice!",            id:204 },
-      { name:"Duck Confit",       emoji:"🍗", price:"Rs. 4,350", reason:"Bold rich flavours for your bold energy.",    id:208 },
-      { name:"Shakshuka",         emoji:"🍅", price:"Rs. 2,050", reason:"Boldly spiced and deeply satisfying.",        id:12  },
-      { name:"Espresso Martini",  emoji:"🍸", price:"Rs. 1,885", reason:"An exciting kick to match your energy!",      id:408 },
+    emoji: "😲",
+    color: "#ad1457",
+    bg: "linear-gradient(135deg,#fce4ec,#f8bbd0)",
+    label: "Full of Energy!",
+    subtitle: "Try something adventurous and exciting!",
+    tags: ["Bold", "Adventurous", "Exciting"],
+    dishes: [
+      { name: "Lobster Thermidor", image: "/images/Lobster Thermidor.jpg", price: "Rs. 7,100", reason: "An adventurous luxurious choice!", id: 204, emoji: "🦞" },
+      { name: "Duck Confit", image: "/images/Duck Confit.jpg", price: "Rs. 4,350", reason: "Bold rich flavours for your bold energy.", id: 208, emoji: "🦆" },
+      { name: "Shakshuka", image: "/images/Shakshuka.jpg", price: "Rs. 2,050", reason: "Boldly spiced and deeply satisfying.", id: 12, emoji: "🍳" },
+      { name: "Espresso Martini", image: "/images/Espresso Martini.jpg", price: "Rs. 1,885", reason: "An exciting kick to match your energy!", id: 408, emoji: "🍸" },
     ],
   },
   Neutral: {
-    emoji:"😐", color:"#43a047", bg:"linear-gradient(135deg,#e8f5e9,#c8e6c9)",
-    label:"Feeling Balanced", subtitle:"A wholesome balanced meal is perfect for you.",
-    tags:["Balanced","Wholesome","Nutritious"],
-    dishes:[
-      { name:"Avocado Toast",    emoji:"🥑", price:"Rs. 1,600", reason:"Clean, balanced and nutritious.",              id:3   },
-      { name:"Grain Buddha Bowl",emoji:"🥘", price:"Rs. 1,960", reason:"A perfectly balanced wholesome bowl.",         id:106 },
-      { name:"Salmon Teriyaki",  emoji:"🐟", price:"Rs. 3,620", reason:"Lean protein and healthy fats — balanced.",    id:205 },
-      { name:"Green Smoothie",   emoji:"🥤", price:"Rs. 1,160", reason:"Nutrient-packed and energising.",              id:403 },
+    emoji: "😐",
+    color: "#43a047",
+    bg: "linear-gradient(135deg,#e8f5e9,#c8e6c9)",
+    label: "Feeling Balanced",
+    subtitle: "A wholesome balanced meal is perfect for you.",
+    tags: ["Balanced", "Wholesome", "Nutritious"],
+    dishes: [
+      { name: "Avocado Toast", image: "/images/Avocado Toast.jpg", price: "Rs. 1,600", reason: "Clean, balanced and nutritious.", id: 3, emoji: "🥑" },
+      { name: "Grain Buddha Bowl", image: "/images/Grain Buddha Bowl.jpg", price: "Rs. 1,960", reason: "A perfectly balanced wholesome bowl.", id: 106, emoji: "🥙" },
+      { name: "Salmon Teriyaki", image: "/images/Salmon Teriyaki.jpg", price: "Rs. 3,620", reason: "Lean protein and healthy fats — balanced.", id: 205, emoji: "🍣" },
+      { name: "Green Smoothie", image: "/images/Green Smoothie.jpg", price: "Rs. 1,160", reason: "Nutrient-packed and energising.", id: 403, emoji: "🥤" },
     ],
   },
   Tired: {
-    emoji:"😴", color:"#5c6bc0", bg:"linear-gradient(135deg,#ede7f6,#d1c4e9)",
-    label:"Feeling Tired?", subtitle:"Energise yourself with power-packed foods!",
-    tags:["Energising","Protein-Rich","Power"],
-    dishes:[
-      { name:"Eggs Benedict",    emoji:"🍳", price:"Rs. 2,100", reason:"Protein-rich to wake you right up!",           id:2   },
-      { name:"Cold Brew Coffee", emoji:"☕", price:"Rs. 870",   reason:"The perfect caffeine boost you need.",          id:401 },
-      { name:"Grilled Ribeye",   emoji:"🥩", price:"Rs. 4,800", reason:"Iron-rich steak to fuel your energy.",         id:201 },
-      { name:"Beef Burger",      emoji:"🍔", price:"Rs. 2,900", reason:"Hearty and filling — recharge mode on.",       id:null},
+    emoji: "😴",
+    color: "#5c6bc0",
+    bg: "linear-gradient(135deg,#ede7f6,#d1c4e9)",
+    label: "Feeling Tired?",
+    subtitle: "Energise yourself with power-packed foods!",
+    tags: ["Energising", "Protein-Rich", "Power"],
+    dishes: [
+      { name: "Eggs Benedict", image: "/images/Eggs Benedict.jpg", price: "Rs. 2,100", reason: "Protein-rich to wake you right up!", id: 2, emoji: "🥚" },
+      { name: "Cold Brew Coffee", image: "/images/Cold Brew Coffee.jpg", price: "Rs. 870", reason: "The perfect caffeine boost you need.", id: 401, emoji: "☕" },
+      { name: "Grilled Ribeye", image: "/images/Grilled Ribeye.jpg", price: "Rs. 4,800", reason: "Iron-rich steak to fuel your energy.", id: 201, emoji: "🥩" },
+      { name: "Beef Burger", image: "/images/Beef Burger.jpg", price: "Rs. 2,900", reason: "Hearty and filling — recharge mode on.", id: 999, emoji: "🍔" },
     ],
   },
 };
@@ -79,8 +97,12 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
   const videoRef   = useRef(null);
   const canvasRef  = useRef(null);
   const streamRef  = useRef(null);
+  const animationFrameRef = useRef(null);
+  const dotIntervalRef = useRef(null);
+  const isMountedRef = useRef(true);
+  const videoReadyRef = useRef(false);
 
-  const [stage, setStage]         = useState("intro");     // intro | scanning | result | manual
+  const [stage, setStage]         = useState("intro");
   const [scanProgress, setScanProgress] = useState(0);
   const [scanPhase, setScanPhase] = useState(0);
   const [detectedMood, setDetectedMood] = useState(null);
@@ -90,15 +112,15 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
   const [manualMood, setManualMood] = useState(null);
   const [modelsLoaded, setModelsLoaded] = useState(false);
 
-  // Load face-api models on component mount
+  // Load face-api models (original)
   useEffect(() => {
     const loadModels = async () => {
       try {
-        const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model/';
+        const MODEL_URL = 'https://justadudewhohacks.github.io/face-api.js/models';
         await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
         await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL);
-        await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
         setModelsLoaded(true);
+        console.log("✅ Models loaded successfully");
       } catch (error) {
         console.error("Failed to load face-api models:", error);
       }
@@ -116,14 +138,23 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
     "Crafting your recommendations…",
   ];
 
-  // Stop camera on unmount
-  useEffect(() => () => stopCamera(), []);
+  // Cleanup
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      if (dotIntervalRef.current) clearInterval(dotIntervalRef.current);
+      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+      stopCamera();
+    };
+  }, []);
 
   const stopCamera = () => {
-    if (streamRef.current) {
+    if (streamRef.current && streamRef.current.getTracks) {
       streamRef.current.getTracks().forEach(t => t.stop());
       streamRef.current = null;
     }
+    videoReadyRef.current = false;
   };
 
   const startCamera = async () => {
@@ -138,16 +169,41 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
     setScanPhase(0);
     setScanDots([]);
     setFaceBox(null);
+    videoReadyRef.current = false;
+
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode:"user", width:640, height:480 } });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode:"user", width:640, height:480 }
+      });
       streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.play();
+
+        // Wait for video to be ready
+        await new Promise((resolve) => {
+          videoRef.current.onloadedmetadata = () => {
+            videoRef.current.play().then(resolve).catch(resolve);
+          };
+          setTimeout(resolve, 1500);
+        });
+
+        // Ensure video dimensions
+        if (videoRef.current.videoWidth === 0 || videoRef.current.videoHeight === 0) {
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
+
+        // Set canvas dimensions
+        if (canvasRef.current) {
+          canvasRef.current.width = videoRef.current.videoWidth || 640;
+          canvasRef.current.height = videoRef.current.videoHeight || 480;
+        }
+
+        videoReadyRef.current = true;
+        console.log("✅ Video ready, starting scan...");
+        setTimeout(() => runScanAnimation(), 300);
       }
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      runScanAnimation();
     } catch (e) {
+      console.error("Camera error:", e);
       setCameraError("Camera access denied. Please allow camera permissions and try again.");
       setStage("intro");
     }
@@ -155,46 +211,48 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
 
   const pickMoodFromEmotions = (expressions) => {
     if (!expressions) return "Neutral";
-    
-    // Map face-api expressions to moods
     const emotionToMood = {
       happy: "Happy",
       sad: "Sad",
       angry: "Angry",
       surprised: "Surprised",
-      fearful: "Tired",      // Fear maps to tired
-      disgusted: "Angry",    // Disgust maps to angry
+      fearful: "Tired",
+      disgusted: "Angry",
       neutral: "Neutral"
     };
 
-    // Find the highest confidence expression
     let maxConfidence = 0;
     let detectedEmotion = "neutral";
-    
     Object.entries(expressions).forEach(([emotion, confidence]) => {
       if (confidence > maxConfidence) {
         maxConfidence = confidence;
         detectedEmotion = emotion;
       }
     });
-
     return emotionToMood[detectedEmotion] || "Neutral";
   };
 
+  // ─── SCANNING ANIMATION (canvas-based detection) ──────────────────────────
   const runScanAnimation = () => {
+    if (!isMountedRef.current) return;
+    if (!videoReadyRef.current) {
+      setTimeout(() => runScanAnimation(), 300);
+      return;
+    }
     if (!modelsLoaded) {
       setCameraError("Models not loaded. Please wait and try again.");
       setStage("intro");
       return;
     }
 
-    let p = 0;
-    const detectionInterval = 300; // ms between detections
-    let lastDetectionTime = 0;
-    const detectionDuration = 4000; // Total 4 seconds of scanning
+    console.log("🔄 Starting scan animation...");
 
-    // Animate scan dots across the face
-    const dotInterval = setInterval(() => {
+    const startTime = Date.now();
+    const detectionDuration = 4000; // 4 seconds
+
+    if (dotIntervalRef.current) clearInterval(dotIntervalRef.current);
+    dotIntervalRef.current = setInterval(() => {
+      if (!isMountedRef.current) return;
       setScanDots(prev => {
         const newDots = [...prev, {
           x: 20 + Math.random() * 60,
@@ -205,111 +263,150 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
       });
     }, 180);
 
-    // Animate face box
     setTimeout(() => setFaceBox({ x: 22, y: 12, w: 56, h: 70 }), 800);
 
-    // Real face detection loop
+    let isFinished = false;
+
     const detectFace = async () => {
-      const now = Date.now();
-      if (videoRef.current && canvasRef.current && (now - lastDetectionTime) > detectionInterval) {
-        lastDetectionTime = now;
+      if (!isMountedRef.current) return;
+
+      const elapsed = Date.now() - startTime;
+      let progress = Math.min((elapsed / detectionDuration) * 100, 95);
+
+      // Draw video frame on canvas and detect
+      if (videoRef.current && canvasRef.current) {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+
         try {
           const detections = await faceapi
-            .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
-            .withFaceExpressions()
-            .withFaceLandmarks();
+            .detectAllFaces(canvas, new faceapi.TinyFaceDetectorOptions())
+            .withFaceExpressions();
 
           if (detections.length > 0) {
-            const detection = detections[0];
-            // Update face box based on detected face
-            const box = detection.detection.box;
-            const videoWidth = videoRef.current.videoWidth;
-            const videoHeight = videoRef.current.videoHeight;
-            
+            progress = Math.min(progress + 10, 95);
+            const box = detections[0].detection.box;
+            const vw = canvas.width;
+            const vh = canvas.height;
             setFaceBox({
-              x: (box.x / videoWidth) * 100,
-              y: (box.y / videoHeight) * 100,
-              w: (box.width / videoWidth) * 100,
-              h: (box.height / videoHeight) * 100
+              x: (box.x / vw) * 100,
+              y: (box.y / vh) * 100,
+              w: (box.width / vw) * 100,
+              h: (box.height / vh) * 100,
             });
-
-            // Update progress
-            p = Math.min(p + 15, 90);
-          } else {
-            p = Math.min(p + 8, 85);
           }
         } catch (error) {
-          console.error("Face detection error:", error);
-          p = Math.min(p + 10, 90);
+          console.error("Detection error:", error);
         }
       }
 
-      setScanProgress(Math.min(p, 100));
-      const newPhase = Math.floor((Math.min(p, 100) / 100) * (scanPhrases.length - 1));
+      setScanProgress(Math.min(progress, 100));
+      const newPhase = Math.floor((Math.min(progress, 100) / 100) * (scanPhrases.length - 1));
       setScanPhase(newPhase);
 
-      if (now - Date.now() < detectionDuration - lastDetectionTime) {
-        requestAnimationFrame(detectFace);
-      } else {
-        // Finalize detection
-        clearInterval(dotInterval);
-        p = 100;
+      // ─── FINALIZE AFTER 4 SECONDS ──────────────────────────────────────
+      if (elapsed >= detectionDuration && !isFinished) {
+        isFinished = true;
+        console.log("⏰ Scan complete!");
+
+        if (dotIntervalRef.current) {
+          clearInterval(dotIntervalRef.current);
+          dotIntervalRef.current = null;
+        }
+
+        if (!isMountedRef.current) return;
+
         setScanProgress(100);
         setScanPhase(scanPhrases.length - 1);
 
-        // Get final emotion reading
-        const performFinalDetection = async () => {
-          try {
-            const detections = await faceapi
-              .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
-              .withFaceExpressions();
+        // Final detection on canvas
+        try {
+          const canvas = canvasRef.current;
+          if (!canvas) throw new Error("Canvas not available");
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
-            if (detections.length > 0) {
-              const emotions = detections[0].expressions;
-              const picked = pickMoodFromEmotions(emotions);
-              
-              setTimeout(() => {
-                stopCamera();
-                setDetectedMood(picked);
-                setStage("result");
-              }, 600);
-            } else {
-              // No face detected, fall back to manual selection
-              setCameraError("No face detected. Please try again or select mood manually.");
-              setStage("intro");
-            }
-          } catch (error) {
-            console.error("Final detection error:", error);
+          const detections = await faceapi
+            .detectAllFaces(canvas, new faceapi.TinyFaceDetectorOptions())
+            .withFaceExpressions();
+
+          let picked = "Neutral";
+          if (detections.length > 0) {
+            const emotions = detections[0].expressions;
+            picked = pickMoodFromEmotions(emotions);
+            console.log("🎯 Detected mood:", picked);
+          } else {
+            console.warn("⚠️ No face detected!");
+            setCameraError("No face detected. Please try again or select mood manually.");
+            stopCamera();
             setStage("intro");
+            return;
           }
-        };
 
-        performFinalDetection();
+          stopCamera();
+          setDetectedMood(picked);
+          setTimeout(() => {
+            if (isMountedRef.current) {
+              console.log("✅ Setting stage to result");
+              setStage("result");
+            }
+          }, 100);
+
+        } catch (error) {
+          console.error("Final detection error:", error);
+          setCameraError("Detection failed. Please try again or select mood manually.");
+          stopCamera();
+          setStage("intro");
+        }
+        return;
       }
+
+      animationFrameRef.current = requestAnimationFrame(detectFace);
     };
 
     detectFace();
   };
 
-  const profile = detectedMood ? moodProfiles[detectedMood] : manualMood ? moodProfiles[manualMood] : null;
+  // Helper
+  const activeMood = detectedMood || manualMood || "Neutral";
+  const profile = moodProfiles[activeMood] || moodProfiles.Neutral;
 
-  const addToCart = (id) => {
-    if (!setCartItems) return;
+  const handleMoodSelect = (mood) => {
+    setManualMood(mood);
+    setDetectedMood(null);
+    setStage("result");
+  };
+
+  // ─── ADD TO CART ──────────────────────────────────────────────────────────
+  const addToCart = (dishId) => {
+    if (!setCartItems || !profile) return;
+    const dish = profile.dishes.find(d => d.id === dishId);
+    if (!dish) return;
+
     setCartItems(prev => {
-      const existing = prev.find(i => i.id === id);
+      const existing = prev.find(i => i.id === dishId);
       if (existing) {
-        return prev.map(i => i.id === id ? { ...i, qty: i.qty + 1 } : i);
+        return prev.map(i => i.id === dishId ? { ...i, qty: i.qty + 1 } : i);
       }
-      const dish = moodProfiles[detectedMood || manualMood]?.dishes?.find(d => d.id === id) || moodProfiles[detectedMood || manualMood]?.dishes?.find((_, idx) => idx === id);
-      if (!dish) return prev;
-      return [...prev, { id: dish.id || id, name: dish.name, emoji: dish.emoji, price: parseInt(String(dish.price).replace(/[^0-9]/g, "")), category: "Recommendation", qty: 1 }];
+      return [
+        ...prev,
+        {
+          id: dishId,
+          name: dish.name,
+          emoji: dish.emoji || '🍽️',
+          price: parseInt(String(dish.price).replace(/[^0-9]/g, '')),
+          category: 'Recommendation',
+          qty: 1,
+        },
+      ];
     });
+    if (onDishSelect) onDishSelect(dish);
   };
 
   // ── INTRO ────────────────────────────────────────────────────────────────────
   const IntroScreen = () => (
     <div style={{ maxWidth:680, margin:"0 auto", padding:"48px 24px", textAlign:"center" }}>
-      {/* Animated face scan icon */}
       <div style={{ position:"relative", width:160, height:160, margin:"0 auto 36px" }}>
         <div style={{
           width:160, height:160, borderRadius:"50%",
@@ -318,7 +415,6 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
           display:"flex", alignItems:"center", justifyContent:"center",
           fontSize:72,
         }}>🤳</div>
-        {/* Rotating ring */}
         <div style={{
           position:"absolute", inset:-8, borderRadius:"50%",
           border:`3px solid transparent`,
@@ -342,7 +438,6 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
         Our AI reads your facial expression to detect your current mood and recommends the perfect dish just for you. It takes only 3 seconds!
       </p>
 
-      {/* How it works steps */}
       <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:16, marginBottom:36 }}>
         {[
           { icon:"📸", step:"1", title:"Allow Camera",  desc:"Grant camera access for a quick scan" },
@@ -422,13 +517,10 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
         <h2 style={{ fontSize:22, fontWeight:900, color:"#111827", margin:0 }}>Scanning your expression…</h2>
       </div>
 
-      {/* Camera viewfinder */}
       <div style={{ position:"relative", borderRadius:24, overflow:"hidden", background:"#0d1117", marginBottom:20, aspectRatio:"4/3", maxHeight:420 }}>
         <video ref={videoRef} autoPlay playsInline muted style={{ width:"100%", height:"100%", objectFit:"cover", transform:"scaleX(-1)" }}/>
 
-        {/* Dark overlay with hole */}
         <div style={{ position:"absolute", inset:0, pointerEvents:"none" }}>
-          {/* Corner brackets */}
           {[["top","left"],["top","right"],["bottom","left"],["bottom","right"]].map(([v,h],i)=>(
             <div key={i} style={{
               position:"absolute",
@@ -442,7 +534,6 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
             }}/>
           ))}
 
-          {/* Face bounding box */}
           {faceBox && (
             <div style={{
               position:"absolute",
@@ -461,7 +552,6 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
             </div>
           )}
 
-          {/* Scan line sweep */}
           <div style={{
             position:"absolute", left:0, right:0, height:2,
             background:`linear-gradient(90deg,transparent,${accentColor},transparent)`,
@@ -469,7 +559,6 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
             animation:"scanLine 2s ease-in-out infinite",
           }}/>
 
-          {/* Detection dots */}
           {scanDots.map(dot => (
             <div key={dot.id} style={{
               position:"absolute",
@@ -480,7 +569,6 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
             }}/>
           ))}
 
-          {/* Landmark labels */}
           {faceBox && [
             {x:38,y:30,label:"LEFT EYE"},
             {x:58,y:30,label:"RIGHT EYE"},
@@ -498,7 +586,6 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
             </div>
           ))}
 
-          {/* Live badge */}
           <div style={{
             position:"absolute", top:14, left:14,
             display:"flex", alignItems:"center", gap:6,
@@ -510,7 +597,6 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
         </div>
       </div>
 
-      {/* Progress */}
       <div style={{ background:"#fff", borderRadius:16, padding:"20px 22px", border:"1px solid rgba(0,0,0,0.06)", boxShadow:"0 2px 12px rgba(0,0,0,0.05)" }}>
         <div style={{ display:"flex", justifyContent:"space-between", marginBottom:10 }}>
           <span style={{ fontSize:13, fontWeight:700, color:"#374151" }}>{scanPhrases[scanPhase]}</span>
@@ -524,7 +610,6 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
             boxShadow:`0 0 10px ${accentColor}66`,
           }}/>
         </div>
-        {/* Phase pills */}
         <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
           {scanPhrases.map((ph,i)=>(
             <div key={i} style={{
@@ -577,8 +662,13 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
   );
 
   // ── RESULT ───────────────────────────────────────────────────────────────────
+  // ── FIXED: Shows images with fallback to emoji ─────────────────────────────
   const ResultScreen = () => {
     if (!profile) return null;
+
+    const moodDishes = profile.dishes || [];
+    const totalCartItems = cartItems.reduce((sum, i) => sum + (i.qty || 1), 0);
+
     return (
       <div style={{ maxWidth:900, margin:"0 auto", padding:"32px 24px" }}>
 
@@ -606,7 +696,6 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
               <p style={{ margin:0, fontSize:14, color:"#6b7280" }}>{profile.subtitle}</p>
             </div>
           </div>
-          {/* Mood tags */}
           <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
             {profile.tags.map(t=>(
               <span key={t} style={{
@@ -616,7 +705,6 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
               }}>{t}</span>
             ))}
           </div>
-          {/* Rescan button */}
           <button onClick={()=>{setDetectedMood(null);setManualMood(null);setStage("intro");}} style={{
             padding:"9px 18px", borderRadius:12, border:"none",
             background:`linear-gradient(135deg,${profile.color},${profile.color}cc)`,
@@ -625,13 +713,12 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
           }}>🔄 Rescan</button>
         </div>
 
-        {/* Recommendations */}
         <h3 style={{ fontSize:18, fontWeight:800, color:"#111827", margin:"0 0 16px" }}>
           🍽️ Perfect Dishes for Your Mood
         </h3>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:16, marginBottom:28 }}>
-          {profile.dishes.map((dish,i) => {
-            const id = dish.id || i;
+          {moodDishes.map((dish, i) => {
+            const id = dish.id;
             const inCart = cartItems.some(item => item.id === id);
             return (
               <div key={i} style={{
@@ -640,19 +727,50 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
                 boxShadow:"0 2px 14px rgba(0,0,0,0.05)",
                 display:"flex", flexDirection:"column",
                 transition:"transform 0.2s, box-shadow 0.2s",
+                cursor:"pointer",
               }}
                 onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-4px)";e.currentTarget.style.boxShadow=`0 12px 32px ${profile.color}22`;}}
                 onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 2px 14px rgba(0,0,0,0.05)";}}
+                onClick={()=>{ if (onDishSelect) onDishSelect(dish); }}
               >
-                {/* Top coloured emoji banner */}
+                {/* ─── IMAGE DISPLAY WITH FALLBACK ────────────────────────── */}
                 <div style={{
-                  background: profile.bg,
-                  padding:"22px", display:"flex", alignItems:"center", justifyContent:"center",
-                  fontSize:64, borderBottom:`1px solid ${profile.color}22`,
-                }}>{dish.emoji}</div>
+                  height:180,
+                  background:'#f3f4f6',
+                  overflow:'hidden',
+                  display:'flex',
+                  alignItems:'center',
+                  justifyContent:'center',
+                  borderBottom:`1px solid ${profile.color}22`,
+                  position:'relative',
+                }}>
+                  <img
+                    src={dish.image}
+                    alt={dish.name}
+                    style={{
+                      width:'100%',
+                      height:'100%',
+                      objectFit:'cover',
+                    }}
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      // Show fallback emoji
+                      const parent = e.target.parentNode;
+                      if (parent) {
+                        const fallback = document.createElement('span');
+                        fallback.style.fontSize = '64px';
+                        fallback.textContent = dish.emoji || '🍽️';
+                        parent.appendChild(fallback);
+                      }
+                    }}
+                  />
+                  {/* Fallback if image fails (inline) */}
+                  <div style={{ display: 'none' }} className="fallback-emoji">
+                    <span style={{ fontSize:64 }}>{dish.emoji || '🍽️'}</span>
+                  </div>
+                </div>
 
                 <div style={{ padding:"18px 18px", flex:1, display:"flex", flexDirection:"column" }}>
-                  {/* Rank badge */}
                   <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:8 }}>
                     <div style={{
                       width:24, height:24, borderRadius:"50%",
@@ -673,7 +791,7 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
 
                   <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
                     <span style={{ fontSize:17, fontWeight:900, color:profile.color }}>{dish.price}</span>
-                    <button onClick={()=>addToCart(id)} style={{
+                    <button onClick={(e)=>{ e.stopPropagation(); addToCart(id); }} style={{
                       padding:"8px 16px", borderRadius:10, border:"none",
                       background: inCart ? "linear-gradient(135deg,#22c55e,#16a34a)" : `linear-gradient(135deg,${profile.color},${profile.color}cc)`,
                       color:"#fff", fontWeight:700, fontSize:12, cursor:"pointer", fontFamily:"inherit",
@@ -689,7 +807,7 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
           })}
         </div>
 
-        {cartItems.reduce((s,i)=>s+(i.qty||1),0) > 0 && (
+        {totalCartItems > 0 && (
           <div style={{
             background:`linear-gradient(135deg,${profile.color}18,${profile.color}08)`,
             border:`1.5px solid ${profile.color}33`,
@@ -697,7 +815,7 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
             display:"flex", justifyContent:"space-between", alignItems:"center",
           }}>
             <span style={{ fontSize:14, fontWeight:700, color:"#111827" }}>
-              🛒 {cartItems.reduce((s,i)=>s+(i.qty||1),0)} dish{cartItems.reduce((s,i)=>s+(i.qty||1),0)>1?"es":""} added to cart!
+              🛒 {totalCartItems} dish{totalCartItems > 1 ? "es" : ""} added to cart!
             </span>
             <button onClick={onViewCart || onBack} style={{
               padding:"9px 20px", background:`linear-gradient(135deg,${profile.color},${profile.color}cc)`,
@@ -737,12 +855,17 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
           <span style={{ color:accentColor, fontWeight:700 }}>AI Recommendation</span>
         </div>
         <div style={{ marginLeft:"auto", display:"flex", gap:12, alignItems:"center" }}>
-          <span style={{ fontSize:20, opacity:0.5 }}>🔔</span>
           <div style={{ position:"relative" }}>
             <span style={{ fontSize:20 }}>🛒</span>
-            <span style={{ position:"absolute",top:-4,right:-4,background:accentColor,color:"#fff",borderRadius:"50%",width:14,height:14,display:"flex",alignItems:"center",justifyContent:"center",fontSize:8,fontWeight:800 }}>3</span>
+            <span style={{
+              position:"absolute", top:-4, right:-4,
+              background:accentColor, color:"#fff",
+              borderRadius:"50%",
+              width:18, height:18,
+              display:"flex", alignItems:"center", justifyContent:"center",
+              fontSize:9, fontWeight:800,
+            }}>{cartItems.reduce((s,i)=>s+(i.qty||1),0)}</span>
           </div>
-          <div style={{ width:32,height:32,borderRadius:"50%",background:`linear-gradient(135deg,${accentColor},${accentColor}99)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16 }}>👤</div>
         </div>
       </div>
 
@@ -768,8 +891,19 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
         </div>
       </div>
 
-      {/* Hidden canvas for processing */}
-      <canvas ref={canvasRef} style={{ display:"none" }}/>
+      {/* ─── FIXED CANVAS ──────────────────────────────────────────────────── */}
+      <canvas
+        ref={canvasRef}
+        width={640}
+        height={480}
+        style={{
+          position:'absolute',
+          opacity:0,
+          pointerEvents:'none',
+          width:'640px',
+          height:'480px',
+        }}
+      />
 
       {/* Page content */}
       {stage === "intro"    && <IntroScreen/>}
@@ -783,7 +917,7 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
           {icon:"🕐",title:"Hours",    lines:["Mon–Sun","10 AM – 11 PM"]},
           {icon:"📞",title:"Contact",  lines:["+94 77 599 5735","info@smartrestaurant.lk"]},
           {icon:"📍",title:"Location", lines:["123, Galle Road","Colombo 03, Sri Lanka"]},
-         
+          {icon:"🌐",title:"Follow Us", social:true},
         ].map((col,i)=>(
           <div key={i}>
             <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:7}}>
@@ -811,6 +945,5 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
     </div>
   );
 }
-
 
 export { RecommendationPage };

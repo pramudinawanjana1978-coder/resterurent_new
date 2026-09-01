@@ -29,8 +29,7 @@ app.listen(PORT, () => {
 app.post('/api/orders', async (req, res) => {
   try {
     const newOrder = req.body; // CartPage එකෙන් එවපු data payload එක
-    // Database එකට save කිරීමේ code එක (MongoDB/MySQL) මෙතනට එන්න ඕනේ.
-    // e.g., await OrderModel.create(newOrder);
+    
     res.status(201).json(newOrder);
   } catch (error) {
     res.status(500).json({ error: "Order save failed" });

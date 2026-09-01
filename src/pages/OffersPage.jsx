@@ -232,21 +232,29 @@ export default function OffersPage({ onBack, accentColor = "#f97316", onGoToCart
               left: 0,
             }}
             onError={(e) => {
-              // If image fails, hide it and show emoji fallback
-              e.currentTarget.style.display = "none";
-              const parent = e.currentTarget.parentElement;
-              if (parent) {
-                // Remove any existing fallback text
-                const existingFallback = parent.querySelector(".fallback-emoji");
-                if (existingFallback) existingFallback.remove();
-                const span = document.createElement("span");
-                span.className = "fallback-emoji";
-                span.textContent = item.emoji || "";
-                span.style.fontSize = "22px";
-                span.style.position = "relative";
-                span.style.zIndex = "1";
-                parent.appendChild(span);
+              const img = e.currentTarget;
+              if (!img) return;
+
+              img.style.display = "none";
+
+              const parent = img.parentElement;
+              if (!parent) return;
+
+              const existingFallback = parent.querySelector(".fallback-emoji");
+              if (existingFallback) {
+                existingFallback.textContent = item.emoji || "";
+                existingFallback.style.display = "inline-block";
+                return;
               }
+
+              const span = document.createElement("span");
+              span.className = "fallback-emoji";
+              span.textContent = item.emoji || "";
+              span.style.fontSize = "22px";
+              span.style.position = "relative";
+              span.style.zIndex = "1";
+              span.style.display = "inline-block";
+              parent.appendChild(span);
             }}
           />
         ) : null}

@@ -202,7 +202,6 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
         </div>
       </div>
       <div style={{ marginLeft: "auto", display: "flex", gap: 12, alignItems: "center" }}>
-        <span style={{ fontSize: 20, opacity: 0.5, cursor: "pointer" }}>🔔</span>
         <div style={{ position: "relative", cursor: "pointer" }}>
           <span style={{ fontSize: 20 }}>🛒</span>
           <span
@@ -224,20 +223,6 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
           >
             3
           </span>
-        </div>
-        <div
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: "50%",
-            background: `linear-gradient(135deg,${accentColor},${accentColor}99)`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 16,
-          }}
-        >
-          👤
         </div>
       </div>
     </div>

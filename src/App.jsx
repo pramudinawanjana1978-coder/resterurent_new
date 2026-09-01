@@ -7,11 +7,11 @@ import { MenuPage } from './pages/MenuPage.jsx';
 import { RecommendationPage } from './pages/RecommendationPage.jsx';
 import CartPage from './pages/CartPage.jsx';
 import { TrackOrderPage } from './pages/TrackOrderPage.jsx';
-import  OrdersPage  from './pages/OrdersPage.jsx';
+import OrdersPage, { StaffLoginModal } from './pages/OrdersPage.jsx';
 import ViewFeedbacks from './pages/ViewFeedbacks.jsx';
 import FeedbackPage from './pages/FeedbackPage.jsx'; // ✅ Duplicate import එක ඉවත් කළා
 import OffersPage from './pages/OffersPage.jsx';
-import { useAppStore } from './store/AppStore.jsx';
+import { getDishReviewStats, useAppStore } from './store/AppStore.jsx';
 
 
 const buildOrderSummary = (items = [], tipAmt = 0) => {
@@ -73,7 +73,7 @@ function Sidebar({ accentColor, activeNav, onNavigate, onPreviewClick, isMobile 
 }
 
 export default function App() {
-  const { placeOrder } = useAppStore();
+  const { placeOrder, store } = useAppStore();
   const videoRef = useRef(null);
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth <= 900 : false);
   const [activeNav, setActiveNav] = useState("Home");
@@ -93,6 +93,7 @@ export default function App() {
   const [feedbackStats, setFeedbackStats] = useState({ average: 4.8, count: 2000 });
   const [isVideoPreviewOpen, setIsVideoPreviewOpen] = useState(false);
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
+  const [staffRole, setStaffRole] = useState(null);
 
   const openPreviewModal = () => {
     setIsVideoPreviewOpen(true);
@@ -223,8 +224,24 @@ export default function App() {
   };
 
   const goToCartPage = () => { setPage("cart"); setActiveNav("Cart"); };
-  const onMoreClick = () => { setPage("orders"); setActiveNav("Staff"); };
-  const handleStaffLogout = () => { setPage(null); setActiveNav("Home"); };
+  const onMoreClick = () => {
+    if (staffRole) {
+      setPage("orders");
+    } else {
+      setPage("staff-login");
+    }
+    setActiveNav("Staff");
+  };
+  const handleStaffLoginSuccess = (role) => {
+    setStaffRole(role);
+    setPage("orders");
+    setActiveNav("Staff");
+  };
+  const handleStaffLogout = () => {
+    setStaffRole(null);
+    setPage(null);
+    setActiveNav("Home");
+  };
   const handleNav = (label) => {
     setActiveNav(label);
     if (label === "Home") setPage(null);
@@ -234,8 +251,9 @@ export default function App() {
     if (label === "Recommendation") setPage("recommendation");
     if (label === "Special Menu") setPage("menu");
     if (label === "Offers") setPage("offers");
-    if (label === "Staff") setPage("orders");
-    
+    if (label === "Staff") {
+      setPage(staffRole ? "orders" : "staff-login");
+    }
   };
   const previewModal = isVideoPreviewOpen && (
     <div
@@ -430,6 +448,16 @@ export default function App() {
     );
   }
 
+  if (page === "staff-login") {
+    return pageShell(
+      <StaffLoginModal
+        accentColor={cfg.accentColor}
+        onSuccess={handleStaffLoginSuccess}
+        onClose={() => { setPage(null); setActiveNav("Home"); }}
+      />
+    );
+  }
+
   if (page === "orders") {
     return pageShell(
       <OrdersPage
@@ -479,7 +507,9 @@ export default function App() {
                 if (item.label === "Recommendation") setPage("recommendation");
                 if (item.label === "Special Menu") setPage("menu");
                 if (item.label === "Offers") setPage("offers");
-                if (item.label === "Staff") setPage("orders");
+                if (item.label === "Staff") {
+                  setPage(staffRole ? "orders" : "staff-login");
+                }
               }} style={{
                 display:"flex", alignItems:"center", gap:14, width:"100%", padding:isMobile ? "10px 12px" : "12px 14px", borderRadius:12, border:"none",
                 background: activeNav===item.label ? cfg.accentColor+"22" : "transparent",
@@ -600,7 +630,12 @@ export default function App() {
           </div>
           
           <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:20 }}>
-            {popularDishes.map(dish => (
+            {popularDishes.map(dish => {
+              const liveStats = getDishReviewStats(store.feedbackList, dish.id, {
+                rating: dish.rating ?? 0,
+                reviews: dish.reviews ?? 0,
+              });
+              return (
               <div key={dish.id} style={{ background:dish.color, borderRadius:20, padding:"34px 30px", cursor:"pointer", transition:"transform 0.2s, box-shadow 0.2s", border:"1px solid rgba(0,0,0,0.04)" }}
                 onClick={() => openDish(dish, activeCategory)}
                 onMouseEnter={e => { e.currentTarget.style.transform="translateY(-4px)"; e.currentTarget.style.boxShadow="0 12px 32px rgba(0,0,0,0.1)"; }}
@@ -620,8 +655,8 @@ export default function App() {
                 <div style={{ display:"inline-block", padding:"3px 10px", borderRadius:20, background:cfg.accentColor+"22", color:cfg.accentColor, fontSize:10, fontWeight:700, letterSpacing:"0.8px", textTransform:"uppercase", marginBottom:6, transition:"all 0.4s" }}>{activeCategory}</div>
                 <h3 style={{ margin:"0 0 4px", fontSize:15, fontWeight:700, color:"#1a1a1a" }}>{dish.name}</h3>
                 <div style={{ display:"flex", alignItems:"center", gap:4, marginBottom:8 }}>
-                  <Stars rating={dish.rating} color={cfg.accentColor} size={11}/>
-                  <span style={{ fontSize:12, color:"#999" }}>({dish.reviews}+)</span>
+                  <Stars rating={liveStats.rating} color={cfg.accentColor} size={11}/>
+                  <span style={{ fontSize:12, color:"#999" }}>({liveStats.reviews}+)</span>
                 </div>
                 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
                   <span style={{ fontSize:16, fontWeight:800, color:cfg.accentColor, transition:"color 0.4s" }}>{dish.price}</span>
@@ -643,7 +678,8 @@ export default function App() {
                   }} style={{ width:32, height:32, background:`linear-gradient(135deg,${cfg.accentColor},${cfg.accentColor}bb)`, border:"none", borderRadius:"50%", color:"#fff", fontSize:20, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", boxShadow:`0 4px 10px ${cfg.accentColor}44`, transition:"background 0.4s" }}>+</button>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </main>
