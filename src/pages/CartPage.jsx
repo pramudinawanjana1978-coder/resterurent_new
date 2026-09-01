@@ -1597,35 +1597,7 @@ function CartPage({
                     marginBottom: 16,
                   }}
                 >
-                  <button
-                    onClick={() =>
-                      setShowSchedule(true)
-                    }
-                    style={{
-                      padding: 11,
-                      borderRadius: 12,
-                      fontFamily: "inherit",
-                      background:
-                        schedSaved
-                          ? "#f0fdf4"
-                          : "#f6f6f6",
-                      border:
-                        schedSaved
-                          ? "1.5px solid #22c55e"
-                          : "1px solid #e8e8e8",
-                      color:
-                        schedSaved
-                          ? "#16a34a"
-                          : "#555",
-                      fontWeight: 700,
-                      fontSize: 12,
-                      cursor: "pointer",
-                    }}
-                  >
-                    {schedSaved
-                      ? "✓ Scheduled"
-                      : "📅 Schedule"}
-                  </button>
+                  
 
                  
                 </div>
