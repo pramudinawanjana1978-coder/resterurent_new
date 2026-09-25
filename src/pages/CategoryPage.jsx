@@ -100,9 +100,9 @@ const makeVariants = (dish) => [
 // ─── REVIEWS ──────────────────────────────────────────────────────────────────
 
 const reviews = [
-  { name:"Kasun Perera",    avatar:"👨",  stars:5, time:"2 days ago",  text:"Very delicious and fresh food. Highly recommended!", likes:12 },
-  { name:"Nethmi Silva",    avatar:"👩",  stars:5, time:"1 week ago",  text:"Fast delivery and excellent taste. Will order again!", likes:8 },
-  { name:"Tharindu Fernando",avatar:"🧑", stars:4, time:"2 weeks ago", text:"Portion size is perfect and food was so juicy.",      likes:7 },
+  { name:"Kasun Perera",    avatar:"",  stars:5, time:"2 days ago",  text:"Very delicious and fresh food. Highly recommended!", likes:12 },
+  { name:"Nethmi Silva",    avatar:"",  stars:5, time:"1 week ago",  text:"Fast delivery and excellent taste. Will order again!", likes:8 },
+  { name:"Tharindu Fernando",avatar:"", stars:4, time:"2 weeks ago", text:"Portion size is perfect and food was so juicy.",      likes:7 },
 ];
 
 // ─── CATEGORY DATA ────────────────────────────────────────────────────────────
@@ -534,7 +534,7 @@ function DishDetailPage({ dish, category, onBack, accentColor, }) {
       {/* Top bar */}
       <div style={{
         position:"sticky", top:0, zIndex:100,
-        background:"rgba(255,255,255,0.97)", backdropFilter:"blur(12px)",
+        background:"#E8F3F1", backdropFilter:"blur(12px)",
         borderBottom:"1px solid rgba(0,0,0,0.07)",
         padding:"0 40px", height:64,
         display:"flex", alignItems:"center", gap:20,
@@ -1145,7 +1145,6 @@ function CategoryPage({ category, onBack, onDishSelect, onViewCart, cartItems = 
   const [liked, setLiked]           = useState(false);
   const [addedCart, setAddedCart]   = useState(false);
 
-  const pageIcons = {Breakfast:"🌅",Lunch:"☀️",Dinner:"🌙",Desserts:"🍰",Drinks:"🥤"};
   const served    = {Breakfast:"7 AM – 11:30 AM",Lunch:"11:30 AM – 3 PM",Dinner:"5 PM – 10 PM",Desserts:"All day",Drinks:"All day"};
 
   // Subcategories — support both 'subcategory' and 'section' fields
@@ -1294,7 +1293,7 @@ function CategoryPage({ category, onBack, onDishSelect, onViewCart, cartItems = 
       {/* ── Top Bar ── */}
       <div style={{
         position:"sticky", top:0, zIndex:200,
-        background:"rgba(255,255,255,0.97)", backdropFilter:"blur(14px)",
+        background:"#E8F3F1", backdropFilter:"blur(14px)",
         borderBottom:"1px solid rgba(0,0,0,0.06)",
         padding:"0 32px", height:64,
         display:"flex", alignItems:"center", gap:14,
@@ -1334,14 +1333,11 @@ function CategoryPage({ category, onBack, onDishSelect, onViewCart, cartItems = 
 
       {/* ── Hero banner ── */}
       <div style={{
-        background: cfg.bannerGrad, padding:"28px 40px 32px",
+        background: "#e9f1ee", padding:"28px 40px 32px",
         position:"relative", overflow:"hidden",
       }}>
         <div style={{ maxWidth:1140, margin:"0 auto", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:16 }}>
           <div style={{ display:"flex", alignItems:"center", gap:16 }}>
-            <div style={{ width:56, height:56, borderRadius:16, background:`linear-gradient(135deg,${accent},${accent}cc)`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:28, boxShadow:`0 6px 18px ${accent}44` }}>
-              {pageIcons[category]}
-            </div>
             <div>
               <h1 style={{ margin:0, fontSize:26, fontWeight:900, color:"#1a1a1a", letterSpacing:"-0.5px" }}>{category} Menu</h1>
               <p style={{ margin:"4px 0 0", color:"#888", fontSize:13 }}>{items.length} items · Served {served[category]}</p>
@@ -1479,7 +1475,7 @@ function CategoryPage({ category, onBack, onDishSelect, onViewCart, cartItems = 
             {/* Drawer top bar */}
             <div style={{
               position:"sticky", top:0, zIndex:10,
-              background:"rgba(255,255,255,0.97)", backdropFilter:"blur(10px)",
+              background:"#E8F3F1", backdropFilter:"blur(10px)",
               borderBottom:"1px solid rgba(0,0,0,0.07)",
               padding:"14px 24px", display:"flex", alignItems:"center", gap:12,
             }}>
@@ -1727,9 +1723,7 @@ function CategoryPage({ category, onBack, onDishSelect, onViewCart, cartItems = 
 
   const badge = dish.subcategory || dish.section || "Chef's Choice";
 
-  const photoBg = dish.color
-    ? `radial-gradient(ellipse at 55% 40%, ${dish.color}ee 0%, ${dish.color}88 60%, ${dish.color}44 100%)`
-    : "radial-gradient(ellipse at 55% 40%, #fdf6ed 0%, #f5e6cc 60%, #edddb6 100%)";
+  const photoBg = "#edf3ef";
 
   return (
     <div

@@ -159,7 +159,7 @@ function PaymentPage({ total, items, orderSummary = null, accentColor, onBack, o
       position:"relative", overflow:"hidden",
     }}>
       {/* Confetti dots */}
-      {[...Array(22)].map((_,i) => (
+      {[].map((_,i) => (
         <div key={i} style={{
           position:"absolute",
           left:`${Math.random()*100}%`, top:`${Math.random()*100}%`,
@@ -243,7 +243,7 @@ function PaymentPage({ total, items, orderSummary = null, accentColor, onBack, o
   // ── PROCESSING ────────────────────────────────────────────────────────────────
   if (stage === "processing") return (
     <div style={{
-      minHeight:"100vh", background:"linear-gradient(135deg,#0d0d1a,#111827,#0d1f33)",
+      minHeight:"100vh", background:"#17212b",
       display:"flex", alignItems:"center", justifyContent:"center",
       fontFamily:"'Trebuchet MS',sans-serif",
     }}>
@@ -292,14 +292,14 @@ function PaymentPage({ total, items, orderSummary = null, accentColor, onBack, o
   return (
     <div style={{
       minHeight:"100vh",
-      background:"linear-gradient(160deg,#0d0d1a 0%,#111827 60%,#0d1f33 100%)",
+            background:"#17212b",
       fontFamily:"'Trebuchet MS',sans-serif", color:"#fff",
     }}>
 
       {/* Top bar */}
       <div style={{
         position:"sticky", top:0, zIndex:100,
-        background:"rgba(13,13,26,0.95)", backdropFilter:"blur(16px)",
+        background:"#E8F3F1", backdropFilter:"blur(16px)",
         borderBottom:"1px solid rgba(255,255,255,0.06)",
         padding:"0 36px", height:64,
         display:"flex", alignItems:"center", gap:16,

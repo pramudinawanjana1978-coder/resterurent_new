@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Icon } from './Icon.jsx';
 
 // ─── ORBIT ────────────────────────────────────────────────────────────────────
 
@@ -20,11 +21,11 @@ function OrbitDisplay({ slide, centerEmoji, accentColor }) {
           background:"rgba(255,255,255,0.93)", border:"2px solid rgba(255,255,255,0.98)",
           boxShadow:"0 4px 14px rgba(0,0,0,0.1)", display:"flex", alignItems:"center",
           justifyContent:"center", fontSize:24, overflow:"hidden",
-          animation:`floatOrbit ${3.5+(i%3)*0.5}s ease-in-out ${i*0.18}s infinite`,
+          animation:"none",
         }}>
           {slide[i].image ? (
             <img src={slide[i].image} alt={slide[i].name} style={{ width:"100%", height:"100%", objectFit:"cover" }} />
-          ) : slide[i].emoji}
+          ) : <Icon name="Utensils" size={22} />}
         </div>
       ))}
       <div style={{
@@ -32,11 +33,11 @@ function OrbitDisplay({ slide, centerEmoji, accentColor }) {
         borderRadius:"50%", background:"rgba(255,255,255,0.97)",
         border:"4px solid #fff", boxShadow:"0 8px 32px rgba(0,0,0,0.13)",
         display:"flex", alignItems:"center", justifyContent:"center", fontSize:52, overflow:"hidden",
-        transition:"all 0.45s cubic-bezier(0.34,1.56,0.64,1)", zIndex:2,
+        transition:"border-color 0.2s ease", zIndex:2,
       }}>
         {typeof centerEmoji === "string" && centerEmoji.startsWith("/") ? (
           <img src={centerEmoji} alt="Featured dish" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
-        ) : centerEmoji}
+        ) : <Icon name={centerEmoji} size={52} />}
       </div>
     </div>
   );

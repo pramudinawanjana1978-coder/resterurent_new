@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, createContext, useContext } from 'react';
 import { useAppStore } from '../store/AppStore.jsx';
+import { Icon } from '../components/Icon.jsx';
 
 // ─── LOCAL StarRow (copied from first file) ──────────────────────────────────
 function StarRow({ value, onChange, size = 36, activeColor }) {
@@ -44,20 +45,20 @@ const quickTags = {
 };
 
 const aspects = [
-  { key: "taste", label: "Taste", emoji: "😋" },
-  { key: "presentation", label: "Presentation", emoji: "🎨" },
-  { key: "service", label: "Service", emoji: "🤝" },
-  { key: "value", label: "Value", emoji: "💰" },
-  { key: "ambiance", label: "Ambiance", emoji: "✨" },
+  { key: "taste", label: "Taste", emoji: "" },
+  { key: "presentation", label: "Presentation", emoji: "" },
+  { key: "service", label: "Service", emoji: "" },
+  { key: "value", label: "Value", emoji: "" },
+  { key: "ambiance", label: "Ambiance", emoji: "" },
 ];
 
 const pastReviews = [
-  { id: "r1", name: "Kasun Perera", avatar: "👨🏽", stars: 5, dish: "Chicken Kottu", emoji: "🍳", time: "2 days ago", comment: "Absolutely incredible! The kottu was perfectly spiced and crispy. Will definitely order again.", helpful: 24, category: "Dinner" },
-  { id: "r2", name: "Nethmi Silva", avatar: "👩🏽", stars: 4, dish: "Blueberry Pancakes", emoji: "🥞", time: "4 days ago", comment: "Fluffy and fresh! The blueberries were sweet and the maple syrup was the perfect touch.", helpful: 17, category: "Breakfast" },
-  { id: "r3", name: "Tharindu Jayawardena", avatar: "👨🏻", stars: 5, dish: "Devilled Prawns", emoji: "🦐", time: "1 week ago", comment: "Best devilled prawns I've had in Colombo. The sauce was perfectly balanced — not too spicy.", helpful: 31, category: "Dinner" },
-  { id: "r4", name: "Dilini Rathnayake", avatar: "👩🏽", stars: 3, dish: "Mango Bubble Tea", emoji: "🧋", time: "2 weeks ago", comment: "Bubble tea was good but a bit too sweet for my liking. Would try less sugar next time.", helpful: 9, category: "Drinks" },
-  { id: "r5", name: "Ravindu Wickrama", avatar: "👨🏽", stars: 5, dish: "Chicken Biryani", emoji: "🍛", time: "3 weeks ago", comment: "Fragrant, perfectly cooked and generous portion. The raita was a great complement.", helpful: 38, category: "Dinner" },
-  { id: "r6", name: "Amaya Fernando", avatar: "👩🏻", stars: 4, dish: "Watalappan", emoji: "🍮", time: "1 month ago", comment: "Traditional taste, just like my grandmother used to make. Creamy and perfectly sweetened.", helpful: 22, category: "Desserts" },
+  { id: "r1", name: "Kasun Perera", avatar: "", stars: 5, dish: "Chicken Kottu", emoji: "🍳", time: "2 days ago", comment: "Absolutely incredible! The kottu was perfectly spiced and crispy. Will definitely order again.", helpful: 24, category: "Dinner" },
+  { id: "r2", name: "Nethmi Silva", avatar: "", stars: 4, dish: "Blueberry Pancakes", emoji: "🥞", time: "4 days ago", comment: "Fluffy and fresh! The blueberries were sweet and the maple syrup was the perfect touch.", helpful: 17, category: "Breakfast" },
+  { id: "r3", name: "Tharindu Jayawardena", avatar: "", stars: 5, dish: "Devilled Prawns", emoji: "🦐", time: "1 week ago", comment: "Best devilled prawns I've had in Colombo. The sauce was perfectly balanced — not too spicy.", helpful: 31, category: "Dinner" },
+  { id: "r4", name: "Dilini Rathnayake", avatar: "", stars: 3, dish: "Mango Bubble Tea", emoji: "🧋", time: "2 weeks ago", comment: "Bubble tea was good but a bit too sweet for my liking. Would try less sugar next time.", helpful: 9, category: "Drinks" },
+  { id: "r5", name: "Ravindu Wickrama", avatar: "", stars: 5, dish: "Chicken Biryani", emoji: "🍛", time: "3 weeks ago", comment: "Fragrant, perfectly cooked and generous portion. The raita was a great complement.", helpful: 38, category: "Dinner" },
+  { id: "r6", name: "Amaya Fernando", avatar: "", stars: 4, dish: "Watalappan", emoji: "🍮", time: "1 month ago", comment: "Traditional taste, just like my grandmother used to make. Creamy and perfectly sweetened.", helpful: 22, category: "Desserts" },
 ];
 
 function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
@@ -88,7 +89,7 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
     const stored = store.feedbackList.map(review => ({
       id: review.id,
       name: review.name || "Anonymous Customer",
-      avatar: "🧑",
+      avatar: "",
       stars: review.rating || 0,
       dish: review.dishName || "Delicious Dish",
       emoji: review.dishEmoji || "🍽️",
@@ -142,7 +143,7 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
         position: "sticky",
         top: 0,
         zIndex: 100,
-        background: "rgba(255,255,255,0.97)",
+        background: "#E8F3F1",
         backdropFilter: "blur(14px)",
         borderBottom: "1px solid rgba(0,0,0,0.06)",
         padding: "0 32px",
@@ -185,7 +186,7 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
             gap: 7,
           }}
         >
-          <span style={{ color: "#9ca3af", fontSize: 13 }}>🔍</span>
+          <span style={{ color: "#9ca3af", display: "inline-flex" }}><Icon name="Search" size={14} /></span>
           <input
             placeholder="Search food, drinks…"
             style={{
@@ -203,7 +204,7 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
       </div>
       <div style={{ marginLeft: "auto", display: "flex", gap: 12, alignItems: "center" }}>
         <div style={{ position: "relative", cursor: "pointer" }}>
-          <span style={{ fontSize: 20 }}>🛒</span>
+          <Icon name="ShoppingCart" size={20} />
           <span
             style={{
               position: "absolute",
@@ -240,14 +241,14 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
       }}
     >
       {[
-        { icon: "🕐", title: "Hours", lines: ["Mon–Sun", "10 AM – 11 PM"] },
-        { icon: "📞", title: "Contact", lines: ["+94 77 599 5735", "info@smartrestaurant.lk"] },
-        { icon: "📍", title: "Location", lines: ["123, Galle Road", "Colombo 03, Sri Lanka"] },
+        { icon: "Clock3", title: "Hours", lines: ["Mon–Sun", "10 AM – 11 PM"] },
+        { icon: "Phone", title: "Contact", lines: ["+94 77 599 5735", "info@smartrestaurant.lk"] },
+        { icon: "MapPin", title: "Location", lines: ["123, Galle Road", "Colombo 03, Sri Lanka"] },
       
       ].map((col, i) => (
         <div key={i}>
           <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 7 }}>
-            <span style={{ color: accentColor, fontSize: 16 }}>{col.icon}</span>
+            <span style={{ color: accentColor, display: "inline-flex" }}><Icon name={col.icon} size={16} /></span>
             <span style={{ fontSize: 12, fontWeight: 700, color: "#374151" }}>{col.title}</span>
           </div>
           {col.lines?.map((l, j) => (
@@ -316,13 +317,13 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
                 animation: "popBounce 0.6s cubic-bezier(0.34,1.56,0.64,1)",
               }}
             >
-              {overall >= 4 ? "🌟" : overall === 3 ? "😊" : "🙏"}
+              <Icon name={overall >= 4 ? "Star" : overall === 3 ? "Smile" : "Heart"} size={18} />
             </div>
             <h2 style={{ fontSize: 26, fontWeight: 900, color: "#111827", margin: "0 0 8px" }}>
               {overall >= 4 ? "You made our day!" : overall === 3 ? "Thanks for the feedback!" : "We'll do better!"}
             </h2>
             <p style={{ fontSize: 14, color: "#6b7280", margin: "0 0 20px", lineHeight: 1.6 }}>
-              {name ? `Thanks, ${name}! ` : ""}Your {ratingMeta[overall].emoji}{" "}
+              {name ? `Thanks, ${name}! ` : ""}Your {ratingMeta[overall].label}{" "}
               <strong>{ratingMeta[overall].label}</strong> review for <strong>{dish?.name}</strong> has been submitted.
             </p>
             <div style={{ display: "flex", justifyContent: "center", gap: 6, marginBottom: 20 }}>
@@ -464,7 +465,7 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
                 Share Your Experience
               </div>
               <h1 style={{ margin: "0 0 8px", fontSize: 26, fontWeight: 900, color: "#fff", letterSpacing: "-0.5px" }}>
-                How was your meal? 💬
+                How was your meal?
               </h1>
               <p style={{ margin: 0, color: "rgba(255,255,255,0.4)", fontSize: 13, maxWidth: 400 }}>
                 Your honest feedback helps us cook better for you every single day.
@@ -504,8 +505,8 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
             }}
           >
             {[
-              ["write", "✏️ Write Review"],
-              ["browse", "🌟 All Reviews"],
+              ["write", "Write Review"],
+              ["browse", "All Reviews"],
             ].map(([id, label]) => (
               <button
                 key={id}
@@ -636,7 +637,7 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
                   </p>
                   {reviewableDishes.length === 0 && (
                     <div style={{ textAlign: "center", padding: "32px", color: "#9ca3af" }}>
-                      <div style={{ fontSize: 48, marginBottom: 12 }}>🛒</div>
+                      <div style={{ marginBottom: 12 }}><Icon name="ShoppingCart" size={48} /></div>
                       <div style={{ fontSize: 14, fontWeight: 600, color: "#374151" }}>No orders yet</div>
                       <div style={{ fontSize: 12, marginTop: 4 }}>Complete a cart order to unlock reviews.</div>
                       <button
@@ -694,7 +695,7 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
                             flexShrink: 0,
                           }}
                         >
-                          {o.emoji}
+                          <Icon name={o.emoji} size={18} />
                         </div>
                         <div style={{ flex: 1 }}>
                           <div style={{ fontSize: 15, fontWeight: 700, color: "#111827" }}>{o.name}</div>
@@ -799,7 +800,7 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
                           animation: "fadeSlideUp 0.25s ease",
                         }}
                       >
-                        <span style={{ fontSize: 36 }}>{currentMeta.emoji}</span>
+                        <Icon name={currentMeta.emoji} size={36} />
                         <span style={{ fontSize: 22, fontWeight: 900, color: currentMeta.color }}>
                           {currentMeta.label}
                         </span>
@@ -837,7 +838,7 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
                             }}
                           >
                             <div style={{ fontSize: 12, fontWeight: 600, color: "#6b7280", marginBottom: 8 }}>
-                              {a.emoji} {a.label}
+                              <Icon name={a.emoji} size={15} /> {a.label}
                             </div>
                             <StarRow
                               value={aspects_[a.key] || 0}
@@ -954,7 +955,7 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
                         flexShrink: 0,
                       }}
                     >
-                      {dish?.emoji}
+                      <Icon name={dish?.emoji} size={36} />
                     </div>
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: 14, fontWeight: 700, color: "#111827" }}>{dish?.name}</div>
@@ -968,7 +969,7 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
                           </span>
                         ))}
                         <span style={{ fontSize: 13, color: currentMeta.color, fontWeight: 700, marginLeft: 6 }}>
-                          {currentMeta.emoji} {currentMeta.label}
+                          <Icon name={currentMeta.emoji} size={16} /> {currentMeta.label}
                         </span>
                       </div>
                     </div>
@@ -1064,7 +1065,7 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
                         marginBottom: 16,
                       }}
                     >
-                      <span style={{ fontSize: 16 }}>✏️</span>
+                      <Icon name="Pencil" size={16} />
                       <input
                         value={name}
                         onChange={e => setName(e.target.value)}
@@ -1086,8 +1087,8 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
                     </div>
                     <div style={{ display: "flex", gap: 10 }}>
                       {[
-                        ["👍  Yes, definitely!", true],
-                        ["👎  Not really", false],
+                        ["Yes, definitely!", true],
+                        ["Not really", false],
                       ].map(([label, val]) => (
                         <button
                           key={String(val)}
@@ -1176,7 +1177,7 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
                       }}
                       onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
                     >
-                      🚀 Submit Review
+                      <Icon name="Send" size={16} /> Submit Review
                     </button>
                   </div>
                 </div>
@@ -1204,7 +1205,7 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
                 }}
               >
                 <div style={{ fontSize: 13, fontWeight: 800, color: "#111827", marginBottom: 12 }}>
-                  💡 Writing Tips
+                  <Icon name="Lightbulb" size={16} /> Writing Tips
                 </div>
                 {[
                   ["Be specific", "Mention the dish name and what you liked most."],
@@ -1386,10 +1387,10 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {[
-                  ["🍽️", "Food", "4.9"],
-                  ["⚡", "Speed", "4.7"],
-                  ["😊", "Staff", "4.8"],
-                  ["💰", "Value", "4.6"],
+                  ["", "Food", "4.9"],
+                  ["", "Speed", "4.7"],
+                  ["", "Staff", "4.8"],
+                  ["", "Value", "4.6"],
                 ].map(([icon, label, score]) => (
                   <div key={label} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <span style={{ fontSize: 16 }}>{icon}</span>
@@ -1471,7 +1472,7 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
                       marginBottom: 10,
                     }}
                   >
-                    🍽 {r.dish}
+                    {r.dish}
                   </div>
                   <p style={{ margin: "0 0 14px", fontSize: 13, color: "#4b5563", lineHeight: 1.65 }}>
                     {r.comment}
@@ -1495,7 +1496,7 @@ function FeedbackPage({ onBack, accentColor = "#e11d48", orderedItems = [] }) {
                         transition: "all 0.2s",
                       }}
                     >
-                      👍 {r.helpful + (helpfulMap[i] ? 1 : 0)}
+                      <Icon name="ThumbsUp" size={13} /> {r.helpful + (helpfulMap[i] ? 1 : 0)}
                     </button>
                     <span style={{ fontSize: 10, color: "#d1d5db", fontWeight: 600 }}>✓ Verified</span>
                   </div>

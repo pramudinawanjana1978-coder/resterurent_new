@@ -92,7 +92,7 @@ export const categoryConfig = {
   Breakfast: {
     tagline:"Good Food,\nGood ", moodWord:"Morning!",
     desc:"Start your day right with fresh ingredients and love.",
-    accentColor:"#f5a623", bannerGrad:"linear-gradient(135deg,#fff3e0 0%,#ffe0a0 100%)",
+    accentColor:"#0f766e", bannerGrad:"linear-gradient(135deg,#e7f3f1 0%,#c8e5e1 100%)",
     slides:[
       [{emoji:"🥞",image:"/images/pancake2.jpg",name:"Pancakes"},
         {emoji:"🍳",image:"/images/Eggs_Benedict.jpg",name:"Eggs Benedict"},
@@ -116,7 +116,7 @@ export const categoryConfig = {
   Lunch: {
     tagline:"Good Food,\nGood ", moodWord:"Noon!",
     desc:"Energise your afternoon with fresh wraps and hearty sandwiches.",
-    accentColor:"#43a047", bannerGrad:"linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 100%)",
+    accentColor:"#0f766e", bannerGrad:"linear-gradient(135deg,#e7f3f1 0%,#c8e5e1 100%)",
     slides:[[
     { image: "/images/eggrice.png",name: "Salad" },
     { image: "/images/vegerice.png", name: "Wrap" },
@@ -142,7 +142,7 @@ export const categoryConfig = {
   Dinner: {
     tagline:"Good Food,\nGood ", moodWord:"Evening!",
     desc:"Wind down with rich, slow-cooked flavours crafted for the evening.",
-    accentColor:"#c62828", bannerGrad:"linear-gradient(135deg,#fbe9e7 0%,#ffccbc 100%)",
+    accentColor:"#0f766e", bannerGrad:"linear-gradient(135deg,#e7f3f1 0%,#c8e5e1 100%)",
      slides:[[
     { image: "/images/vegerice.png", name: "Wrap" },
     {   image: "/images/FriedFish.jpg",   name: "Sandwich" },
@@ -167,7 +167,7 @@ export const categoryConfig = {
   Desserts: {
     tagline:"Good Food,\nGood ", moodWord:"Sweet!",
     desc:"End on a high note with silky mousses and artisan gelato.",
-    accentColor:"#ad1457", bannerGrad:"linear-gradient(135deg,#fce4ec 0%,#f8bbd0 100%)",
+    accentColor:"#0f766e", bannerGrad:"linear-gradient(135deg,#e7f3f1 0%,#c8e5e1 100%)",
     slides:[
       [{id:307,name:"Pani Walalu",             image: "/images/Pani walalu.jpg",  price:"Rs. 350", color:"#FCE4EC",desc:"Delicate urad dhal rings soaked in golden kithul honey — crunchy outside, sweet inside", rating:4.6,reviews:76, ingredients:["Urad Dhal","Rice Flour","Kithul Treacle","Oil"],subcategory:"Traditional Sri Lankan Desserts"},
     {id:308,name:"Mung Kavum",              image: "/images/MungKawum.webp",  price:"Rs. 380", color:"#E8F5E9",desc:"Green gram sweet cakes fried golden and garnished with sesame — light and nutty",       rating:4.5,reviews:64, ingredients:["Green Gram","Rice Flour","Jaggery","Sesame","Coconut Milk","Oil"],subcategory:"Traditional Sri Lankan Desserts"},
@@ -191,7 +191,7 @@ export const categoryConfig = {
   Drinks: {
     tagline:"Good Vibes,\nGood ", moodWord:"Sip!",
     desc:"Refresh with handcrafted beverages from cold-pressed juices to cocktails.",
-    accentColor:"#0277bd", bannerGrad:"linear-gradient(135deg,#e3f2fd 0%,#b3e5fc 100%)",
+    accentColor:"#0f766e", bannerGrad:"linear-gradient(135deg,#e7f3f1 0%,#c8e5e1 100%)",
     slides:[
       [{id:401,name:"Ceylon Black Tea",    image: "/images/black_tea.jpg",    price:"Rs. 250", color:"#FFF8E1",desc:"Aromatic Sri Lankan single-estate black tea brewed to golden perfection",                 rating:4.8,reviews:210,ingredients:["Ceylon Tea Leaves","Hot Water","Optional Milk","Optional Sugar"],subcategory:"Hot Beverages"},
     {id:402,name:"Green Tea",           image: "/images/green_tea.jpg",    price:"Rs. 280", color:"#E8F5E9",desc:"Light and antioxidant-rich green tea with a delicate grassy flavour",                    rating:4.6,reviews:98, ingredients:["Green Tea Leaves","Hot Water","Optional Honey"],subcategory:"Hot Beverages"},
@@ -271,9 +271,9 @@ export const allDishes = {
 };
 
 export const navItems = [
-  {icon:"🏠",label:"Home"},{icon:"🍽️",label:"Special Menu"},{icon:"💡",label:"Recommendation"},
-  {icon:"📍",label:"Track Order"},{icon:"💬",label:"Feedback"},{icon:"🏷️",label:"Offers"},
-  {icon:"🛒",label:"Cart"},{icon:"👥",label:"Staff"},
+  {icon:"Home",label:"Home"},{icon:"Utensils",label:"Special Menu"},{icon:"Lightbulb",label:"Recommendation"},
+  {icon:"MapPin",label:"Track Order"},{icon:"MessageCircle",label:"Feedback"},{icon:"Tag",label:"Offers"},
+  {icon:"ShoppingCart",label:"Cart"},{icon:"Users",label:"Staff"},
 ];
 
 

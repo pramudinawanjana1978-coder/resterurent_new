@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { getDishReviewStats, useAppStore } from '../store/AppStore.jsx';
+import { Icon } from '../components/Icon.jsx';
 
 // ─── MENU PAGE ─────────────────────────────────────────────────────────────────
 
 const menuData = {
   "Fast Food": {
-    icon:"🍔", color:"#f97316", bg:"linear-gradient(135deg,#fff7ed,#fed7aa)",
+    icon:"Utensils", color:"#edeae9f0", bg:"linear-gradient(135deg,#fff7ed,#fed7aa)",
     tagline:"Quick bites, bold flavours",
     items:[
       {id:"ff1", name:"Classic Smash Burger",    image: "/images/specialmenu/cheesburger.jpg",  emoji:"🍔", price:2450, rating:4.8, time:"12 min", tags:["Bestseller","Juicy"],   desc:"Double smash patty, American cheese, special sauce, brioche bun", cal:680, spicy:false },
@@ -19,7 +20,7 @@ const menuData = {
     ],
   },
   "Appetizers": {
-    icon:"🥗", color:"#16a34a", bg:"linear-gradient(135deg,#f0fdf4,#bbf7d0)",
+    icon:"Salad", color:"#edeae9f0", bg:"linear-gradient(135deg,#f0fdf4,#bbf7d0)",
     tagline:"Start your meal in style",
     items:[
       {id:"ap1", name:"Bruschetta al Pomodoro",   image: "/images/specialmenu/onianring.jpg",emoji:"🍅", price:1350, rating:4.7, time:"8 min",  tags:["Italian","Fresh"],   desc:"Grilled sourdough, heritage tomatoes, fresh basil, aged balsamic",  cal:280, spicy:false },
@@ -33,7 +34,7 @@ const menuData = {
     ],
   },
   "Vegetarian": {
-    icon:"🌿", color:"#15803d", bg:"linear-gradient(135deg,#f0fdf4,#d1fae5)",
+    icon:"Leaf", color:"#edeae9f0", bg:"linear-gradient(135deg,#f0fdf4,#d1fae5)",
     tagline:"Fresh, vibrant & plant-powered",
     items:[
       {id:"vg1", name:"Mushroom Risotto",       image: "/images/specialmenu/onianring.jpg", emoji:"🍄", price:2350, rating:4.9, time:"20 min", tags:["Creamy","Gourmet"],  desc:"Arborio rice, wild mushrooms, truffle oil, parmesan, white wine",   cal:480, spicy:false },
@@ -47,7 +48,7 @@ const menuData = {
     ],
   },
   "Chef's Specials": {
-    icon:"👨‍🍳", color:"#7c3aed", bg:"linear-gradient(135deg,#faf5ff,#e9d5ff)",
+    icon:"ChefHat", color:"#edeae9f0", bg:"linear-gradient(135deg,#faf5ff,#e9d5ff)",
     tagline:"Signature creations by Chef Lakmal",
     items:[
       {id:"cs1", name:"Lobster Thermidor",      image: "/images/specialmenu/onianring.jpg", emoji:"🦞", price:7100, rating:5.0, time:"35 min", tags:["Luxury","Signature"],desc:"Whole lobster, cognac cream, gruyère gratin, micro herbs",           cal:620, spicy:false },
@@ -61,7 +62,7 @@ const menuData = {
     ],
   },
   "Popular Items": {
-    icon:"⭐", color:"#d97706", bg:"linear-gradient(135deg,#fffbeb,#fde68a)",
+    icon:"Star", color:"#edeae9f0", bg:"linear-gradient(135deg,#fffbeb,#fde68a)",
     tagline:"Customer favourites you can't miss",
     items:[
       {id:"pi1", name:"Blueberry Pancakes",      image: "/images/specialmenu/onianring.jpg",emoji:"🥞", price:1850, rating:4.9, time:"12 min", tags:["#1 Rated","Breakfast"],desc:"Fluffy stacks, fresh blueberries, Vermont maple syrup, butter",    cal:520, spicy:false },
@@ -75,7 +76,7 @@ const menuData = {
     ],
   },
   "Combo Meals": {
-    icon:"🎁", color:"#db2777", bg:"linear-gradient(135deg,#fdf2f8,#fbcfe8)",
+    icon:"Gift", color:"#edeae9f0", bg:"linear-gradient(135deg,#fdf2f8,#fbcfe8)",
     tagline:"More value, more flavour",
     items:[
       {id:"cm1", name:"The Classic Combo",      image: "/images/specialmenu/onianring.jpg", emoji:"🍔", price:3200, rating:4.8, time:"15 min", tags:["Best Value","Save 20%"], desc:"Smash burger + loaded fries + soft drink of your choice",          cal:980, spicy:false },
@@ -146,7 +147,7 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
       {/* ── Top Bar ── */}
       <div style={{
         position:"sticky", top:0, zIndex:100,
-        background:"rgba(255,255,255,0.97)", backdropFilter:"blur(16px)",
+        background:"#E8F3F1", backdropFilter:"blur(16px)",
         borderBottom:"1px solid rgba(0,0,0,0.07)",
         padding:"0 36px", height:66,
         display:"flex", alignItems:"center", gap:14,
@@ -175,7 +176,7 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
             border:`1.5px solid ${search ? accentColor+"66":"transparent"}`,
             borderRadius:12, padding:"0 14px", gap:8, transition:"border-color 0.2s",
           }}>
-            <span style={{ color:"#9ca3af", fontSize:15 }}>🔍</span>
+            <span style={{ color:"#030b1a", display:"inline-flex" }}><Icon name="Search" size={16} /></span>
             <input value={search} onChange={e=>setSearch(e.target.value)}
               placeholder="Search dishes, ingredients…"
               style={{ border:"none", background:"none", fontSize:13, color:"#374151", outline:"none", padding:"10px 0", width:"100%", fontFamily:"inherit" }}/>
@@ -185,7 +186,7 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
 
         <div style={{ marginLeft:"auto", display:"flex", gap:12, alignItems:"center" }}>
           <div style={{ position:"relative", cursor:"pointer" }}>
-            <span style={{ fontSize:20 }}>🛒</span>
+            <Icon name="ShoppingCart" size={20} />
             {cartCount > 0 && (
               <span style={{
                 position:"absolute", top:-5, right:-5, background:accentColor,
@@ -201,13 +202,10 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
 
       {/* ── Hero Banner ── */}
       <div style={{
-        background:`linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%)`,
+        background:"#23333b",
         padding:"32px 40px 0", position:"relative", overflow:"hidden",
       }}>
-        {/* bg blobs */}
-        {[["-40px",null,"200px",`${accentColor}10`],[null,"30px","160px","rgba(255,255,255,0.02)"]].map(([l,r,sz,bg],i)=>(
-          <div key={i} style={{position:"absolute",top:"-20px",left:l||undefined,right:r||undefined,width:sz,height:sz,borderRadius:"50%",background:bg,pointerEvents:"none"}}/>
-        ))}
+        <div style={{ position:"absolute", inset:0, borderBottom:"1px solid rgba(255,255,255,0.08)", pointerEvents:"none" }} />
         <div style={{ position:"relative", zIndex:1, maxWidth:1160, margin:"0 auto" }}>
           <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", flexWrap:"wrap", gap:16, marginBottom:28 }}>
             <div>
@@ -234,10 +232,10 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
               </select>
               <button onClick={()=>setFilterSpicy(f=>!f)} style={{
                 padding:"8px 14px", borderRadius:10, border:"1px solid rgba(255,255,255,0.1)",
-                background: filterSpicy ? "#ef4444" : "rgba(255,255,255,0.08)",
+                background: filterSpicy ? "#110101df" : "rgba(255,255,255,0.08)",
                 color:"#fff", fontSize:12, fontWeight:700, cursor:"pointer", fontFamily:"inherit",
                 transition:"all 0.2s",
-              }}>🌶 Spicy Only</button>
+              }}><Icon name="Flame" size={15} color="#000" /> Spicy Only</button>
             </div>
           </div>
 
@@ -254,7 +252,7 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
                   borderBottom: active ? `3px solid ${cd.color}` : "3px solid transparent",
                   transition:"all 0.2s",
                 }}>
-                  <span style={{ fontSize:22 }}>{cd.icon}</span>
+                  <Icon name={cd.icon} size={22} color="#000" />
                   <span style={{ fontSize:11, fontWeight:700, color: active ? cd.color : "rgba(255,255,255,0.5)", whiteSpace:"nowrap" }}>{k}</span>
                   <span style={{
                     fontSize:9, fontWeight:800, color:"#fff",
@@ -285,7 +283,7 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
               background:`linear-gradient(135deg,${cat.color},${cat.color}cc)`,
               display:"flex", alignItems:"center", justifyContent:"center", fontSize:28,
               boxShadow:`0 6px 18px ${cat.color}44`,
-            }}>{cat.icon}</div>
+            }}><Icon name={cat.icon} size={28} color={cat.color} /></div>
             <div style={{ flex:1 }}>
               <h2 style={{ margin:"0 0 4px", fontSize:20, fontWeight:900, color:"#111827" }}>{activeCategory}</h2>
               <p style={{ margin:0, fontSize:13, color:"#6b7280" }}>{cat.tagline}</p>
@@ -294,8 +292,8 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
               background:`${cat.color}15`, border:`1px solid ${cat.color}33`,
               borderRadius:12, padding:"10px 18px", textAlign:"center",
             }}>
-              <div style={{ fontSize:20, fontWeight:900, color:cat.color }}>{cat.items.length}</div>
-              <div style={{ fontSize:10, color:"#9ca3af", fontWeight:600 }}>Dishes</div>
+              <div style={{ fontSize:20, fontWeight:900, color:"#01050b", }}>{cat.items.length}</div>
+              <div style={{ fontSize:10, color:"#01050b", fontWeight:600 }}>Dishes</div>
             </div>
           </div>
         )}
@@ -309,7 +307,7 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
 
         {displayItems.length === 0 && (
           <div style={{ textAlign:"center", padding:"60px 24px" }}>
-            <div style={{ fontSize:56, marginBottom:16 }}>🔍</div>
+            <div style={{ marginBottom:16 }}><Icon name="Search" size={48} /></div>
             <div style={{ fontSize:18, fontWeight:700, color:"#374151" }}>No dishes found</div>
             <div style={{ fontSize:13, color:"#9ca3af", marginTop:6 }}>Try a different search term or category</div>
           </div>
@@ -322,12 +320,12 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
             const isAnim = cartAnim === item.id;
             const itemCat = catKeys.find(k => menuData[k].items.some(i=>i.id===item.id));
             const itemColor = itemCat ? menuData[itemCat].color : accentColor;
-            const itemBg    = itemCat ? menuData[itemCat].bg    : "#fff3e0";
+            const itemBg    = "#F1F8EC";
             const liveStats = getLiveDishStats(item);
             return (
               <div key={item.id}
                 style={{
-                  background:"#fff", borderRadius:22, overflow:"hidden",
+                  background:"#F1F8EC", borderRadius:22, overflow:"hidden",
                   border:"1px solid rgba(0,0,0,0.06)",
                   boxShadow:"0 2px 14px rgba(0,0,0,0.05)",
                   transition:"transform 0.22s, box-shadow 0.22s",
@@ -372,7 +370,7 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
                       background: itemBg,
                     }}
                   >
-                    {item.emoji}
+                    <Icon name={item.emoji} size={22} />
                   </div>
  {/* ── Wave SVG ── */}
         <div
@@ -414,7 +412,7 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
                   </div>
                   {/* Spicy badge */}
                   {item.spicy && (
-                    <div style={{ position:"absolute", top:10, right:10, fontSize:16 }} title="Spicy">🌶️</div>
+                    <div style={{ position:"absolute", top:10, right:10 }} title="Spicy"><Icon name="Flame" size={16} /></div>
                   )}
                 </div>
 
@@ -440,7 +438,7 @@ function MenuPage({ onBack, accentColor, onDishSelect, cartItems = [], setCartIt
                       background: inCart
                         ? "linear-gradient(135deg,#22c55e,#16a34a)"
                         : `linear-gradient(135deg,${itemColor},${itemColor}cc)`,
-                      color:"#fff", fontWeight:700, fontSize:12, cursor:"pointer",
+                      color:"#140101", fontWeight:700, fontSize:12, cursor:"pointer",
                       fontFamily:"inherit",
                       boxShadow: inCart ? "0 4px 12px #22c55e44" : `0 4px 12px ${itemColor}44`,
                       transform: isAnim ? "scale(1.2)" : "scale(1)",

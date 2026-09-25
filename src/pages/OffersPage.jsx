@@ -5,7 +5,7 @@ const currentOffers = [
     id: "o1",
     title: "Weekend Family Feast",
    
-    color: "#f97316",
+    color: "#43a047",
     bg: "linear-gradient(135deg,#fff7ed,#fed7aa)",
     discount: "25% OFF",
     desc: "Any order over Rs. 5,000 on Saturdays & Sundays",
@@ -22,7 +22,7 @@ const currentOffers = [
     id: "o2",
     title: "Happy Hour Drinks",
    
-    color: "#0277bd",
+    color: "#43a047",
     bg: "linear-gradient(135deg,#e3f2fd,#b3e5fc)",
     discount: "Buy 1 Get 1",
     desc: "All mocktails & juices — 3 PM to 5 PM daily",
@@ -39,7 +39,7 @@ const currentOffers = [
     id: "o3",
     title: "First Order Bonus",
 
-    color: "#ad1457",
+    color: "#43a047",
     bg: "linear-gradient(135deg,#fce4ec,#f8bbd0)",
     discount: "20% OFF",
     desc: "New customers — 20% off your very first order",
@@ -56,7 +56,7 @@ const currentOffers = [
     id: "o4",
     title: "Dessert Lovers Combo",
    
-    color: "#7c3aed",
+    color: "#43a047",
     bg: "linear-gradient(135deg,#f5f3ff,#ddd6fe)",
     discount: "15% OFF",
     desc: "Any 2 desserts from our full desserts menu",
@@ -72,7 +72,7 @@ const currentOffers = [
     id: "o5",
     title: "Lunch Express Deal",
     
-    color: "#16a34a",
+    color: "#43a047",
     bg: "linear-gradient(135deg,#f0fdf4,#bbf7d0)",
     discount: "Rs. 300 OFF",
     desc: "Any lunch combo, 11:30 AM – 2 PM on weekdays",
@@ -88,7 +88,7 @@ const currentOffers = [
     id: "o6",
     title: "Birthday Special",
    
-    color: "#db2777",
+    color: "#43a047",
     bg: "linear-gradient(135deg,#fdf2f8,#fbcfe8)",
     discount: "Free Dessert",
     desc: "Show your ID on your birthday for a free dessert",
@@ -279,7 +279,7 @@ export default function OffersPage({ onBack, accentColor = "#f97316", onGoToCart
 
       {/* Hero */}
       <div style={{
-        background: `linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%)`,
+          background: "#23333b",
         padding: "32px 40px 36px",
         position: "relative",
         overflow: "hidden",
@@ -314,9 +314,9 @@ export default function OffersPage({ onBack, accentColor = "#f97316", onGoToCart
           {/* Navigation Tabs */}
           <div style={{ display: "flex", gap: 10 }}>
             {[
-              { id: "browse", label: "🏷️ Browse Offers" },
-              { id: "submit", label: "💡 Suggest an Offer" },
-              { id: "mine", label: "💬 Community Ideas" },
+              { id: "browse", label: " Browse Offers" },
+              { id: "submit", label: " Suggest an Offer" },
+              { id: "mine", label: "Community Ideas" },
             ].map(tab => (
               <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{
                 padding: "10px 18px",
@@ -360,7 +360,7 @@ export default function OffersPage({ onBack, accentColor = "#f97316", onGoToCart
 
                     {/* Card top banner */}
                     <div style={{
-                      background: o.bg,
+                      background: "#ffffff",
                       padding: "20px 24px 16px",
                       display: "flex",
                       alignItems: "center",

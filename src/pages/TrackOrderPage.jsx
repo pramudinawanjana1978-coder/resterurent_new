@@ -1,3 +1,4 @@
+import { Icon } from "../components/Icon.jsx";
 import { useState, useEffect } from 'react';
 import { useAppStore } from '../store/AppStore';
 
@@ -95,11 +96,11 @@ const getDishPrepTime = (name) => {
 };
 
 const trackSteps = [
-  { icon:"📋", label:"Order Received", desc:"Confirmed & logged in our system",     pct:100 },
-  { icon:"👨‍🍳", label:"Preparing",      desc:"Chef gathering fresh ingredients",     pct:100 },
-  { icon:"🍳", label:"Cooking",        desc:"Your meal is being crafted with love",  pct:60  },
-  { icon:"🍽️", label:"Ready",          desc:"Plated & waiting to reach your table",  pct:0   },
-  { icon:"✅", label:"Delivered",      desc:"Enjoy every bite — bon appétit!",       pct:0   },
+  { icon:"ClipboardList", label:"Order Received", desc:"Confirmed & logged in our system",     pct:100 },
+  { icon:"ChefHat", label:"Preparing",      desc:"Chef gathering fresh ingredients",     pct:100 },
+  { icon:"Utensils", label:"Cooking",        desc:"Your meal is being crafted with love",  pct:60  },
+  { icon:"Utensils", label:"Ready",          desc:"Plated & waiting to reach your table",  pct:0   },
+  { icon:"CheckCircle", label:"Delivered",      desc:"Enjoy every bite — bon appétit!",       pct:0   },
 ];
 
 function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
@@ -199,12 +200,12 @@ function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
 
   // Speed label for each dish
   const speedLabel = (mins) => {
-    if (mins <= 3)  return { label:"⚡ Instant",  color:"#0277bd" };
-    if (mins <= 7)  return { label:"🚀 Very Fast", color:"#16a34a" };
-    if (mins <= 12) return { label:"⏱ Quick",     color:"#d97706" };
-    if (mins <= 20) return { label:"🍳 Normal",    color:"#f97316" };
-    if (mins <= 28) return { label:"🔥 Slow Cook", color:"#dc2626" };
-    return                  { label:"👨‍🍳 Craft",     color:"#7c3aed" };
+    if (mins <= 3)  return { label:"Instant",  color:"#0f766e" };
+    if (mins <= 7)  return { label:"Very Fast", color:"#0f766e" };
+    if (mins <= 12) return { label:"Quick",    color:"#0f766e" };
+    if (mins <= 20) return { label:"Normal",   color:"#64748b" };
+    if (mins <= 28) return { label:"Slow Cook", color:"#64748b" };
+    return                  { label:"Special Preparation", color:"#64748b" };
   };
 
   return (
@@ -217,12 +218,9 @@ function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
       )}
 
       {/* ── Dark hero ── */}
-      <div style={{ background:"linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%)", padding:"36px 44px 44px", position:"relative", overflow:"hidden" }}>
-        {[["-40px",null,"160px",`${accentColor}18`],[null,"60px","220px","rgba(255,255,255,0.04)"]].map(([l,r,sz,bg],i)=>(
-          <div key={i} style={{ position:"absolute",top:"-20px",left:l||undefined,right:r||undefined,width:sz,height:sz,borderRadius:"50%",background:bg,pointerEvents:"none" }}/>
-        ))}
+      <div style={{ background:"#23333b", padding:"36px 44px 44px", position:"relative", overflow:"hidden" }}>
+        <div style={{ position:"absolute", inset:0, borderBottom:"1px solid rgba(255,255,255,0.08)", pointerEvents:"none" }} />
         <div style={{ position:"relative", zIndex:1, maxWidth:1160, margin:"0 auto" }}>
-
           {/* Order ID + placed time */}
           <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:24, flexWrap:"wrap", gap:14 }}>
             <div>
@@ -273,7 +271,7 @@ function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
                       display:"flex", alignItems:"center", justifyContent:"center", fontSize:19,
                       boxShadow: active ? `0 0 0 6px ${accentColor}28, 0 0 20px ${accentColor}44` : done ? `0 4px 14px ${accentColor}55` : "none",
                       transition:"all 0.3s", animation: active ? "heroPulse 2s ease-in-out infinite" : "none",
-                    }}>{step.icon}</div>
+                    }}><Icon name={step.icon} size={21} color="#fff" /></div>
                     <div style={{ fontSize:9, fontWeight:700, color: done||active ? "#fff" : "rgba(255,255,255,0.3)", letterSpacing:"0.3px", whiteSpace:"nowrap", textTransform:"uppercase" }}>{step.label}</div>
                     <div style={{ fontSize:9, color: done ? accentColor : "rgba(255,255,255,0.25)", fontWeight:600 }}>{stepTimes[i]}</div>
                     {active && <div style={{ fontSize:9, color:accentColor, fontWeight:600, background:`${accentColor}22`, borderRadius:10, padding:"2px 7px", marginTop:-2 }}>In Progress</div>}
@@ -308,7 +306,7 @@ function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
               display:"flex", alignItems:"center", justifyContent:"center", fontSize:28,
               boxShadow:`0 6px 18px ${accentColor}44`, flexShrink:0,
               animation:"heroPulse 2s ease-in-out infinite",
-            }}>{trackSteps[activeStep].icon}</div>
+            }}><Icon name={trackSteps[activeStep].icon} size={28} color="#fff" /></div>
             <div style={{ flex:1 }}>
               <div style={{ fontSize:10, fontWeight:700, color:accentColor, letterSpacing:"1px", textTransform:"uppercase", marginBottom:4 }}>Currently Active Step</div>
               <div style={{ fontSize:20, fontWeight:900, color:"#111827" }}>{trackSteps[activeStep].label}</div>
@@ -341,15 +339,15 @@ function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
               {/* Timing legend */}
               <div style={{ display:"flex", gap:10, flexWrap:"wrap", marginBottom:16, paddingBottom:14, borderBottom:"1px solid #f3f4f6" }}>
                 {[
-                  ["⚡","Instant","≤ 3 min","#0277bd"],
-                  ["🚀","Very Fast","4–7 min","#16a34a"],
-                  ["⏱","Quick","8–12 min","#d97706"],
-                  ["🍳","Normal","13–20 min","#f97316"],
-                  ["🔥","Slow Cook","21–28 min","#dc2626"],
-                  ["👨‍🍳","Craft","28+ min","#7c3aed"],
+                  ["Zap","Instant","≤ 3 min","#0f766e"],
+                  ["Zap","Very Fast","4–7 min","#0f766e"],
+                  ["Clock3","Quick","8–12 min","#0f766e"],
+                  ["Utensils","Normal","13–20 min","#64748b"],
+                  ["ChefHat","Slow Cook","21–28 min","#64748b"],
+                  ["ChefHat","Special Preparation","28+ min","#64748b"],
                 ].map(([icon, label, range, color]) => (
-                  <div key={label} style={{ display:"flex", alignItems:"center", gap:5, background:`${color}0d`, borderRadius:8, padding:"4px 10px" }}>
-                    <span style={{ fontSize:13 }}>{icon}</span>
+                  <div key={label} style={{ display:"flex", alignItems:"center", gap:5, background:"#edf4f2", borderRadius:8, padding:"4px 10px" }}>
+                    <Icon name={icon} size={13} color={color} />
                     <span style={{ fontSize:10, fontWeight:700, color }}>{label}</span>
                     <span style={{ fontSize:9, color:"#9ca3af" }}>({range})</span>
                   </div>
@@ -458,7 +456,7 @@ function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
           {/* Order items */}
           <div style={{ background:"#fff", borderRadius:20, overflow:"hidden", boxShadow:"0 2px 14px rgba(0,0,0,0.05)" }}>
             <div style={{ padding:"16px 20px 12px", borderBottom:"1px solid #f3f4f6" }}>
-              <div style={{ fontSize:12, fontWeight:800, color:"#374151", textTransform:"uppercase", letterSpacing:"0.5px" }}>🛒 Your Order</div>
+              <div style={{ fontSize:12, fontWeight:800, color:"#374151", textTransform:"uppercase", letterSpacing:"0.5px", display:"flex", alignItems:"center", gap:6 }}><Icon name="ShoppingCart" size={14} /> Your Order</div>
             </div>
             <div style={{ padding:"12px 20px" }}>
               {dishTimes.map((item, i) => {
@@ -469,7 +467,7 @@ function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
                     display:"flex", alignItems:"center", gap:10, paddingBottom:10, marginBottom:10,
                     borderBottom: i < dishTimes.length-1 ? "1px solid #f9fafb" : "none",
                   }}>
-                    <div style={{ width:36, height:36, borderRadius:10, background:`${catColor}15`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:18, flexShrink:0 }}>{item.emoji}</div>
+                    <div style={{ width:36, height:36, borderRadius:10, background:`${catColor}15`, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}><Icon name={item.emoji} size={18} /></div>
                     <div style={{ flex:1, minWidth:0 }}>
                       <div style={{ fontSize:12, fontWeight:700, color:"#111827", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
                         {item.name}{item.qty>1&&<span style={{ color:"#9ca3af", marginLeft:4 }}>×{item.qty}</span>}
@@ -502,20 +500,20 @@ function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
 
           {/* Quick tips */}
           <div style={{ background:"#fff", borderRadius:20, padding:"16px 20px", boxShadow:"0 2px 14px rgba(0,0,0,0.05)" }}>
-            <div style={{ fontSize:12, fontWeight:800, color:"#374151", marginBottom:12, textTransform:"uppercase", letterSpacing:"0.5px" }}>⏱ Timing Tips</div>
+            <div style={{ fontSize:12, fontWeight:800, color:"#374151", marginBottom:12, textTransform:"uppercase", letterSpacing:"0.5px", display:"flex", alignItems:"center", gap:6 }}><Icon name="Clock3" size={14} /> Timing Tips</div>
             {[
               dishTimes.length > 0 && (() => {
                 const fastestDish = dishTimes.reduce((fastest, dish) => dish.prepMins < fastest.prepMins ? dish : fastest);
-                return { icon:"⚡", tip:`Your ${fastestDish.name} takes ${fastestDish.prepMins} min — it'll be served first!` };
+                return { icon:"Zap", tip:`Your ${fastestDish.name} takes ${fastestDish.prepMins} min — it'll be served first!` };
               })(),
               dishTimes.length > 1 && (() => {
                 const longestDish = dishTimes.reduce((longest, dish) => dish.prepMins > longest.prepMins ? dish : longest);
-                return { icon:"🔥", tip:`Your ${longestDish.name} takes ${longestDish.prepMins} min — chef's priority!` };
+                return { icon:"ChefHat", tip:`Your ${longestDish.name} takes ${longestDish.prepMins} min — chef's priority!` };
               })(),
-              { icon:"🧑‍🍳", tip:"All dishes are cooked in parallel for the shortest wait." },
+              { icon:"Utensils", tip:"All dishes are cooked in parallel for the shortest wait." },
             ].filter(Boolean).map((t,i) => (
               <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:8, marginBottom:8 }}>
-                <span style={{ fontSize:16, flexShrink:0 }}>{t.icon}</span>
+                <Icon name={t.icon} size={16} color="#0f766e" />
                 <span style={{ fontSize:11, color:"#6b7280", lineHeight:1.5 }}>{t.tip}</span>
               </div>
             ))}
@@ -523,7 +521,7 @@ function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
 
           {/* Message center */}
           <div style={{ background:"#fff", borderRadius:20, padding:"18px 20px", boxShadow:"0 2px 14px rgba(0,0,0,0.05)" }}>
-            <div style={{ fontSize:12, fontWeight:800, color:"#374151", marginBottom:12, textTransform:"uppercase", letterSpacing:"0.5px" }}>💬 Order Messages</div>
+            <div style={{ fontSize:12, fontWeight:800, color:"#374151", marginBottom:12, textTransform:"uppercase", letterSpacing:"0.5px" }}><Icon name="MessageCircle" size={14} /> Order Messages</div>
 
             {staffMessages.length > 0 && (
               <div style={{ marginBottom:12, background:"#f0fdf4", border:"1px solid #bbf7d0", borderRadius:12, padding:"10px 12px" }}>
@@ -581,7 +579,7 @@ function TrackOrderPage({ onBack, accentColor, orderItems = [], orderMeta }) {
             boxShadow:`0 6px 20px ${accentColor}44`,
             display:"flex", alignItems:"center", justifyContent:"center", gap:8,
           }}>
-            📞 Call Restaurant
+            <Icon name="Phone" size={14} /> Call Restaurant
           </button>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, createContext, useContext } from 'react';
+import { Icon } from './Icon.jsx';
 
 function VideoWidget({ accentColor, onViewMenu }) {
   const [playing,    setPlaying]    = useState(false);
@@ -59,7 +60,7 @@ function VideoWidget({ accentColor, onViewMenu }) {
 
           <div style={{
             fontSize:130, zIndex:2, userSelect:"none", filter:`drop-shadow(0 8px 32px ${accentColor}55)`, animation: playing ? "sceneFloat 3s ease-in-out infinite" : "none", transition:"font-size 0.3s",
-          }}>{scene.emoji}</div>
+          }}><Icon name={scene.emoji} size={130} /></div>
 
           {!playing && (
             <div style={{
@@ -67,7 +68,7 @@ function VideoWidget({ accentColor, onViewMenu }) {
             }}>
               <div style={{
                 width:72, height:72, borderRadius:"50%", background:`linear-gradient(135deg,${accentColor},${accentColor}cc)`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:30, boxShadow:`0 8px 28px ${accentColor}66`, animation:"playPulse 2s ease-in-out infinite",
-              }}>▶</div>
+              }}><Icon name="Play" size={30} /></div>
             </div>
           )}
 
@@ -77,14 +78,14 @@ function VideoWidget({ accentColor, onViewMenu }) {
 
           <button onClick={()=>{ setFullscreen(false); setPlaying(false); }} style={{
             position:"absolute", top:14, right:14, zIndex:10, width:34, height:34, borderRadius:"50%", background:"rgba(255,255,255,0.12)", border:"1px solid rgba(255,255,255,0.15)", color:"#fff", cursor:"pointer", fontSize:16, display:"flex", alignItems:"center", justifyContent:"center",
-          }}>✕</button>
+          }}><Icon name="X" size={16} /></button>
         </div>
 
         <div style={{ padding:"20px 24px" }}>
 
           <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10 }}>
             <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-              <span style={{ fontSize:20 }}>{currentChapter.emoji}</span>
+              <Icon name={currentChapter.emoji} size={20} />
               <div>
                 <div style={{ fontSize:13, fontWeight:800, color:"#fff" }}>{currentChapter.title}</div>
                 <div style={{ fontSize:10, color:"rgba(255,255,255,0.35)" }}>
@@ -118,7 +119,7 @@ function VideoWidget({ accentColor, onViewMenu }) {
             {videoChapters.map((ch, i) => (
               <button key={i} onClick={()=>{ setProgress(ch.pct); setSceneIdx(Math.floor((ch.pct/100)*videoScenes.length)); }} style={{
                 padding:"4px 10px", borderRadius:20, border:"none", background: currentChapterIdx===i ? `linear-gradient(135deg,${ch.color},${ch.color}cc)` : "rgba(255,255,255,0.07)", color: currentChapterIdx===i ? "#fff" : "rgba(255,255,255,0.4)", fontSize:10, fontWeight:700, cursor:"pointer", fontFamily:"inherit", transition:"all 0.2s",
-              }}>{ch.emoji} {ch.title}</button>
+              }}><Icon name={ch.emoji} size={13} /> {ch.title}</button>
             ))}
           </div>
 
@@ -128,12 +129,12 @@ function VideoWidget({ accentColor, onViewMenu }) {
                 ? "rgba(255,255,255,0.08)"
                 : `linear-gradient(135deg,${accentColor},${accentColor}cc)`, color:"#fff", fontWeight:700, fontSize:13, cursor:"pointer", fontFamily:"inherit", display:"flex", alignItems:"center", justifyContent:"center", gap:7, boxShadow: playing ? "none" : `0 6px 20px ${accentColor}44`,
             }}>
-              {playing ? "⏸ Pause" : progress > 0 ? "▶ Resume" : "▶ Play"}
+              <Icon name={playing ? "Pause" : "Play"} size={15} /> {playing ? "Pause" : progress > 0 ? "Resume" : "Play"}
             </button>
             <button onClick={()=>setLiked(l=>!l)} style={{
               padding:"11px 16px", borderRadius:12, border:"none", background: liked ? "rgba(239,68,68,0.2)" : "rgba(255,255,255,0.07)", color: liked ? "#ef4444" : "rgba(255,255,255,0.5)", fontWeight:700, fontSize:13, cursor:"pointer", fontFamily:"inherit",
             }}>
-              {liked ? "❤️" : "🤍"}
+              <Icon name="Heart" size={16} fill={liked ? "currentColor" : "none"} />
             </button>
             <button onClick={()=>{ setFullscreen(false); setPlaying(false); onViewMenu && onViewMenu(); }} style={{
               padding:"11px 16px", borderRadius:12, border:`1px solid ${accentColor}55`, background:"transparent", color:accentColor, fontWeight:700, fontSize:12, cursor:"pointer", fontFamily:"inherit",

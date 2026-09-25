@@ -12,6 +12,7 @@ import ViewFeedbacks from './pages/ViewFeedbacks.jsx';
 import FeedbackPage from './pages/FeedbackPage.jsx'; // ✅ Duplicate import එක ඉවත් කළා
 import OffersPage from './pages/OffersPage.jsx';
 import { getDishReviewStats, useAppStore } from './store/AppStore.jsx';
+import { Icon } from './components/Icon.jsx';
 
 
 const buildOrderSummary = (items = [], tipAmt = 0) => {
@@ -30,10 +31,10 @@ const getTimeBasedCategory = (hour = new Date().getHours()) => {
 
 function Sidebar({ accentColor, activeNav, onNavigate, onPreviewClick, isMobile }) {
   return (
-    <aside style={{ width:isMobile ? '100%' : 240, maxWidth:isMobile ? '100%' : 240, flexShrink:0, background:"#1a1a1a", display:"flex", flexDirection:"column", padding:isMobile ? "0 0 12px 0" : "0 0 24px 0", boxShadow:"4px 0 20px rgba(0,0,0,0.15)", zIndex:10 }}>
+    <aside style={{ width:isMobile ? '100%' : 240, maxWidth:isMobile ? '100%' : 240, flexShrink:0, background:"#17212b", display:"flex", flexDirection:"column", padding:isMobile ? "0 0 12px 0" : "0 0 24px 0", boxShadow:"2px 0 12px rgba(23,33,43,0.12)", zIndex:10 }}>
       <div style={{ padding:isMobile ? "20px 18px 18px" : "28px 24px 24px", borderBottom:"1px solid rgba(255,255,255,0.08)", marginBottom:isMobile ? 12 : 16 }}>
         <div style={{ display:"flex", alignItems:"center", gap:12 }}>
-          <div style={{ width:44, height:44, background:`linear-gradient(135deg,${accentColor},${accentColor}bb)`, borderRadius:12, display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, color:"#fff", fontSize:16, boxShadow:`0 4px 12px ${accentColor}55` }}>SR</div>
+          <div style={{ width:44, height:44, background:accentColor, borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, color:"#fff", fontSize:16 }}>SR</div>
           <span style={{ color:"#fff", fontWeight:600, fontSize:15 }}>Smart Restaurant</span>
         </div>
       </div>
@@ -47,7 +48,7 @@ function Sidebar({ accentColor, activeNav, onNavigate, onPreviewClick, isMobile 
               cursor:"pointer", marginBottom:4, fontSize:isMobile ? 13 : 14, fontWeight: activeNav===item.label ? 600 : 400,
               transition:"all 0.2s", textAlign:"left", fontFamily:"inherit",
             }}>
-              <span style={{ fontSize:18, width:22, textAlign:"center" }}>{item.icon}</span>
+              <span style={{ width:22, display:"inline-flex", justifyContent:"center" }}><Icon name={item.icon} size={17} /></span>
               <span>{item.label}</span>
               {item.badge && item.label !== 'Cart' && <span style={{ marginLeft:"auto", background:accentColor, color:"#fff", borderRadius:"50%", width:22, height:22, display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:700 }}>{item.badge}</span>}
             </button>
@@ -56,11 +57,11 @@ function Sidebar({ accentColor, activeNav, onNavigate, onPreviewClick, isMobile 
                 <button onClick={onPreviewClick} style={{
                   display:"flex", alignItems:"center", justifyContent:"center", gap:8,
                   width:"100%", padding:"10px 12px", borderRadius:12, border:"1px solid rgba(234, 88, 12, 0.4)",
-                  background:"linear-gradient(135deg, #ea580c, #f97316)", color:"#fff",
+                  background:"#0f766e", color:"#fff",
                   fontSize:12, fontWeight:800, cursor:"pointer", letterSpacing:"0.3px",
                   boxShadow:"0 6px 14px rgba(234, 88, 12, 0.25)"
                 }}>
-                  <span>🎥</span>
+                  <Icon name="Video" size={16} />
                   <span>Watch Preview</span>
                 </button>
               </div>
@@ -181,7 +182,7 @@ export default function App() {
   const slides = cfg.slides || [[]];
   const currentSlide = slides[slideIdx % slides.length] || [];
   
-  const centerImage = currentSlide[0]?.image || currentSlide[0]?.emoji || "🍽️";
+  const centerImage = currentSlide[0]?.image || currentSlide[0]?.emoji || "Utensils";
 
   const changeCategory = (cat) => { 
     setActiveCategory(cat); 
@@ -487,10 +488,10 @@ export default function App() {
       {previewModal}
 
       {/* Sidebar */}
-      <aside style={{ width:isMobile ? '100%' : 240, background:"#1a1a1a", display:"flex", flexDirection:"column", padding:"0 0 24px 0", boxShadow:"4px 0 20px rgba(0,0,0,0.15)", zIndex:10 }}>
+      <aside style={{ width:isMobile ? '100%' : 240, background:"#17212b", display:"flex", flexDirection:"column", padding:"0 0 24px 0", boxShadow:"2px 0 12px rgba(23,33,43,0.12)", zIndex:10 }}>
         <div style={{ padding:isMobile ? "20px 18px 18px" : "28px 24px 24px", borderBottom:"1px solid rgba(255,255,255,0.08)", marginBottom:isMobile ? 12 : 16 }}>
           <div style={{ display:"flex", alignItems:"center", gap:12 }}>
-            <div style={{ width:44, height:44, background:`linear-gradient(135deg,${cfg.accentColor},${cfg.accentColor}bb)`, borderRadius:12, display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, color:"#fff", fontSize:16, boxShadow:`0 4px 12px ${cfg.accentColor}55`, transition:"background 0.4s" }}>SR</div>
+            <div style={{ width:44, height:44, background:cfg.accentColor, borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, color:"#fff", fontSize:16 }}>SR</div>
             <span style={{ color:"#fff", fontWeight:600, fontSize:15 }}>Smart Restaurant</span>
           </div>
         </div>
@@ -517,7 +518,7 @@ export default function App() {
                 cursor:"pointer", marginBottom:4, fontSize:isMobile ? 13 : 14, fontWeight: activeNav===item.label ? 600 : 400,
                 transition:"all 0.2s", textAlign:"left", fontFamily:"inherit",
               }}>
-                <span style={{ fontSize:18, width:22, textAlign:"center" }}>{item.icon}</span>
+                <span style={{ width:22, display:"inline-flex", justifyContent:"center" }}><Icon name={item.icon} size={17} /></span>
                 <span>{item.label}</span>
                 {item.badge && <span style={{ marginLeft:"auto", background:cfg.accentColor, color:"#fff", borderRadius:"50%", width:22, height:22, display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:700 }}>{item.badge}</span>}
               </button>
@@ -526,7 +527,7 @@ export default function App() {
                   <button 
                     onClick={openPreviewModal}
                     style={{
-                      background: 'linear-gradient(135deg, #ea580c, #f97316)', color: '#fff', border: '1px solid rgba(234, 88, 12, 0.4)', borderRadius: '12px',
+                      background: '#0f766e', color: '#fff', border: '1px solid #0f766e', borderRadius: '10px',
                       padding: '10px 12px', width: '100%', fontSize: '12px',
                       fontWeight: '800', cursor: 'pointer', transition: 'transform 0.2s',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
@@ -535,7 +536,7 @@ export default function App() {
                     onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
                     onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                   >
-                    <span>🎥</span> Watch Preview
+                    <Icon name="Video" size={16} /> Watch Preview
                   </button>
                 </div>
               )}
@@ -546,7 +547,7 @@ export default function App() {
 
       {/* Main Content */}
       <main style={{ flex:1, display:"flex", flexDirection:"column", overflow:isMobile ? "auto" : "hidden", minWidth:0, width:'100%' }}>
-        <header style={{ display:"flex", alignItems:"center", padding:isMobile ? "16px 18px" : "0 32px", height:isMobile ? "auto" : 72, background:"#fff", borderBottom:"1px solid rgba(0,0,0,0.06)", gap:isMobile ? 12 : 24, flexShrink:0, flexWrap:isMobile ? "wrap" : "nowrap", flexDirection:isMobile ? "column" : "row" }}>
+        <header style={{ display:"flex", alignItems:"center", padding:isMobile ? "16px 18px" : "0 32px", height:isMobile ? "auto" : 72, background:"#E8F3F1", borderBottom:"1px solid rgba(0,0,0,0.06)", gap:isMobile ? 12 : 24, flexShrink:0, flexWrap:isMobile ? "wrap" : "nowrap", flexDirection:isMobile ? "column" : "row" }}>
           <div style={{ display:"flex", gap:22, width:isMobile ? "100%" : "auto", overflowX:isMobile ? "auto" : "visible", paddingBottom:isMobile ? 4 : 0, scrollbarWidth:"thin" }}>
             {categories.map(cat => (
               <button key={cat} onClick={() => changeCategory(cat)} style={{
@@ -559,15 +560,15 @@ export default function App() {
             ))}
           </div>
           <div style={{ flex:1, maxWidth:isMobile ? "100%" : 360, display:"flex", alignItems:"center", background:"#f5f5f5", borderRadius:12, padding:"0 16px", gap:8, width:isMobile ? "100%" : "auto" }}>
-            <span style={{ color:"#aaa" }}>🔍</span>
+            <span style={{ color:"#aaa", display:"inline-flex" }}><Icon name="Search" size={17} /></span>
             <input value={searchVal} onChange={e => setSearchVal(e.target.value)} placeholder="Search for food, drinks..." style={{ flex:1, border:"none", background:"none", fontSize:14, color:"#333", outline:"none", padding:"10px 0", fontFamily:"inherit" }}/>
           </div>
           <div style={{ display:"flex", gap:10, marginLeft:isMobile ? 0 : "auto", width:isMobile ? "100%" : "auto", justifyContent:isMobile ? "space-between" : "flex-start" }}>
             <a href="https://wa.me/945995735?text=I%20need%20some%20help%20with%20my%20order" target="_blank" rel="noopener noreferrer" style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"10px 18px", background:"#25D366", borderRadius:25, color:"#fff", fontWeight:600, fontSize:13, textDecoration:"none", cursor:"pointer", fontFamily:"inherit", transition:"background 0.4s" }}>
-              💬 Chat via WhatsApp
+              <Icon name="MessageCircle" size={16} /> Chat via WhatsApp
             </a>
             <button onClick={handleVoiceSearch} style={{ display:"flex", alignItems:"center", gap:6, padding:"10px 18px", background:isListening ? "#ff4d4d" : "transparent", border:`2px solid ${cfg.accentColor}`, borderRadius:25, color:isListening ? "#fff" : cfg.accentColor, fontWeight:600, fontSize:13, cursor:"pointer", fontFamily:"inherit", transition:"all 0.4s" }}>
-              {isListening ? '🛑 Listening...' : '🎙️ Voice'}
+              <Icon name={isListening ? "StopCircle" : "Mic"} size={16} /> {isListening ? 'Listening...' : 'Voice'}
             </button>
           </div>
         </header>
@@ -575,7 +576,7 @@ export default function App() {
         <div style={{ flex:1, overflowY:"auto", overflowX:"visible", padding:isMobile ? "18px 18px 28px" : "28px 32px" }}>
 
           {/* Hero */}
-          <div style={{ background:cfg.bannerGrad, borderRadius:24, padding:isMobile ? "24px 20px 28px" : "40px 40px 50px 48px", position:"relative", overflow:"hidden", display:"flex", alignItems:"center", justifyContent:"space-between", flexDirection:isMobile ? "column" : "row", minHeight:isMobile ? 260 : 380, marginBottom:40, transition:"background 0.5s", gap:isMobile ? 20 : 0 }}>
+          <div style={{ background:"#e9f1ee", borderRadius:16, padding:isMobile ? "24px 20px 28px" : "40px 40px 50px 48px", position:"relative", overflow:"hidden", display:"flex", alignItems:"center", justifyContent:"space-between", flexDirection:isMobile ? "column" : "row", minHeight:isMobile ? 260 : 380, marginBottom:40, gap:isMobile ? 20 : 0 }}>
             <div style={{ maxWidth:isMobile ? "100%" : 380, flexShrink:0, zIndex:2, width:"100%" }}>
               <h1 style={{ fontSize:isMobile ? 30 : 44, fontWeight:900, lineHeight:1.15, color:"#1a1a1a", margin:"0 0 16px", letterSpacing:"-1px", whiteSpace:"pre-line" }}>
                 {cfg.tagline}<span style={{ color:cfg.accentColor, transition:"color 0.4s" }}>{cfg.moodWord}</span>
@@ -587,8 +588,8 @@ export default function App() {
               >View All →</button>
               <div style={{ display:"flex", alignItems:"center", gap:14, marginTop:28 }}>
                 <div style={{ display:"flex" }}>
-                  {["👨","👩","🧑"].map((f,i) => (
-                    <div key={i} style={{ width:36, height:36, borderRadius:"50%", background:"#e0d0c0", border:"2px solid #fff", marginLeft:i>0?-10:0, display:"flex", alignItems:"center", justifyContent:"center", fontSize:18 }}>{f}</div>
+                  {["User","User","User"].map((f,i) => (
+                    <div key={i} style={{ width:36, height:36, borderRadius:"50%", background:"#e0d0c0", border:"2px solid #fff", marginLeft:i>0?-10:0, display:"flex", alignItems:"center", justifyContent:"center" }}><Icon name={f} size={18} /></div>
                   ))}
                 </div>
                 <div>
@@ -636,7 +637,7 @@ export default function App() {
                 reviews: dish.reviews ?? 0,
               });
               return (
-              <div key={dish.id} style={{ background:dish.color, borderRadius:20, padding:"34px 30px", cursor:"pointer", transition:"transform 0.2s, box-shadow 0.2s", border:"1px solid rgba(0,0,0,0.04)" }}
+              <div key={dish.id} style={{ background:"#F1F8EC", borderRadius:20, padding:"34px 30px", cursor:"pointer", transition:"transform 0.2s, box-shadow 0.2s", border:"1px solid rgba(0,0,0,0.04)" }}
                 onClick={() => openDish(dish, activeCategory)}
                 onMouseEnter={e => { e.currentTarget.style.transform="translateY(-4px)"; e.currentTarget.style.boxShadow="0 12px 32px rgba(0,0,0,0.1)"; }}
                 onMouseLeave={e => { e.currentTarget.style.transform="translateY(0)"; e.currentTarget.style.boxShadow="none"; }}

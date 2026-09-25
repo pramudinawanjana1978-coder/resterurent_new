@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { PaymentPage } from "./PaymentPage.jsx";
+import { Icon } from "../components/Icon.jsx";
 
 // ─── CART PAGE ────────────────────────────────────────────────────────────────
 
@@ -15,7 +16,7 @@ const suggestedItems = [
   {
     id: 11,
     name: "Waffles & Cream",
-    emoji: "🧇",
+    emoji: "",
     price: 1670,
     category: "Breakfast",
     image: "/images/Tostwithegg.jpg",
@@ -25,7 +26,7 @@ const suggestedItems = [
   {
     id: 406,
     name: "Matcha Latte",
-    emoji: "🍵",
+    emoji: "",
     price: 1015,
     category: "Drinks",
     image: "/images/Matcha Latte.jpg",
@@ -33,7 +34,7 @@ const suggestedItems = [
   {
     id: 301,
     name: "Chocolate Fondant",
-    emoji: "🍫",
+    emoji: "",
     price: 1450,
     category: "Desserts",
     image: "/images/Chocolate Fondant.jpg",
@@ -41,7 +42,7 @@ const suggestedItems = [
   {
     id: 102,
     name: "Chicken Wrap",
-    emoji: "🥙",
+    emoji: "",
     price: 1750,
     category: "Lunch",
     image: "/images/Chicken Wrap.jpg",
@@ -205,7 +206,7 @@ function CartPage({
           position: "sticky",
           top: 0,
           zIndex: 100,
-          background: "rgba(255,255,255,0.97)",
+          background: "#E8F3F1",
           backdropFilter: "blur(14px)",
           borderBottom: "1px solid rgba(0,0,0,0.06)",
           padding: "0 40px",
@@ -326,7 +327,8 @@ function CartPage({
               position: "relative",
             }}
           >
-            <span style={{ fontSize: 21 }}>🛒</span>
+            <span style={{ fontSize: 21 }}></span>
+            <Icon name="ShoppingCart" size={21} />
 
             <span
               style={{
@@ -707,7 +709,7 @@ function CartPage({
                           }}
                         />
                       ) : (
-                        item.emoji || "🍽️"
+                        item.emoji || ""
                       )}
                     </div>
 
@@ -1062,14 +1064,14 @@ function CartPage({
 
                                 const existingFallback = parent.querySelector(".fallback-emoji");
                                 if (existingFallback) {
-                                  existingFallback.textContent = s.emoji || "🍽️";
+                                  existingFallback.textContent = s.emoji || "";
                                   existingFallback.style.display = "inline-block";
                                   return;
                                 }
 
                                 const fallback = document.createElement("span");
                                 fallback.className = "fallback-emoji";
-                                fallback.textContent = s.emoji || "🍽️";
+                                fallback.textContent = s.emoji || "";
                                 fallback.style.fontSize = "36px";
                                 fallback.style.lineHeight = "1";
                                 fallback.style.display = "inline-block";
@@ -1083,7 +1085,7 @@ function CartPage({
                               }}
                             >
                               {s.emoji ||
-                                "🍽️"}
+                                ""}
                             </div>
                           )}
                         </div>

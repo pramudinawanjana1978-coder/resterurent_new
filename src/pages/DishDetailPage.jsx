@@ -6,16 +6,16 @@ import { getDishReviewStats, useAppStore } from '../store/AppStore.jsx';
 
 const makeVariants = (dish) => [
   { label: "Original",     bg: dish.color + "cc", emoji: dish.emoji, note: dish.desc },
-  { label: "Spicy",        bg: "#fbe9e7cc",        emoji: "🌶️",       note: "Extra spicy version" },
+  { label: "Spicy",        bg: "#fbe9e7cc",        emoji: "",       note: "Extra spicy version" },
   { label: "Large",        bg: dish.color + "cc",  emoji: dish.emoji, note: "Extra large portion" },
-  { label: "Chef Special", bg: "#fffde7cc",         emoji: "⭐",        note: "House twist" },
+  { label: "Chef Special", bg: "#fffde7cc",         emoji: "",        note: "House twist" },
 ];
 
 // Mock reviews data (Error එක නිවැරදි කර ඇත - likes සඳහා අගයන් ලබා දී ඇත)
 const mockReviews = [
-  { avatar: "👨", name: "Amal Silva", stars: 5, time: "2 days ago", text: "The food was absolutely delicious and fresh!", likes: 14 },
-  { avatar: "👩", name: "Pramudi", stars: 4, time: "1 week ago", text: "Great taste and neat packaging. Will order again.", likes: 8 },
-  { avatar: "🧑", name: "Nimal Perera", stars: 5, time: "3 days ago", text: "Highly recommended! Fast preparation too.", likes: 3 }
+  { avatar: "", name: "Amal Silva", stars: 5, time: "2 days ago", text: "The food was absolutely delicious and fresh!", likes: 14 },
+  { avatar: "", name: "Pramudi", stars: 4, time: "1 week ago", text: "Great taste and neat packaging. Will order again.", likes: 8 },
+  { avatar: "", name: "Nimal Perera", stars: 5, time: "3 days ago", text: "Highly recommended! Fast preparation too.", likes: 3 }
 ];
 
 // ─── DISH DETAIL PAGE ─────────────────────────────────────────────────────────
@@ -132,7 +132,7 @@ function DishDetailPage({ dish, category, onBack, cartItems, setCartItems, accen
       {/* Top bar */}
       <div style={{
         position:"sticky", top:0, zIndex:100,
-        background:"rgba(255,255,255,0.97)", backdropFilter:"blur(12px)",
+        background:"#E8F3F1", backdropFilter:"blur(12px)",
         borderBottom:"1px solid rgba(0,0,0,0.07)",
         padding:"0 40px", height:64,
         display:"flex", alignItems:"center", gap:20,

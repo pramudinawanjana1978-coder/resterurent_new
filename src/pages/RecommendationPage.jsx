@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import * as faceapi from 'face-api.js';
+import { Icon } from '../components/Icon.jsx';
 
 // ─── RECOMMENDATION PAGE ──────────────────────────────────────────────────────
 
@@ -414,7 +415,7 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
           border:`2px solid ${accentColor}33`,
           display:"flex", alignItems:"center", justifyContent:"center",
           fontSize:72,
-        }}>🤳</div>
+        }}><Icon name="Camera" size={72} /></div>
         <div style={{
           position:"absolute", inset:-8, borderRadius:"50%",
           border:`3px solid transparent`,
@@ -440,9 +441,9 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
 
       <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:16, marginBottom:36 }}>
         {[
-          { icon:"📸", step:"1", title:"Allow Camera",  desc:"Grant camera access for a quick scan" },
-          { icon:"🧠", step:"2", title:"AI Scans You",  desc:"Our AI reads your facial expressions"  },
-          { icon:"🍽️", step:"3", title:"Get Dishes",    desc:"Receive mood-matched recommendations"  },
+          { icon:"Camera", step:"1", title:"Allow Camera",  desc:"Grant camera access for a quick scan" },
+          { icon:"Brain", step:"2", title:"AI Scans You",  desc:"Our AI reads your facial expressions"  },
+          { icon:"Utensils", step:"3", title:"Get Dishes",    desc:"Receive mood-matched recommendations"  },
         ].map(s => (
           <div key={s.step} style={{
             background:"#fff", borderRadius:18, padding:"20px 16px",
@@ -452,7 +453,7 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
               width:44, height:44, borderRadius:12, margin:"0 auto 10px",
               background:`linear-gradient(135deg,${accentColor},${accentColor}cc)`,
               display:"flex", alignItems:"center", justifyContent:"center", fontSize:22,
-            }}>{s.icon}</div>
+            }}><Icon name={s.icon} size={22} /></div>
             <div style={{ fontSize:13, fontWeight:800, color:"#111827", marginBottom:4 }}>{s.title}</div>
             <div style={{ fontSize:11, color:"#9ca3af", lineHeight:1.5 }}>{s.desc}</div>
           </div>
@@ -463,7 +464,7 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
         <div style={{
           background:"#fff5f5", border:"1px solid #fed7d7", borderRadius:12,
           padding:"12px 16px", marginBottom:20, fontSize:13, color:"#c53030",
-        }}>⚠️ {cameraError}</div>
+        }}><Icon name="TriangleAlert" size={15} /> {cameraError}</div>
       )}
 
       {!modelsLoaded && (
@@ -472,7 +473,7 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
           padding:"12px 16px", marginBottom:20, fontSize:13, color:"#92400e",
           display:"flex", alignItems:"center", gap:8,
         }}>
-          <span style={{ animation:"spin 1s linear infinite" }}>⚙️</span>
+          <Icon name="LoaderCircle" size={16} />
           Loading AI models... This may take a few seconds.
         </div>
       )}
@@ -490,7 +491,7 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
         onMouseEnter={e=>modelsLoaded&&(e.currentTarget.style.transform="scale(1.03)")}
         onMouseLeave={e=>modelsLoaded&&(e.currentTarget.style.transform="scale(1)")}
       >
-        📸 Scan My Mood
+        <Icon name="Camera" size={16} /> Scan My Mood
       </button>
 
       <div style={{ marginTop:8 }}>
@@ -499,12 +500,12 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
           padding:"9px 20px", color:accentColor, fontWeight:600, fontSize:13,
           cursor:"pointer", fontFamily:"inherit",
         }}>
-          😊 Choose Mood Manually Instead
+          <Icon name="Smile" size={16} /> Choose Mood Manually Instead
         </button>
       </div>
 
       <p style={{ fontSize:11, color:"#d1d5db", marginTop:20 }}>
-        🔒 Camera feed is processed locally — we never store or upload your images.
+        <Icon name="LockKeyhole" size={13} /> Camera feed is processed locally — we never store or upload your images.
       </p>
     </div>
   );
@@ -646,7 +647,7 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
               onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-3px)";e.currentTarget.style.boxShadow=`0 8px 24px ${mp.color}22`;}}
               onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow=manualMood===mood?`0 0 0 4px ${mp.color}18`:"0 2px 8px rgba(0,0,0,0.04)";}}
             >
-              <span style={{ fontSize:44 }}>{moodEmojis[i]}</span>
+              <Icon name={moodEmojis[i]} size={44} />
               <span style={{ fontSize:14, fontWeight:700, color:"#111827" }}>{mood}</span>
               <span style={{ fontSize:10, color:"#9ca3af", lineHeight:1.4 }}>{mp.subtitle}</span>
             </button>
@@ -674,7 +675,7 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
 
         {/* Mood hero card */}
         <div style={{
-          background: profile.bg,
+          background: "#e9f1ee",
           borderRadius:24, padding:"28px 32px", marginBottom:28,
           border:`1.5px solid ${profile.color}33`,
           display:"flex", alignItems:"center", justifyContent:"space-between", gap:20,
@@ -687,7 +688,7 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
               display:"flex", alignItems:"center", justifyContent:"center", fontSize:40,
               boxShadow:`0 8px 24px ${profile.color}55`,
               animation:"moodPop 0.5s cubic-bezier(0.34,1.56,0.64,1)",
-            }}>{profile.emoji}</div>
+            }}><Icon name={profile.emoji} size={40} /></div>
             <div>
               <div style={{ fontSize:10, fontWeight:700, color:profile.color, letterSpacing:"1.5px", textTransform:"uppercase", marginBottom:4 }}>
                 {detectedMood ? "AI Detected Mood" : "Your Selected Mood"}
@@ -710,11 +711,11 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
             background:`linear-gradient(135deg,${profile.color},${profile.color}cc)`,
             color:"#fff", fontWeight:700, fontSize:12, cursor:"pointer", fontFamily:"inherit",
             boxShadow:`0 4px 14px ${profile.color}44`,
-          }}>🔄 Rescan</button>
+          }}><Icon name="RefreshCw" size={14} /> Rescan</button>
         </div>
 
         <h3 style={{ fontSize:18, fontWeight:800, color:"#111827", margin:"0 0 16px" }}>
-          🍽️ Perfect Dishes for Your Mood
+          <Icon name="Utensils" size={18} /> Perfect Dishes for Your Mood
         </h3>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:16, marginBottom:28 }}>
           {moodDishes.map((dish, i) => {
@@ -754,19 +755,19 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
                     }}
                     onError={(e) => {
                       e.target.style.display = 'none';
-                      // Show fallback emoji
+                      // Show a neutral fallback when the dish image is unavailable.
                       const parent = e.target.parentNode;
                       if (parent) {
                         const fallback = document.createElement('span');
                         fallback.style.fontSize = '64px';
-                        fallback.textContent = dish.emoji || '🍽️';
+                        fallback.textContent = dish.name;
                         parent.appendChild(fallback);
                       }
                     }}
                   />
                   {/* Fallback if image fails (inline) */}
                   <div style={{ display: 'none' }} className="fallback-emoji">
-                    <span style={{ fontSize:64 }}>{dish.emoji || '🍽️'}</span>
+                    <Icon name={dish.emoji} size={64} />
                   </div>
                 </div>
 
@@ -786,7 +787,7 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
 
                   <h4 style={{ margin:"0 0 6px", fontSize:16, fontWeight:800, color:"#111827" }}>{dish.name}</h4>
                   <p style={{ margin:"0 0 12px", fontSize:12, color:"#9ca3af", lineHeight:1.55, flex:1 }}>
-                    💡 {dish.reason}
+                    <Icon name="Lightbulb" size={14} /> {dish.reason}
                   </p>
 
                   <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
@@ -815,7 +816,7 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
             display:"flex", justifyContent:"space-between", alignItems:"center",
           }}>
             <span style={{ fontSize:14, fontWeight:700, color:"#111827" }}>
-              🛒 {totalCartItems} dish{totalCartItems > 1 ? "es" : ""} added to cart!
+              <Icon name="ShoppingCart" size={14} /> {totalCartItems} dish{totalCartItems > 1 ? "es" : ""} added to cart!
             </span>
             <button onClick={onViewCart || onBack} style={{
               padding:"9px 20px", background:`linear-gradient(135deg,${profile.color},${profile.color}cc)`,
@@ -834,7 +835,7 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
       {/* Top bar */}
       <div style={{
         position:"sticky", top:0, zIndex:100,
-        background:"rgba(255,255,255,0.97)", backdropFilter:"blur(14px)",
+        background:"#E8F3F1", backdropFilter:"blur(14px)",
         borderBottom:"1px solid rgba(0,0,0,0.06)",
         padding:"0 36px", height:64,
         display:"flex", alignItems:"center", gap:14,
@@ -856,7 +857,7 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
         </div>
         <div style={{ marginLeft:"auto", display:"flex", gap:12, alignItems:"center" }}>
           <div style={{ position:"relative" }}>
-            <span style={{ fontSize:20 }}>🛒</span>
+            <Icon name="ShoppingCart" size={20} />
             <span style={{
               position:"absolute", top:-4, right:-4,
               background:accentColor, color:"#fff",
@@ -871,7 +872,7 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
 
       {/* Hero banner */}
       <div style={{
-        background:`linear-gradient(135deg,#1a1a2e 0%,#16213e 55%,#0f3460 100%)`,
+        background:"#23333b",
         padding:"28px 40px 32px", position:"relative", overflow:"hidden",
       }}>
         {[["-30px",null,"160px",`${accentColor}12`],[null,"10px","130px","rgba(255,255,255,0.025)"]].map(([l,r,sz,bg],i)=>(
@@ -880,12 +881,12 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
         <div style={{ position:"relative", zIndex:1, maxWidth:900, margin:"0 auto", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:16 }}>
           <div>
             <div style={{ fontSize:10,fontWeight:700,color:`${accentColor}bb`,letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:6 }}>Powered by AI</div>
-            <h1 style={{ margin:"0 0 6px",fontSize:24,fontWeight:900,color:"#fff",letterSpacing:"-0.5px" }}>Smart Food Recommendation 🧠</h1>
+            <h1 style={{ margin:"0 0 6px",fontSize:24,fontWeight:900,color:"#fff",letterSpacing:"-0.5px",display:"flex",alignItems:"center",gap:8 }}><Icon name="Brain" size={22} /> Smart Food Recommendation</h1>
             <p style={{ margin:0,color:"rgba(255,255,255,0.4)",fontSize:13 }}>Face detection · Mood analysis · Personalised dishes</p>
           </div>
           <div style={{ display:"flex", gap:10 }}>
             {["😄","😢","😠","😴"].map((e,i)=>(
-              <div key={i} style={{ width:40,height:40,borderRadius:"50%",background:"rgba(255,255,255,0.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20, animation:`float${i} ${2+i*0.3}s ease-in-out infinite` }}>{e}</div>
+              <div key={i} style={{ width:40,height:40,borderRadius:"50%",background:"rgba(255,255,255,0.08)",display:"flex",alignItems:"center",justifyContent:"center" }}><Icon name="Smile" size={20} /></div>
             ))}
           </div>
         </div>
@@ -914,14 +915,14 @@ function RecommendationPage({ onBack, accentColor, onDishSelect, onViewCart, car
       {/* Footer */}
       <div style={{ background:"#fff",borderTop:"1px solid #f0f0f0",padding:"22px 40px",display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:24,marginTop:40 }}>
         {[
-          {icon:"🕐",title:"Hours",    lines:["Mon–Sun","10 AM – 11 PM"]},
-          {icon:"📞",title:"Contact",  lines:["+94 77 599 5735","info@smartrestaurant.lk"]},
-          {icon:"📍",title:"Location", lines:["123, Galle Road","Colombo 03, Sri Lanka"]},
-          {icon:"🌐",title:"Follow Us", social:true},
+          {icon:"Clock3",title:"Hours",    lines:["Mon–Sun","10 AM – 11 PM"]},
+          {icon:"Phone",title:"Contact",  lines:["+94 77 599 5735","info@smartrestaurant.lk"]},
+          {icon:"MapPin",title:"Location", lines:["123, Galle Road","Colombo 03, Sri Lanka"]},
+          {icon:"Globe",title:"Follow Us", social:true},
         ].map((col,i)=>(
           <div key={i}>
             <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:7}}>
-              <span style={{color:accentColor,fontSize:16}}>{col.icon}</span>
+              <span style={{color:accentColor,display:"inline-flex"}}><Icon name={col.icon} size={16} /></span>
               <span style={{fontSize:12,fontWeight:700,color:"#374151"}}>{col.title}</span>
             </div>
             {col.lines?.map((l,j)=><div key={j} style={{fontSize:11,color:"#9ca3af",marginBottom:2}}>{l}</div>)}

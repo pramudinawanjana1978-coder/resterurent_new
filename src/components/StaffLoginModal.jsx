@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, createContext, useContext } from 'react';
+import { Icon } from './Icon.jsx';
 
 // ─── STAFF LOGIN MODAL ────────────────────────────────────────────────────────
 
@@ -89,14 +90,14 @@ function StaffLoginModal({ accentColor, onSuccess, onClose }) {
             background:"rgba(255,255,255,0.1)", border:"none", borderRadius:"50%",
             width:32, height:32, cursor:"pointer", color:"rgba(255,255,255,0.7)",
             fontSize:16, display:"flex", alignItems:"center", justifyContent:"center",
-          }}>✕</button>
+          }}><Icon name="X" size={16} /></button>
 
           <div style={{
             width:72, height:72, borderRadius:22, margin:"0 auto 16px",
             background:`linear-gradient(135deg,${accentColor},${accentColor}cc)`,
             display:"flex", alignItems:"center", justifyContent:"center",
             fontSize:34, boxShadow:`0 8px 24px ${accentColor}55`,
-          }}>🔐</div>
+          }}><Icon name="LockKeyhole" size={32} /></div>
 
           <div style={{ fontSize:10, fontWeight:700, color:`${accentColor}bb`, letterSpacing:"1.5px", textTransform:"uppercase", marginBottom:6 }}>Restricted Access</div>
           <h2 style={{ margin:0, fontSize:22, fontWeight:900, color:"#fff" }}>Staff Dashboard</h2>
@@ -109,7 +110,7 @@ function StaffLoginModal({ accentColor, onSuccess, onClose }) {
           {/* Username */}
           <div style={{ marginBottom:16 }}>
             <label style={{ fontSize:11, fontWeight:700, color:"#374151", display:"block", marginBottom:7, textTransform:"uppercase", letterSpacing:"0.5px" }}>
-              👤 Username
+              <Icon name="User" size={14} /> Username
             </label>
             <input
               value={username}
@@ -133,7 +134,7 @@ function StaffLoginModal({ accentColor, onSuccess, onClose }) {
           {/* Password */}
           <div style={{ marginBottom:20 }}>
             <label style={{ fontSize:11, fontWeight:700, color:"#374151", display:"block", marginBottom:7, textTransform:"uppercase", letterSpacing:"0.5px" }}>
-              🔑 Password
+              <Icon name="LockKeyhole" size={14} /> Password
             </label>
             <div style={{ position:"relative" }}>
               <input
